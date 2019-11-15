@@ -1,6 +1,6 @@
 <p>Bluetooth status: {{this.status}}</p>
 
-<button {{on "click" this.search}}>Search for devices</button>
+<button class="border border-black" {{on "click" this.search}}>Search for devices</button>
 
 {{#if this.error}}
   <p>Bluetooth error: {{this.error}}</p>
