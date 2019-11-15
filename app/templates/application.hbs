@@ -9,7 +9,7 @@
 {{outlet}}
 
 {{#if this.debugLog.entries}}
-  <button {{on "click" (action (mut this.showLogEntries true))}} class="fixed bottom-0 bg-gray-200 p-1 w-full" data-test-log-drawer>
+  <button {{on "click" (action (mut this.showLogEntries true))}} class="fixed left-0 bottom-0 bg-gray-200 p-1 w-full h-16 overflow-y-scroll" data-test-log-drawer>
     <div data-test-log-count>{{this.debugLog.entries.length}}</div>
     {{#if this.showLogEntries}}
       <ul>
