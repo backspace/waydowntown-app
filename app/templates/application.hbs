@@ -7,3 +7,16 @@
 </nav>
 
 {{outlet}}
+
+{{#if this.debugLog.entries}}
+  <button {{on "click" (action (mut this.showLogEntries true))}} class="fixed bottom-0 bg-gray-200 p-1 w-full" data-test-log-drawer>
+    <div data-test-log-count>{{this.debugLog.entries.length}}</div>
+    {{#if this.showLogEntries}}
+      <ul>
+        {{#each this.debugLog.entries as |entry|}}
+          <li data-test-log-entry>{{entry}}</li>
+        {{/each}}
+      </ul>
+    {{/if}}
+  </button>
+{{/if}}
