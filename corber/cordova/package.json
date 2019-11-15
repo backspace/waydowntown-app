@@ -21,7 +21,11 @@
   },
   "cordova": {
     "plugins": {
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-bluetooth-peripheral-usage-description": {
+        "TEXT": "Scans for nearby Bluetooth devices"
+      },
+      "cordova-plugin-bluetoothle": {}
     },
     "platforms": [
       "android",

@@ -1,0 +1,15 @@
+<p>Bluetooth status: {{this.status}}</p>
+
+<button {{on "click" this.search}}>Search for devices</button>
+
+{{#if this.error}}
+  <p>Bluetooth error: {{this.error}}</p>
+{{/if}}
+
+<ul>
+  {{#each this.devices as |device|}}
+    <li>{{device}}</li>
+  {{else}}
+    <li>no devices</li>
+  {{/each}}
+</ul>
