@@ -7,8 +7,12 @@ export default class OrientationController extends Controller {
 
   @action
   start() {
-    window.addEventListener('deviceorientation', event => {
-      this.event = event;
-    }, true);
+    this.handler = event => this.event = event;
+    window.addEventListener('deviceorientation', this.handler, true);
+  }
+
+  @action
+  stop() {
+    window.removeEventListener('deviceorientation', this.handler, true);
   }
 }
