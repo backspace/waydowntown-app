@@ -13,6 +13,7 @@
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
   "dependencies": {
+    "@mauron85/cordova-plugin-background-geolocation": "^3.1.0",
     "cordova-android": "^8.1.0",
     "cordova-ios": "^5.0.1"
   },
@@ -25,7 +26,19 @@
       "cordova-plugin-bluetooth-peripheral-usage-description": {
         "TEXT": "Scans for nearby Bluetooth devices"
       },
-      "cordova-plugin-bluetoothle": {}
+      "cordova-plugin-bluetoothle": {},
+      "cordova-plugin-background-geolocation": {
+        "GOOGLE_PLAY_SERVICES_VERSION": "11+",
+        "ANDROID_SUPPORT_LIBRARY_VERSION": "26+",
+        "ICON": "@mipmap/icon",
+        "SMALL_ICON": "@mipmap/icon",
+        "ACCOUNT_NAME": "@string/app_name",
+        "ACCOUNT_LABEL": "@string/app_name",
+        "ACCOUNT_TYPE": "$PACKAGE_NAME.account",
+        "CONTENT_AUTHORITY": "$PACKAGE_NAME",
+        "ALWAYS_USAGE_DESCRIPTION": "This app always requires location tracking",
+        "MOTION_USAGE_DESCRIPTION": "This app requires motion detection"
+      }
     },
     "platforms": [
       "android",

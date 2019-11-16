@@ -8,6 +8,7 @@ export default class Router extends EmberRouter {
 
 Router.map(function() {
   this.route('bluetooth-scan');
+  this.route('location');
   this.route('motion');
   this.route('orientation');
 });
