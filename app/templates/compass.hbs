@@ -1,0 +1,9 @@
+<button class="border border-black" {{on "click" this.start}}>Observe</button>
+<button class="border border-black" {{on "click" this.stop}}>Stop</button>
+
+<ul>
+  <li>x: {{this.event.x}}</li>
+  <li>y: {{this.event.y}}</li>
+  <li>z: {{this.event.z}}</li>
+  <li>magnitude: {{this.event.magnitude}}</li>
+</ul>

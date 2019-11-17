@@ -16,7 +16,8 @@
     "@mauron85/cordova-plugin-background-geolocation": "^3.1.0",
     "cordova-android": "^8.1.0",
     "cordova-ios": "^5.0.1",
-    "cordova-plugin-battery-status": "^2.0.3"
+    "cordova-plugin-battery-status": "^2.0.3",
+    "cordova-plugin-magnetometer": "^1.0.0"
   },
   "devDependencies": {
     "cordova-plugin-whitelist": "^1.3.4"
@@ -40,7 +41,8 @@
         "ALWAYS_USAGE_DESCRIPTION": "This app always requires location tracking",
         "MOTION_USAGE_DESCRIPTION": "This app requires motion detection"
       },
-      "cordova-plugin-battery-status": {}
+      "cordova-plugin-battery-status": {},
+      "cordova-plugin-magnetometer": {}
     },
     "platforms": [
       "android",
