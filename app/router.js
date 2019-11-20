@@ -13,4 +13,5 @@ Router.map(function() {
   this.route('location');
   this.route('motion');
   this.route('orientation');
+  this.route('sim');
 });

@@ -1,0 +1,13 @@
+<button class="border border-black" {{on "click" this.start}}>Get info</button>
+
+{{#if this.info}}
+  <ul>
+    {{#each-in this.info as |key value|}}
+      <li>{{key}}: {{value}}</li>
+    {{/each-in}}
+  </ul>
+{{/if}}
+
+{{#if this.error}}
+  <p>Error: {{this.error}}</p>
+{{/if}}
