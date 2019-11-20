@@ -10,6 +10,7 @@ Router.map(function() {
   this.route('battery');
   this.route('bluetooth-scan');
   this.route('compass');
+  this.route('db-meter');
   this.route('location');
   this.route('motion');
   this.route('orientation');

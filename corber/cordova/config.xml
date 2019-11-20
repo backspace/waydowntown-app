@@ -25,5 +25,8 @@
     <platform name="ios">
         <allow-intent href="itms:*"/>
         <allow-intent href="itms-apps:*"/>
+        <edit-config target="NSMicrophoneUsageDescription" file="*-Info.plist" mode="merge">
+            <string>need microphone access to record sounds FIXME</string>
+        </edit-config>
     </platform>
 </widget>
