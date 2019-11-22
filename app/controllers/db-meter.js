@@ -7,7 +7,7 @@ export default class DBMeterController extends Controller {
 
   @action
   start() {
-    window.DBMeter.start(dB => this.dB = dB);
+    window.DBMeter.start(dB => (this.dB = dB));
   }
 
   @action

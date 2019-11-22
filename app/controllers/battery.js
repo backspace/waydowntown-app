@@ -7,7 +7,7 @@ export default class BatteryController extends Controller {
 
   @action
   start() {
-    this.handler = event => this.event = event;
+    this.handler = event => (this.event = event);
     window.addEventListener('batterystatus', this.handler, true);
   }
 

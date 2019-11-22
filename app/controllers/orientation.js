@@ -7,7 +7,7 @@ export default class OrientationController extends Controller {
 
   @action
   start() {
-    this.handler = event => this.event = event;
+    this.handler = event => (this.event = event);
     window.addEventListener('deviceorientation', this.handler, true);
   }
 

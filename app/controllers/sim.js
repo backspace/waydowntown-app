@@ -8,6 +8,9 @@ export default class SimController extends Controller {
 
   @action
   start() {
-    window.plugins.sim.getSimInfo(info => this.info = info, error => this.error = error);
+    window.plugins.sim.getSimInfo(
+      info => (this.info = info),
+      error => (this.error = error),
+    );
   }
 }

@@ -7,7 +7,7 @@ export default class MotionController extends Controller {
 
   @action
   start() {
-    this.handler = event => this.event = event;
+    this.handler = event => (this.event = event);
     window.addEventListener('devicemotion', this.handler, true);
   }
 

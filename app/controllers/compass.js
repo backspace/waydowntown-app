@@ -7,7 +7,9 @@ export default class CompassController extends Controller {
 
   @action
   start() {
-    this.watchId = window.cordova.plugins.magnetometer.watchReadings(reading => this.event = reading);
+    this.watchId = window.cordova.plugins.magnetometer.watchReadings(
+      reading => (this.event = reading),
+    );
   }
 
   @action

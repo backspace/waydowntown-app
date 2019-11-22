@@ -7,6 +7,8 @@ export default class VolumeController extends Controller {
 
   @action
   getBrightness() {
-    window.cordova.plugins.brightness.getBrightness(brightness => this.brightness = brightness);
+    window.cordova.plugins.brightness.getBrightness(
+      brightness => (this.brightness = brightness),
+    );
   }
 }

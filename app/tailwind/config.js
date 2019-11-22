@@ -1,8 +1,8 @@
 /*global module*/
 module.exports = {
   theme: {
-    extend: {}
+    extend: {},
   },
   variants: {},
-  plugins: []
-}
+  plugins: [],
+};

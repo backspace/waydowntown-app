@@ -8,7 +8,7 @@ export default class LocationController extends Controller {
   @action
   start() {
     window.BackgroundGeolocation.configure({
-      debug: true
+      debug: true,
     });
 
     window.BackgroundGeolocation.on('location', loc => {
@@ -16,7 +16,7 @@ export default class LocationController extends Controller {
         this.event = loc;
         this.event.date = new Date(loc.time);
         window.BackgroundGeolocation.endTask(key);
-      })
+      });
     });
 
     window.BackgroundGeolocation.start();
