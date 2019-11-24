@@ -20,6 +20,10 @@ module.exports = function(environment) {
     APP: {
       server: 'http://localhost:3000',
     },
+
+    'ember-local-storage': {
+      includeEmberDataSupport: false,
+    },
   };
 
   if (environment === 'development') {
