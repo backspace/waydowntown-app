@@ -14,12 +14,6 @@ module('Acceptance | request game', function(hooks) {
     const incarnation = concept.createIncarnation();
     incarnation.createGame();
 
-    const host = this.owner.lookup('adapter:application').host || '';
-
-    this.server.post(`${host}/games/request`, schema => {
-      return schema.games.first();
-    });
-
     await visit('/');
     await click('[data-test-request]');
 
