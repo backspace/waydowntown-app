@@ -18,6 +18,9 @@ Router.map(function() {
   this.route('sim');
   this.route('volume');
 
-  this.route('request');
+  this.route('team', function() {
+    this.route('request');
+  });
+
   this.route('teams');
 });

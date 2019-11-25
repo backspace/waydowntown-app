@@ -14,7 +14,7 @@ module('Acceptance | request game', function(hooks) {
     const incarnation = concept.createIncarnation();
     incarnation.createGame();
 
-    await visit('/');
+    await visit('/team'); // FIXME should autoforward from root?
     await click('[data-test-request]');
 
     assert.dom('[data-test-concept-name]').hasText('a concept');

@@ -18,5 +18,6 @@ export default class ApplicationController extends Controller {
   @action
   saveToken() {
     this.set('token', this.tokenFieldValue);
+    this.transitionToRoute('team');
   }
 }

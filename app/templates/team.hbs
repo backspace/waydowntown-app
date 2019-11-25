@@ -1,0 +1,7 @@
+<div class="fixed left-0 top-0 bg-gray-200 p-1 w-full h-8" data-test-team-name>
+  {{@model.data.attributes.name}}
+</div>
+
+<LinkTo @route="team.request" data-test-request>Request</LinkTo>
+
+{{outlet}}
