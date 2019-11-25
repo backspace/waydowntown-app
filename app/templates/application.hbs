@@ -28,6 +28,9 @@
 
   {{outlet}}
 {{else}}
+  {{#if this.error}}
+    <p data-test-error>{{this.error}}</p>
+  {{/if}}
   <label for="token-input">Token</label>
   <Input @id="token-input" @value={{this.tokenFieldValue}} data-test-token-field />
 

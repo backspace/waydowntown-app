@@ -13,6 +13,18 @@ export default class TeamRoute extends Route {
         Authorization: `Bearer ${this.get('tokenStorage.token')}`,
       }),
       method: 'POST',
-    }).then(response => response.json());
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error();
+        }
+      })
+      .catch(() => {
+        this.tokenStorage.reset();
+        this.controllerFor('application').set('error', 'Invalid token');
+        this.transitionTo('application');
+      });
   }
 }
