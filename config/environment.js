@@ -47,6 +47,8 @@ module.exports = function(environment) {
 
     ENV.APP.rootElement = '#ember-testing';
     ENV.APP.autoboot = false;
+
+    delete ENV.APP.server;
   }
 
   if (environment === 'production') {
