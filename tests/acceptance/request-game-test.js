@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { click, visit } from '@ember/test-helpers';
+import { click, settled, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import setToken from '../set-token';
@@ -18,6 +18,7 @@ module('Acceptance | request game', function(hooks) {
 
     await visit('/');
     await click('[data-test-request]');
+    await settled();
 
     assert.dom('[data-test-concept-name]').hasText('a concept');
   });

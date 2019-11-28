@@ -2,7 +2,11 @@
   {{@model.data.attributes.name}}
 </div>
 
-<LinkTo @route="team.request" data-test-request>Request</LinkTo>
+<button class="border border-black" {{on "click" (perform this.requestGame)}} data-test-request>Request</button>
+
+{{#if this.requestGame.lastSuccessful.value}}
+  <p>Game name: <span data-test-concept-name>{{this.requestGame.lastSuccessful.value.incarnation.concept.name}}</span></p>
+{{/if}}
 
 {{#if this.invitation}}
   <div data-test-invitation>

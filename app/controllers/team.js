@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { storageFor } from 'ember-local-storage';
 import { alias } from '@ember/object/computed';
 import { tracked } from '@glimmer/tracking';
+import { task } from 'ember-concurrency';
 
 import config from 'waydowntown/config/environment';
 
@@ -46,4 +47,13 @@ export default class ApplicationController extends Controller {
   willDestroy() {
     this.consumer.destroy();
   }
+
+  @task(function*() {
+    const emptyGame = this.store.createRecord('game');
+
+    const game = yield emptyGame.request();
+    emptyGame.deleteRecord();
+    return game;
+  })
+  requestGame;
 }
