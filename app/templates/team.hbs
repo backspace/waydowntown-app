@@ -8,9 +8,7 @@
   Invitations:
   <ul data-test-invitations>
     {{#each this.invitations as |invitation|}}
-      <li data-test-game-id={{invitation.id}}>
-        <p>Game name: <span data-test-concept-name>{{invitation.incarnation.concept.name}}</span></p>
-      </li>
+      <GameListItem @game={{invitation}} />
     {{/each}}
   </ul>
 {{/if}}
@@ -19,9 +17,7 @@
   Acceptances:
   <ul data-test-acceptances>
     {{#each this.acceptances as |acceptance|}}
-      <li data-test-game-id={{acceptance.id}}>
-        <p>Game name: <span data-test-concept-name>{{acceptance.incarnation.concept.name}}</span></p>
-      </li>
+      <GameListItem @game={{acceptance}} />
     {{/each}}
   </ul>
 {{/if}}
