@@ -4,4 +4,14 @@
 
 <LinkTo @route="team.request" data-test-request>Request</LinkTo>
 
+{{#if this.invitation}}
+  <div data-test-invitation>
+    <h1 class="text-2xl">Invitation!</h1>
+    <p>Game name: <span data-test-concept-name>{{this.invitation.incarnation.concept.name}}</span></p>
+    {{#each this.invitation.participations as |participation|}}
+      <p>Team: <span data-test-team-name>{{participation.team.name}}</span></p>
+    {{/each}}
+  </div>
+{{/if}}
+
 {{outlet}}
