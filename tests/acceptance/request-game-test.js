@@ -12,14 +12,24 @@ module('Acceptance | request game', function(hooks) {
   mockCable(hooks);
 
   test('the requested game’s name is printed', async function(assert) {
-    const concept = this.server.create('concept', { name: 'a concept' });
+    const concept = this.server.create('concept', {
+      name: 'a requested concept',
+    });
     const incarnation = concept.createIncarnation();
-    incarnation.createGame();
+    const game = incarnation.createGame();
+    game.createParticipation({
+      team: this.server.create('team', { id: '1' }),
+      // FIXME avoid hard-coding the token
+    });
 
     await visit('/');
     await click('[data-test-request]');
     await settled();
 
-    assert.dom('[data-test-concept-name]').hasText('a concept');
+    assert
+      .dom(
+        `[data-test-invitations] [data-test-game-id='${game.id}'] [data-test-concept-name]`,
+      )
+      .hasText('a requested concept');
   });
 });

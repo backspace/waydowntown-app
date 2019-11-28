@@ -12,14 +12,19 @@ module('Acceptance | game invitation receipt', function(hooks) {
   mockCable(hooks);
 
   test('a received invitation is displayed', async function(assert) {
-    const concept = this.server.create('concept', { name: 'a concept' });
+    const team = this.server.create('team', { id: '1' }); // FIXME avoid hard-coding the token
+    const concept = this.server.create('concept', {
+      name: 'an invited concept',
+    });
     const incarnation = concept.createIncarnation();
+
+    await visit('/');
+
     const game = incarnation.createGame();
     game.createParticipation({
       team: this.server.create('team', { name: 'other team' }),
     });
-
-    await visit('/');
+    game.createParticipation({ team });
 
     await this.cable.handlers.received({
       type: 'invitation',
@@ -34,10 +39,47 @@ module('Acceptance | game invitation receipt', function(hooks) {
     await settled();
 
     assert
-      .dom('[data-test-invitation] [data-test-concept-name]')
-      .hasText('a concept');
+      .dom(
+        `[data-test-invitations] [data-test-game-id='${game.id}'] [data-test-concept-name]`,
+      )
+      .hasText('an invited concept');
+  });
+});
+
+module('Acceptance | game invitation listing', function(hooks) {
+  setupApplicationTest(hooks);
+  setupMirage(hooks);
+  setToken(hooks);
+  mockCable(hooks);
+
+  test('existing invitations are listed', async function(assert) {
+    const team = this.server.create('team', { id: '1' }); // FIXME avoid hard-coding the token
+    const concept = this.server.create('concept', {
+      name: 'an invited concept',
+    });
+    const incarnation = concept.createIncarnation();
+    const game = incarnation.createGame();
+    game.createParticipation({
+      team: this.server.create('team', { name: 'other team' }),
+    });
+    game.createParticipation({ team });
+
+    const acceptedGame = incarnation.createGame();
+    acceptedGame.createParticipation({
+      team,
+      accepted: true,
+    });
+
+    await visit('/');
+
     assert
-      .dom('[data-test-invitation] [data-test-team-name]')
-      .hasText('other team');
+      .dom(
+        `[data-test-invitations] [data-test-game-id='${game.id}'] [data-test-concept-name]`,
+      )
+      .hasText('an invited concept');
+
+    assert
+      .dom(`[data-test-invitations] [data-test-game-id='${acceptedGame.id}']`)
+      .doesNotExist();
   });
 });

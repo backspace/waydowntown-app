@@ -18,13 +18,28 @@ export default class ApplicationController extends Controller {
 
   @alias('tokenStorage.token') token;
 
+  @tracked games;
+
   consumer = null;
-  @tracked invitation = null;
 
   constructor() {
     super(...arguments);
 
     this.setupConsumer();
+  }
+
+  get teamId() {
+    return this.team.data.id;
+  }
+
+  get invitations() {
+    return this.games.filter(game => {
+      const participationForThisTeam = game.participations.find(
+        participation => participation.get('team.id') === this.teamId,
+      );
+
+      return participationForThisTeam && !participationForThisTeam.accepted;
+    });
   }
 
   setupConsumer() {
@@ -36,8 +51,7 @@ export default class ApplicationController extends Controller {
       connected() {},
       received: message => {
         if (message.type === 'invitation') {
-          const game = this.store.push(message.content);
-          this.invitation = game;
+          this.store.push(message.content);
         }
       },
       disconnected() {},

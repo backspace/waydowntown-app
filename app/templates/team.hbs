@@ -1,21 +1,18 @@
 <div class="fixed left-0 top-0 bg-gray-200 p-1 w-full h-8" data-test-team-name>
-  {{@model.data.attributes.name}}
+  {{this.team.data.attributes.name}}
 </div>
 
 <button class="border border-black" {{on "click" (perform this.requestGame)}} data-test-request>Request</button>
 
-{{#if this.requestGame.lastSuccessful.value}}
-  <p>Game name: <span data-test-concept-name>{{this.requestGame.lastSuccessful.value.incarnation.concept.name}}</span></p>
-{{/if}}
-
-{{#if this.invitation}}
-  <div data-test-invitation>
-    <h1 class="text-2xl">Invitation!</h1>
-    <p>Game name: <span data-test-concept-name>{{this.invitation.incarnation.concept.name}}</span></p>
-    {{#each this.invitation.participations as |participation|}}
-      <p>Team: <span data-test-team-name>{{participation.team.name}}</span></p>
+{{#if this.invitations}}
+  Invitations:
+  <ul data-test-invitations>
+    {{#each this.invitations as |invitation|}}
+      <li data-test-game-id={{invitation.id}}>
+        <p>Game name: <span data-test-concept-name>{{invitation.incarnation.concept.name}}</span></p>
+      </li>
     {{/each}}
-  </div>
+  </ul>
 {{/if}}
 
 {{outlet}}
