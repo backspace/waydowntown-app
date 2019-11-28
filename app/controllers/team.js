@@ -42,6 +42,16 @@ export default class ApplicationController extends Controller {
     });
   }
 
+  get acceptances() {
+    return this.games.filter(game => {
+      const participationForThisTeam = game.participations.find(
+        participation => participation.get('team.id') === this.teamId,
+      );
+
+      return participationForThisTeam && participationForThisTeam.accepted;
+    });
+  }
+
   setupConsumer() {
     this.consumer = this.cable.createConsumer(
       `${wsHost}/cable?token=${this.token}`,

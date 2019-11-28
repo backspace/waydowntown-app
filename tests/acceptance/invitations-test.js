@@ -45,13 +45,13 @@ module('Acceptance | game invitation receipt', function(hooks) {
   });
 });
 
-module('Acceptance | game invitation listing', function(hooks) {
+module('Acceptance | game invitation and acceptance listing', function(hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
   setToken(hooks);
   mockCable(hooks);
 
-  test('existing invitations are listed', async function(assert) {
+  test('existing invitations and acceptances are listed', async function(assert) {
     const concept = this.server.create('concept', {
       name: 'an invited concept',
     });
@@ -62,7 +62,11 @@ module('Acceptance | game invitation listing', function(hooks) {
     });
     game.createParticipation({ team: this.team });
 
-    const acceptedGame = incarnation.createGame();
+    const acceptedConcept = this.server.create('concept', {
+      name: 'an accepted concept',
+    });
+    const acceptedIncarnation = acceptedConcept.createIncarnation();
+    const acceptedGame = acceptedIncarnation.createGame();
     acceptedGame.createParticipation({
       team: this.team,
       accepted: true,
@@ -79,5 +83,11 @@ module('Acceptance | game invitation listing', function(hooks) {
     assert
       .dom(`[data-test-invitations] [data-test-game-id='${acceptedGame.id}']`)
       .doesNotExist();
+
+    assert
+      .dom(
+        `[data-test-acceptances] [data-test-game-id='${acceptedGame.id}'] [data-test-concept-name]`,
+      )
+      .hasText('an accepted concept');
   });
 });

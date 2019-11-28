@@ -15,4 +15,15 @@
   </ul>
 {{/if}}
 
+{{#if this.acceptances}}
+  Acceptances:
+  <ul data-test-acceptances>
+    {{#each this.acceptances as |acceptance|}}
+      <li data-test-game-id={{acceptance.id}}>
+        <p>Game name: <span data-test-concept-name>{{acceptance.incarnation.concept.name}}</span></p>
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
+
 {{outlet}}
