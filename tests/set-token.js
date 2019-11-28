@@ -11,4 +11,12 @@ export default function setToken(hooks) {
     const applicationController = this.owner.lookup('controller:application');
     applicationController.set('tokenStorage.token', 1);
   });
+
+  hooks.afterEach(function() {
+    if (window.localStorage) {
+      window.localStorage.clear();
+    }
+
+    resetStorages();
+  });
 }
