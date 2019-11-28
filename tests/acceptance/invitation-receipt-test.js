@@ -12,7 +12,6 @@ module('Acceptance | game invitation receipt', function(hooks) {
   mockCable(hooks);
 
   test('a received invitation is displayed', async function(assert) {
-    const team = this.server.create('team', { id: '1' }); // FIXME avoid hard-coding the token
     const concept = this.server.create('concept', {
       name: 'an invited concept',
     });
@@ -24,7 +23,7 @@ module('Acceptance | game invitation receipt', function(hooks) {
     game.createParticipation({
       team: this.server.create('team', { name: 'other team' }),
     });
-    game.createParticipation({ team });
+    game.createParticipation({ team: this.team });
 
     await this.cable.handlers.received({
       type: 'invitation',
@@ -53,7 +52,6 @@ module('Acceptance | game invitation listing', function(hooks) {
   mockCable(hooks);
 
   test('existing invitations are listed', async function(assert) {
-    const team = this.server.create('team', { id: '1' }); // FIXME avoid hard-coding the token
     const concept = this.server.create('concept', {
       name: 'an invited concept',
     });
@@ -62,11 +60,11 @@ module('Acceptance | game invitation listing', function(hooks) {
     game.createParticipation({
       team: this.server.create('team', { name: 'other team' }),
     });
-    game.createParticipation({ team });
+    game.createParticipation({ team: this.team });
 
     const acceptedGame = incarnation.createGame();
     acceptedGame.createParticipation({
-      team,
+      team: this.team,
       accepted: true,
     });
 

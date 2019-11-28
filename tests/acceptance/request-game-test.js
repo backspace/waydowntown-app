@@ -18,8 +18,7 @@ module('Acceptance | request game', function(hooks) {
     const incarnation = concept.createIncarnation();
     const game = incarnation.createGame();
     game.createParticipation({
-      team: this.server.create('team', { id: '1' }),
-      // FIXME avoid hard-coding the token
+      team: this.team,
     });
 
     await visit('/');
