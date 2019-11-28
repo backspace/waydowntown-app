@@ -2,37 +2,14 @@ import { module, test } from 'qunit';
 import { settled, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import Service from '@ember/service';
 import setToken from '../set-token';
-
-let teamSubscriptionHandlers;
-
-class MockCableService extends Service {
-  createConsumer() {
-    return new MockConsumer();
-  }
-}
-
-class MockConsumer {
-  get subscriptions() {
-    return {
-      create(channel, handlers) {
-        teamSubscriptionHandlers = handlers;
-      },
-    };
-  }
-
-  destroy() {}
-}
+import mockCable from '../mock-cable';
 
 module('Acceptance | game invitation receipt', function(hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
   setToken(hooks);
-
-  hooks.beforeEach(function() {
-    this.owner.register('service:cable', MockCableService);
-  });
+  mockCable(hooks);
 
   test('a received invitation is displayed', async function(assert) {
     const concept = this.server.create('concept', { name: 'a concept' });
@@ -44,7 +21,7 @@ module('Acceptance | game invitation receipt', function(hooks) {
 
     await visit('/');
 
-    await teamSubscriptionHandlers.received({
+    await this.cable.handlers.received({
       type: 'invitation',
       content: this.server.serializerOrRegistry.serialize(game, {
         queryParams: {
