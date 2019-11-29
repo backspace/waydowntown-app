@@ -60,7 +60,7 @@ export default class ApplicationController extends Controller {
     });
   }
 
-  get scheduleds() {
+  get pendings() {
     return this.games.filter(game => {
       return game.participations.every(participation => participation.accepted);
     });

@@ -79,7 +79,7 @@ module('Acceptance | game list', function(hooks) {
     assert.dom('[data-test-invitations]').doesNotExist();
   });
 
-  test('existing invitations, acceptances, and scheduleds are listed', async function(assert) {
+  test('existing invitations, acceptances, and pendings are listed', async function(assert) {
     const otherTeam = this.server.create('team', { name: 'other team' });
     const thirdTeam = this.server.create('team', { name: 'a third team' });
 
@@ -159,10 +159,10 @@ module('Acceptance | game list', function(hooks) {
       .doesNotExist();
 
     assert
-      .dom('[data-test-scheduleds] [data-test-concept-name]')
+      .dom('[data-test-pendings] [data-test-concept-name]')
       .exists({ count: 1 });
     assert
-      .dom(`[data-test-scheduleds] [data-test-game-id='${scheduledGame.id}']`)
+      .dom(`[data-test-pendings] [data-test-game-id='${scheduledGame.id}']`)
       .exists();
   });
 });
