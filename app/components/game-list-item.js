@@ -2,6 +2,12 @@ import Component from '@glimmer/component';
 import { task } from 'ember-concurrency';
 
 export default class GameListItem extends Component {
+  get teamParticipation() {
+    return this.args.game.participations.find(
+      participation => participation.get('team.id') === this.args.team.id,
+    );
+  }
+
   get otherTeams() {
     return this.args.game.participations
       .mapBy('team')

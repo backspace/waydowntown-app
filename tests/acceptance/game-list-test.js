@@ -152,6 +152,11 @@ module('Acceptance | game list', function(hooks) {
     assert
       .dom(`[data-test-acceptances] [data-test-game-id='${acceptedGame.id}']`)
       .exists();
+    assert
+      .dom(
+        `[data-test-acceptances] [data-test-game-id='${acceptedGame.id}'] [data-test-accept]`,
+      )
+      .doesNotExist();
 
     assert
       .dom('[data-test-scheduleds] [data-test-concept-name]')
