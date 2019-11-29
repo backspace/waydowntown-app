@@ -1,3 +1,9 @@
 <li data-test-game-id={{@game.id}}>
   <p>Game name: <span data-test-concept-name>{{@game.incarnation.concept.name}}</span></p>
+
+  <ul>
+    {{#each this.otherTeams as |team|}}
+      <li data-test-team-id={{team.id}}>Team: <span data-test-team-name>{{team.name}}</span></li>
+    {{/each}}
+  </ul>
 </li>

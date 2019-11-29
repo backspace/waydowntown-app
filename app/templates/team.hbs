@@ -8,7 +8,7 @@
   Invitations:
   <ul data-test-invitations>
     {{#each this.invitations as |invitation|}}
-      <GameListItem @game={{invitation}} />
+      <GameListItem @game={{invitation}} @team={{this.team}} />
     {{/each}}
   </ul>
 {{/if}}
@@ -17,7 +17,7 @@
   Acceptances:
   <ul data-test-acceptances>
     {{#each this.acceptances as |acceptance|}}
-      <GameListItem @game={{acceptance}} />
+      <GameListItem @game={{acceptance}} @team={{this.team}} />
     {{/each}}
   </ul>
 {{/if}}
