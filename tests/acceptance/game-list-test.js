@@ -65,7 +65,7 @@ module('Acceptance | game list', function(hooks) {
       .hasText('an invited concept');
     assert.dom('[data-test-acceptances]').doesNotExist();
 
-    this.server.post(`/games/${game.id}/accept`, function({
+    this.server.patch(`/games/${game.id}/accept`, function({
       participations,
       games,
     }) {

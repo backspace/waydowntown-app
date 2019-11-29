@@ -7,7 +7,7 @@ export default class GameModel extends Model {
   @hasMany() participations;
 
   accept = modelAction('accept', {
-    method: 'POST',
+    method: 'PATCH',
     pushToStore: true,
     queryParams: {
       include: 'incarnation,incarnation.concept,participations.team',
