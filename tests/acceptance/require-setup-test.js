@@ -26,15 +26,15 @@ module('Acceptance | require setup', function(hooks) {
   });
 
   test('filling in a token shows the logged-in interface with team name', async function(assert) {
-    const team = this.server.create('team', { name: 'our team' });
+    const member = this.server.create('member', { name: 'me' });
 
     await visit('/');
 
-    await fillIn('[data-test-token-field]', team.id);
+    await fillIn('[data-test-token-field]', member.id);
     await click('[data-test-token-save');
 
     assert.dom('.text-2xl').exists();
-    assert.dom('[data-test-team-name]').hasText('our team');
+    assert.dom('[data-test-member-name]').hasText('me');
   });
 
   test('it returns to the token field when auth fails', async function(assert) {
@@ -45,7 +45,7 @@ module('Acceptance | require setup', function(hooks) {
       return new Response(401, {}, {});
     });
 
-    await visitWithAbortedTransition('/team');
+    await visitWithAbortedTransition('/member');
 
     assert.dom('.text-2xl').doesNotExist();
     assert.dom('[data-test-token-field]').exists();

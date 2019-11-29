@@ -8,11 +8,13 @@ export default function setToken(hooks) {
 
     resetStorages();
 
-    const team = this.server.create('team', { name: 'our team' });
+    const member = this.server.create('member', { name: 'me' });
+    this.member = member;
+    const team = member.createTeam({ name: 'our team' });
     this.team = team;
 
     const applicationController = this.owner.lookup('controller:application');
-    applicationController.set('tokenStorage.token', team.id);
+    applicationController.set('tokenStorage.token', member.id);
   });
 
   hooks.afterEach(function() {

@@ -10,7 +10,7 @@ export default class TeamRoute extends Route {
     const host = adapter.host || '';
 
     return hash({
-      team: fetch(`${host}/auth`, {
+      member: fetch(`${host}/auth?include=team`, {
         headers: new Headers({
           Authorization: `Bearer ${this.get('tokenStorage.token')}`,
         }),
@@ -33,10 +33,16 @@ export default class TeamRoute extends Route {
         include:
           'participations,participations.team,incarnation,incarnation.concept',
       }),
-    });
+    }).then(({ games, member }) =>
+      hash({
+        games,
+        member,
+        team: member.get('team'),
+      }),
+    );
   }
 
-  setupController(controller, { games, team }) {
-    controller.setProperties({ games, team });
+  setupController(controller, { games, member, team }) {
+    controller.setProperties({ games, member, team });
   }
 }

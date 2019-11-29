@@ -6,7 +6,7 @@ export default class ApplicationRoute extends Route {
 
   model() {
     if (this.get('tokenStorage.token')) {
-      this.transitionTo('team');
+      this.transitionTo('member');
     }
   }
 }

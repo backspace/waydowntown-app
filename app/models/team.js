@@ -6,5 +6,6 @@ export default class TeamModel extends Model {
   @attr('number') lat;
   @attr('number') lon;
 
+  @hasMany() members;
   @hasMany() participations;
 }
