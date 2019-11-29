@@ -29,7 +29,7 @@ export default class ApplicationController extends Controller {
   }
 
   get teamId() {
-    return this.team.data.id;
+    return this.team.id;
   }
 
   get invitations() {

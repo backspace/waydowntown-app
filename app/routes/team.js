@@ -23,6 +23,7 @@ export default class TeamRoute extends Route {
             throw new Error();
           }
         })
+        .then(json => this.store.push(json))
         .catch(() => {
           this.tokenStorage.reset();
           this.controllerFor('application').set('error', 'Invalid token');
