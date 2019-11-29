@@ -79,7 +79,7 @@ module('Acceptance | game list', function(hooks) {
     assert.dom('[data-test-invitations]').doesNotExist();
   });
 
-  test('existing invitations and acceptances are listed', async function(assert) {
+  test('existing invitations, acceptances, and scheduleds are listed', async function(assert) {
     const otherTeam = this.server.create('team', { name: 'other team' });
     const thirdTeam = this.server.create('team', { name: 'a third team' });
 
@@ -103,6 +103,23 @@ module('Acceptance | game list', function(hooks) {
     const acceptedGame = acceptedIncarnation.createGame();
     acceptedGame.createParticipation({
       team: this.team,
+      accepted: true,
+    });
+    acceptedGame.createParticipation({
+      team: otherTeam,
+    });
+
+    const scheduledConcept = this.server.create('concept', {
+      name: 'a scheduled concept',
+    });
+    const scheduledIncarnation = scheduledConcept.createIncarnation();
+    const scheduledGame = scheduledIncarnation.createGame();
+    scheduledGame.createParticipation({
+      team: this.team,
+      accepted: true,
+    });
+    scheduledGame.createParticipation({
+      team: otherTeam,
       accepted: true,
     });
 
@@ -132,9 +149,21 @@ module('Acceptance | game list', function(hooks) {
       .doesNotExist();
 
     assert
+      .dom('[data-test-acceptances] [data-test-concept-name]')
+      .exists({ count: 1 });
+    assert
       .dom(
         `[data-test-acceptances] [data-test-game-id='${acceptedGame.id}'] [data-test-concept-name]`,
       )
       .hasText('an accepted concept');
+
+    assert
+      .dom('[data-test-scheduleds] [data-test-concept-name]')
+      .exists({ count: 1 });
+    assert
+      .dom(
+        `[data-test-scheduleds] [data-test-game-id='${scheduledGame.id}'] [data-test-concept-name]`,
+      )
+      .hasText('a scheduled concept');
   });
 });

@@ -48,7 +48,21 @@ export default class ApplicationController extends Controller {
         participation => participation.get('team.id') === this.teamId,
       );
 
-      return participationForThisTeam && participationForThisTeam.accepted;
+      return (
+        participationForThisTeam &&
+        participationForThisTeam.accepted &&
+        game.participations.any(
+          participation =>
+            participation !== participationForThisTeam &&
+            !participation.accepted,
+        )
+      );
+    });
+  }
+
+  get scheduleds() {
+    return this.games.filter(game => {
+      return game.participations.every(participation => participation.accepted);
     });
   }
 

@@ -22,4 +22,13 @@
   </ul>
 {{/if}}
 
+{{#if this.scheduleds}}
+  Scheduleds:
+  <ul data-test-scheduleds>
+    {{#each this.scheduleds as |scheduled|}}
+      <GameListItem @game={{scheduled}} @team={{this.team}} />
+    {{/each}}
+  </ul>
+{{/if}}
+
 {{outlet}}
