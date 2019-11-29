@@ -5,5 +5,9 @@ export default class ParticipationModel extends Model {
   @belongsTo() game;
   @belongsTo() team;
 
-  @attr('boolean') accepted;
+  @attr() state;
+
+  get accepted() {
+    return this.state === 'accepted';
+  }
 }

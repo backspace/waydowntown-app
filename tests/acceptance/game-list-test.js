@@ -69,7 +69,7 @@ module('Acceptance | game list', function(hooks) {
       participations,
       games,
     }) {
-      participations.find(teamParticipation.id).update('accepted', true);
+      participations.find(teamParticipation.id).update('state', 'accepted');
       return games.find(game.id);
     });
 
@@ -103,7 +103,7 @@ module('Acceptance | game list', function(hooks) {
     const acceptedGame = acceptedIncarnation.createGame();
     acceptedGame.createParticipation({
       team: this.team,
-      accepted: true,
+      state: 'accepted',
     });
     acceptedGame.createParticipation({
       team: otherTeam,
@@ -116,11 +116,11 @@ module('Acceptance | game list', function(hooks) {
     const scheduledGame = scheduledIncarnation.createGame();
     scheduledGame.createParticipation({
       team: this.team,
-      accepted: true,
+      state: 'accepted',
     });
     scheduledGame.createParticipation({
       team: otherTeam,
-      accepted: true,
+      state: 'accepted',
     });
 
     await visit('/');
