@@ -1,6 +1,8 @@
 <li class="border border-black p-1" data-test-game-id={{@game.id}}>
   <p>Game name: <span data-test-concept-name>{{@game.incarnation.concept.name}}</span></p>
 
+  <button class="border border-black" {{on "click" (perform this.acceptGame)}} data-test-accept>Accept</button>
+
   <ul>
     {{#each this.otherTeams as |team|}}
       <li data-test-team-id={{team.id}}>Team: <span data-test-team-name>{{team.name}}</span></li>

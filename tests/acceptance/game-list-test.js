@@ -32,7 +32,7 @@ module('Acceptance | game list', function(hooks) {
       .hasText('a requested concept');
   });
 
-  test('a received invitation is displayed', async function(assert) {
+  test('a received invitation is displayed and can be accepted', async function(assert) {
     const concept = this.server.create('concept', {
       name: 'an invited concept',
     });
@@ -44,7 +44,7 @@ module('Acceptance | game list', function(hooks) {
     game.createParticipation({
       team: this.server.create('team', { name: 'other team' }),
     });
-    game.createParticipation({ team: this.team });
+    const teamParticipation = game.createParticipation({ team: this.team });
 
     await this.cable.handlers.received({
       type: 'invitation',
@@ -63,6 +63,20 @@ module('Acceptance | game list', function(hooks) {
         `[data-test-invitations] [data-test-game-id='${game.id}'] [data-test-concept-name]`,
       )
       .hasText('an invited concept');
+    assert.dom('[data-test-acceptances]').doesNotExist();
+
+    this.server.post(`/games/${game.id}/accept`, function({
+      participations,
+      games,
+    }) {
+      participations.find(teamParticipation.id).update('accepted', true);
+      return games.find(game.id);
+    });
+
+    await click(`[data-test-game-id='${game.id}'] [data-test-accept]`);
+    await settled();
+
+    assert.dom('[data-test-invitations]').doesNotExist();
   });
 
   test('existing invitations and acceptances are listed', async function(assert) {
