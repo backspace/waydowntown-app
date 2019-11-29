@@ -126,10 +126,8 @@ module('Acceptance | game list', function(hooks) {
     await visit('/');
 
     assert
-      .dom(
-        `[data-test-invitations] [data-test-game-id='${game.id}'] [data-test-concept-name]`,
-      )
-      .hasText('an invited concept');
+      .dom(`[data-test-invitations] [data-test-game-id='${game.id}']`)
+      .exists();
     assert
       .dom(
         `[data-test-invitations] [data-test-team-id='${otherTeam.id}'] [data-test-team-name]`,
@@ -152,18 +150,14 @@ module('Acceptance | game list', function(hooks) {
       .dom('[data-test-acceptances] [data-test-concept-name]')
       .exists({ count: 1 });
     assert
-      .dom(
-        `[data-test-acceptances] [data-test-game-id='${acceptedGame.id}'] [data-test-concept-name]`,
-      )
-      .hasText('an accepted concept');
+      .dom(`[data-test-acceptances] [data-test-game-id='${acceptedGame.id}']`)
+      .exists();
 
     assert
       .dom('[data-test-scheduleds] [data-test-concept-name]')
       .exists({ count: 1 });
     assert
-      .dom(
-        `[data-test-scheduleds] [data-test-game-id='${scheduledGame.id}'] [data-test-concept-name]`,
-      )
-      .hasText('a scheduled concept');
+      .dom(`[data-test-scheduleds] [data-test-game-id='${scheduledGame.id}']`)
+      .exists();
   });
 });
