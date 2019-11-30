@@ -8,6 +8,10 @@ export default class GameListItem extends Component {
     );
   }
 
+  get canAccept() {
+    return this.teamParticipation && this.teamParticipation.state === 'invited';
+  }
+
   get otherTeams() {
     return this.args.game.participations
       .mapBy('team')

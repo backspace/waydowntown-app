@@ -44,7 +44,10 @@ module('Acceptance | game list', function(hooks) {
     game.createParticipation({
       team: this.server.create('team', { name: 'other team' }),
     });
-    const teamParticipation = game.createParticipation({ team: this.team });
+    const teamParticipation = game.createParticipation({
+      team: this.team,
+      state: 'invited',
+    });
 
     await this.cable.handlers.received({
       type: 'invitation',
@@ -166,5 +169,10 @@ module('Acceptance | game list', function(hooks) {
         `[data-test-rendezvousings] [data-test-game-id='${rendezvousingGame.id}']`,
       )
       .exists();
+    assert
+      .dom(
+        `[data-test-rendezvousings] [data-test-game-id='${rendezvousingGame.id}'] [data-test-accept]`,
+      )
+      .doesNotExist();
   });
 });
