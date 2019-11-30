@@ -5,6 +5,9 @@ import { setupMirage } from 'ember-cli-mirage/test-support';
 import setToken from '../set-token';
 import mockCable from '../mock-cable';
 
+import Service from '@ember/service';
+import { tracked } from '@glimmer/tracking';
+
 module('Acceptance | active game', function(hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
@@ -43,6 +46,44 @@ module('Acceptance | active game', function(hooks) {
       .hasText('an in-progress concept');
 
     assert.dom('[data-test-active-game]').exists({ count: 1 });
+  });
+
+  test('a game can become active and inactive again as time passes', async function(assert) {
+    this.owner.register('service:game-clock', MockClockService);
+
+    const concept = this.server.create('concept');
+    const incarnation = concept.createIncarnation();
+    const game = incarnation.createGame({
+      beginsAt: new Date(new Date().getTime() - 1000 * 60),
+      endsAt: new Date(new Date().getTime() + 1000 * 60),
+    });
+
+    game.createParticipation({
+      team: this.team,
+      state: 'scheduled',
+    });
+
+    this.owner.lookup('service:game-clock').date = new Date(
+      new Date().getTime() - 1000 * 60 * 2,
+    );
+
+    await visit('/');
+
+    assert.dom('[data-test-active-game]').doesNotExist();
+
+    this.owner.lookup('service:game-clock').date = new Date(
+      new Date().getTime() - 1000 * 30,
+    );
+    await settled();
+
+    assert.dom('[data-test-active-game]').exists();
+
+    this.owner.lookup('service:game-clock').date = new Date(
+      new Date().getTime() + 1000 * 30 * 2,
+    );
+    await settled();
+
+    assert.dom('[data-test-active-game]').doesNotExist();
   });
 
   test('the active game counts taps and reports back manually', async function(assert) {
@@ -97,3 +138,12 @@ module('Acceptance | active game', function(hooks) {
       .hasText('4');
   });
 });
+
+class MockClockService extends Service {
+  @tracked date;
+
+  constructor() {
+    super(...arguments);
+    this.date = new Date();
+  }
+}

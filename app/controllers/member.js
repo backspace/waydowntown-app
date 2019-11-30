@@ -12,6 +12,7 @@ const wsHost = host.replace('http', 'ws');
 
 export default class ApplicationController extends Controller {
   @service cable;
+  @service gameClock;
   @service store;
 
   @storageFor('token') tokenStorage;
@@ -79,7 +80,7 @@ export default class ApplicationController extends Controller {
   }
 
   get activeGames() {
-    const now = new Date(); // FIXME periodic rechecks, triggered when new games arrive?
+    const now = this.gameClock.date;
     return this.games.filter(game => {
       return game.beginsAt <= now && game.endsAt >= now;
     });
