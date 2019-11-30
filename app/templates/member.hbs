@@ -5,6 +5,7 @@
 {{#each this.activeGames as |game|}}
   <div class="bg-purple-300 p-1" data-test-active-game>
     Game in progress: <span data-test-concept-name>{{game.incarnation.concept.name}}</span>
+    <TapGame @game={{game}} />
   </div>
 {{/each}}
 

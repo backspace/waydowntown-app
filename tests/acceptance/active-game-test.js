@@ -44,4 +44,34 @@ module('Acceptance | active game', function(hooks) {
 
     assert.dom('[data-test-active-game]').exists({ count: 1 });
   });
+
+  test('the active game counts taps', async function(assert) {
+    const concept = this.server.create('concept', {
+      name: 'clicky',
+    });
+    const incarnation = concept.createIncarnation();
+    const game = incarnation.createGame({
+      beginsAt: new Date(new Date().getTime() - 1000 * 60),
+      endsAt: new Date(new Date().getTime() + 1000 * 60),
+    });
+
+    game.createParticipation({
+      team: this.team,
+      state: 'scheduled',
+    });
+
+    await visit('/');
+
+    assert.dom('[data-test-active-game] [data-test-taps]').hasText('0');
+
+    await click('[data-test-tap-target]');
+
+    assert.dom('[data-test-active-game] [data-test-taps]').hasText('1');
+
+    await click('[data-test-tap-target]');
+    await click('[data-test-tap-target]');
+    await click('[data-test-tap-target]');
+
+    assert.dom('[data-test-active-game] [data-test-taps]').hasText('4');
+  });
 });
