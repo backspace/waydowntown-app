@@ -104,7 +104,9 @@ module('Acceptance | game list', function(hooks) {
       games,
     }) {
       participations.find(teamParticipation.id).update('state', 'scheduled');
-      return games.find(game.id);
+      const serverGame = games.find(game.id);
+      serverGame.update('beginsAt', new Date());
+      return serverGame;
     });
 
     await click(`[data-test-game-id='${game.id}'] [data-test-arrive]`);
@@ -112,6 +114,8 @@ module('Acceptance | game list', function(hooks) {
 
     assert.dom('[data-test-convergings]').doesNotExist();
     assert.dom('[data-test-scheduleds]').exists();
+
+    assert.dom('[data-test-scheduleds] [data-test-begins-at]').exists();
   });
 
   test('existing invitations, acceptances, and pendings are listed', async function(assert) {

@@ -1,10 +1,12 @@
 import DS from 'ember-data';
-const { Model, belongsTo, hasMany } = DS;
+const { Model, attr, belongsTo, hasMany } = DS;
 import { modelAction, resourceAction } from 'ember-custom-actions';
 
 export default class GameModel extends Model {
   @belongsTo() incarnation;
   @hasMany() participations;
+
+  @attr('date') beginsAt;
 
   accept = modelAction('accept', {
     method: 'PATCH',

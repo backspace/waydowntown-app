@@ -14,4 +14,8 @@
       <li data-test-team-id={{team.id}}>Team: <span data-test-team-name>{{team.name}}</span></li>
     {{/each}}
   </ul>
+
+  {{#if @game.beginsAt}}
+    <p data-test-begins-at>Begins in {{moment-diff (now interval=200) @game.beginsAt precision="seconds" interval=200}} seconds</p>
+  {{/if}}
 </li>
