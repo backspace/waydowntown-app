@@ -78,6 +78,13 @@ export default class ApplicationController extends Controller {
     });
   }
 
+  get activeGames() {
+    const now = new Date(); // FIXME periodic rechecks, triggered when new games arrive?
+    return this.games.filter(game => {
+      return game.beginsAt <= now && game.endsAt >= now;
+    });
+  }
+
   setupConsumer() {
     this.consumer = this.cable.createConsumer(
       `${wsHost}/cable?token=${this.token}`,

@@ -7,6 +7,7 @@ export default class GameModel extends Model {
   @hasMany() participations;
 
   @attr('date') beginsAt;
+  @attr('date') endsAt;
 
   accept = modelAction('accept', {
     method: 'PATCH',
