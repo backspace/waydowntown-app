@@ -38,7 +38,9 @@ export default class ApplicationController extends Controller {
         participation => participation.get('team.id') === this.teamId,
       );
 
-      return participationForThisTeam && !participationForThisTeam.accepted;
+      return (
+        participationForThisTeam && participationForThisTeam.state === 'invited'
+      );
     });
   }
 

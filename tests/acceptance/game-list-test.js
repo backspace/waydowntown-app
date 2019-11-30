@@ -19,6 +19,7 @@ module('Acceptance | game list', function(hooks) {
     const game = incarnation.createGame();
     game.createParticipation({
       team: this.team,
+      state: 'invited',
     });
 
     await visit('/');
@@ -97,7 +98,7 @@ module('Acceptance | game list', function(hooks) {
     game.createParticipation({
       team: thirdTeam,
     });
-    game.createParticipation({ team: this.team });
+    game.createParticipation({ team: this.team, state: 'invited' });
 
     const acceptedConcept = this.server.create('concept', {
       name: 'an accepted concept',
@@ -146,8 +147,8 @@ module('Acceptance | game list', function(hooks) {
       .doesNotExist();
 
     assert
-      .dom(`[data-test-invitations] [data-test-game-id='${acceptedGame.id}']`)
-      .doesNotExist();
+      .dom('[data-test-invitations] [data-test-concept-name]')
+      .exists({ count: 1 });
 
     assert
       .dom('[data-test-acceptances] [data-test-concept-name]')
