@@ -5,6 +5,10 @@
     <button class="border border-black" {{on "click" (perform this.acceptGame)}} data-test-accept>Accept</button>
   {{/if}}
 
+  {{#if this.canArrive}}
+    <button class="border border-black" {{on "click" (perform this.arriveGame)}} data-test-arrive>Arrive</button>
+  {{/if}}
+
   <ul>
     {{#each this.otherTeams as |team|}}
       <li data-test-team-id={{team.id}}>Team: <span data-test-team-name>{{team.name}}</span></li>

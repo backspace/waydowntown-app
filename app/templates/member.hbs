@@ -31,4 +31,13 @@
   </ul>
 {{/if}}
 
+{{#if this.scheduleds}}
+  Scheduled:
+  <ul data-test-scheduleds>
+    {{#each this.scheduleds as |scheduled|}}
+      <GameListItem @game={{scheduled}} @team={{this.team}} />
+    {{/each}}
+  </ul>
+{{/if}}
+
 {{outlet}}

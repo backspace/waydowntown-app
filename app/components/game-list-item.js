@@ -12,6 +12,12 @@ export default class GameListItem extends Component {
     return this.teamParticipation && this.teamParticipation.state === 'invited';
   }
 
+  get canArrive() {
+    return (
+      this.teamParticipation && this.teamParticipation.state === 'converging'
+    );
+  }
+
   get otherTeams() {
     return this.args.game.participations
       .mapBy('team')
@@ -23,4 +29,10 @@ export default class GameListItem extends Component {
     return this.game;
   })
   acceptGame;
+
+  @task(function*() {
+    yield this.args.game.arrive();
+    return this.game;
+  })
+  arriveGame;
 }

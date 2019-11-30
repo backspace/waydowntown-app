@@ -83,6 +83,37 @@ module('Acceptance | game list', function(hooks) {
     assert.dom('[data-test-invitations]').doesNotExist();
   });
 
+  test('a team can arrive at a converging game and when it becomes scheduled it shows as that way', async function(assert) {
+    const concept = this.server.create('concept', {
+      name: 'a converging concept',
+    });
+    const incarnation = concept.createIncarnation();
+    const game = incarnation.createGame();
+    const teamParticipation = game.createParticipation({
+      team: this.team,
+      state: 'converging',
+    });
+
+    await visit('/');
+
+    assert.dom('[data-test-convergings]').exists();
+    assert.dom('[data-test-scheduleds]').doesNotExist();
+
+    this.server.patch(`/games/${game.id}/arrive`, function({
+      participations,
+      games,
+    }) {
+      participations.find(teamParticipation.id).update('state', 'scheduled');
+      return games.find(game.id);
+    });
+
+    await click(`[data-test-game-id='${game.id}'] [data-test-arrive]`);
+    await settled();
+
+    assert.dom('[data-test-convergings]').doesNotExist();
+    assert.dom('[data-test-scheduleds]').exists();
+  });
+
   test('existing invitations, acceptances, and pendings are listed', async function(assert) {
     const otherTeam = this.server.create('team', { name: 'other team' });
     const thirdTeam = this.server.create('team', { name: 'a third team' });

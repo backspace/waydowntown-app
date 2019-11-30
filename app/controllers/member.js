@@ -70,6 +70,14 @@ export default class ApplicationController extends Controller {
     });
   }
 
+  get scheduleds() {
+    return this.games.filter(game => {
+      return game.participations.every(
+        participation => participation.state === 'scheduled',
+      );
+    });
+  }
+
   setupConsumer() {
     this.consumer = this.cable.createConsumer(
       `${wsHost}/cable?token=${this.token}`,
