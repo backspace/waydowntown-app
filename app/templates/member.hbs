@@ -22,11 +22,11 @@
   </ul>
 {{/if}}
 
-{{#if this.pendings}}
-  Pendings:
-  <ul data-test-pendings>
-    {{#each this.pendings as |pendings|}}
-      <GameListItem @game={{pendings}} @team={{this.team}} />
+{{#if this.rendezvousings}}
+  Rendezvousings:
+  <ul data-test-rendezvousings>
+    {{#each this.rendezvousings as |rendezvousing|}}
+      <GameListItem @game={{rendezvousing}} @team={{this.team}} />
     {{/each}}
   </ul>
 {{/if}}

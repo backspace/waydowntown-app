@@ -109,18 +109,18 @@ module('Acceptance | game list', function(hooks) {
       team: otherTeam,
     });
 
-    const scheduledConcept = this.server.create('concept', {
-      name: 'a scheduled concept',
+    const rendezvousingConcept = this.server.create('concept', {
+      name: 'a rendezvousing concept',
     });
-    const scheduledIncarnation = scheduledConcept.createIncarnation();
-    const scheduledGame = scheduledIncarnation.createGame();
-    scheduledGame.createParticipation({
+    const rendezvousingIncarnation = rendezvousingConcept.createIncarnation();
+    const rendezvousingGame = rendezvousingIncarnation.createGame();
+    rendezvousingGame.createParticipation({
       team: this.team,
-      state: 'accepted',
+      state: 'rendezvousing',
     });
-    scheduledGame.createParticipation({
+    rendezvousingGame.createParticipation({
       team: otherTeam,
-      state: 'accepted',
+      state: 'rendezvousing',
     });
 
     await visit('/');
@@ -159,10 +159,12 @@ module('Acceptance | game list', function(hooks) {
       .doesNotExist();
 
     assert
-      .dom('[data-test-pendings] [data-test-concept-name]')
+      .dom('[data-test-rendezvousings] [data-test-concept-name]')
       .exists({ count: 1 });
     assert
-      .dom(`[data-test-pendings] [data-test-game-id='${scheduledGame.id}']`)
+      .dom(
+        `[data-test-rendezvousings] [data-test-game-id='${rendezvousingGame.id}']`,
+      )
       .exists();
   });
 });

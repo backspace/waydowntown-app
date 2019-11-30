@@ -60,9 +60,11 @@ export default class ApplicationController extends Controller {
     });
   }
 
-  get pendings() {
+  get rendezvousings() {
     return this.games.filter(game => {
-      return game.participations.every(participation => participation.accepted);
+      return game.participations.any(
+        participation => participation.state === 'rendezvousing',
+      );
     });
   }
 
