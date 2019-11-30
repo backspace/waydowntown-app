@@ -22,11 +22,11 @@
   </ul>
 {{/if}}
 
-{{#if this.rendezvousings}}
-  Rendezvousings:
-  <ul data-test-rendezvousings>
-    {{#each this.rendezvousings as |rendezvousing|}}
-      <GameListItem @game={{rendezvousing}} @team={{this.team}} />
+{{#if this.convergings}}
+  Convergings:
+  <ul data-test-convergings>
+    {{#each this.convergings as |converging|}}
+      <GameListItem @game={{converging}} @team={{this.team}} />
     {{/each}}
   </ul>
 {{/if}}

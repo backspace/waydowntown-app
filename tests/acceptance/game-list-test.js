@@ -113,18 +113,18 @@ module('Acceptance | game list', function(hooks) {
       team: otherTeam,
     });
 
-    const rendezvousingConcept = this.server.create('concept', {
-      name: 'a rendezvousing concept',
+    const convergingConcept = this.server.create('concept', {
+      name: 'a converging concept',
     });
-    const rendezvousingIncarnation = rendezvousingConcept.createIncarnation();
-    const rendezvousingGame = rendezvousingIncarnation.createGame();
-    rendezvousingGame.createParticipation({
+    const convergingIncarnation = convergingConcept.createIncarnation();
+    const convergingGame = convergingIncarnation.createGame();
+    convergingGame.createParticipation({
       team: this.team,
-      state: 'rendezvousing',
+      state: 'converging',
     });
-    rendezvousingGame.createParticipation({
+    convergingGame.createParticipation({
       team: otherTeam,
-      state: 'rendezvousing',
+      state: 'converging',
     });
 
     await visit('/');
@@ -163,16 +163,14 @@ module('Acceptance | game list', function(hooks) {
       .doesNotExist();
 
     assert
-      .dom('[data-test-rendezvousings] [data-test-concept-name]')
+      .dom('[data-test-convergings] [data-test-concept-name]')
       .exists({ count: 1 });
     assert
-      .dom(
-        `[data-test-rendezvousings] [data-test-game-id='${rendezvousingGame.id}']`,
-      )
+      .dom(`[data-test-convergings] [data-test-game-id='${convergingGame.id}']`)
       .exists();
     assert
       .dom(
-        `[data-test-rendezvousings] [data-test-game-id='${rendezvousingGame.id}'] [data-test-accept]`,
+        `[data-test-convergings] [data-test-game-id='${convergingGame.id}'] [data-test-accept]`,
       )
       .doesNotExist();
   });

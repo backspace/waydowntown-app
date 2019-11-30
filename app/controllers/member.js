@@ -62,10 +62,10 @@ export default class ApplicationController extends Controller {
     });
   }
 
-  get rendezvousings() {
+  get convergings() {
     return this.games.filter(game => {
       return game.participations.any(
-        participation => participation.state === 'rendezvousing',
+        participation => participation.state === 'converging',
       );
     });
   }
