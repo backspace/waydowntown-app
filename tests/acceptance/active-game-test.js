@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { click, visit } from '@ember/test-helpers';
+import { click, settled, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import setToken from '../set-token';
@@ -45,7 +45,7 @@ module('Acceptance | active game', function(hooks) {
     assert.dom('[data-test-active-game]').exists({ count: 1 });
   });
 
-  test('the active game counts taps', async function(assert) {
+  test('the active game counts taps and reports back manually', async function(assert) {
     const concept = this.server.create('concept', {
       name: 'clicky',
     });
@@ -73,5 +73,27 @@ module('Acceptance | active game', function(hooks) {
     await click('[data-test-tap-target]');
 
     assert.dom('[data-test-active-game] [data-test-taps]').hasText('4');
+
+    assert.dom('[data-test-results]').doesNotExist();
+
+    this.server.patch(
+      `/games/${game.id}/report`,
+      ({ participations, games }, { requestBody }) => {
+        const result = JSON.parse(requestBody).result;
+        participations
+          .findBy({ teamId: this.team.id })
+          .update('result', result);
+        return games.find(game.id);
+      },
+    );
+
+    await click('[data-test-report]');
+    await settled();
+
+    assert
+      .dom(
+        `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-result]`,
+      )
+      .hasText('4');
   });
 });

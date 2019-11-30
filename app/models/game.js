@@ -25,6 +25,14 @@ export default class GameModel extends Model {
     },
   });
 
+  report = modelAction('report', {
+    method: 'PATCH',
+    pushToStore: true,
+    queryParams: {
+      include: 'incarnation,incarnation.concept,participations.team',
+    },
+  });
+
   request = resourceAction('request', {
     method: 'POST',
     pushToStore: true,

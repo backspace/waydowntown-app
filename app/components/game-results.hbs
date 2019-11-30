@@ -1,0 +1,10 @@
+{{#if this.participationsWithResults}}
+  Results:
+  <ul data-test-results>
+    {{#each this.participationsWithResults as |participation|}}
+      <li data-test-team-id={{participation.team.id}}>
+        {{participation.team.name}}: <span data-test-result>{{participation.result}}</span>
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
