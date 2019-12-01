@@ -105,7 +105,7 @@ export default class ApplicationController extends Controller {
     this.consumer.subscriptions.create('TeamChannel', {
       connected() {},
       received: message => {
-        if (message.type === 'invitation') {
+        if (message.type === 'changes') {
           // FIXME why does this massaging need to happen AND why the push/pushPayload dichotomy?
           const data = get(message, 'content.data');
           let dataArray;

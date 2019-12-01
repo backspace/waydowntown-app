@@ -53,7 +53,7 @@ module('Acceptance | game list', function(hooks) {
     });
 
     await this.cable.handlers.received({
-      type: 'invitation',
+      type: 'changes',
       content: this.server.serializerOrRegistry.serialize(game, {
         queryParams: {
           include:
@@ -238,7 +238,7 @@ module('Acceptance | game list', function(hooks) {
     game.save();
 
     await this.cable.handlers.received({
-      type: 'invitation',
+      type: 'changes',
       content: this.server.serializerOrRegistry.serialize(game, {
         queryParams: {
           include:
