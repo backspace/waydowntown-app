@@ -4,15 +4,14 @@ import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import setToken from '../set-token';
 import mockCable from '../mock-cable';
-
-import Service from '@ember/service';
-import { tracked } from '@glimmer/tracking';
+import mockGameClock from '../mock-game-clock';
 
 module('Acceptance | active game', function(hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
   setToken(hooks);
   mockCable(hooks);
+  mockGameClock(hooks);
 
   test('an active game is displayed and an inactive one is not', async function(assert) {
     const concept = this.server.create('concept', {
@@ -49,8 +48,6 @@ module('Acceptance | active game', function(hooks) {
   });
 
   test('a game can become active and inactive again as time passes', async function(assert) {
-    this.owner.register('service:game-clock', MockClockService);
-
     const concept = this.server.create('concept');
     const incarnation = concept.createIncarnation();
     const game = incarnation.createGame({
@@ -63,34 +60,25 @@ module('Acceptance | active game', function(hooks) {
       state: 'scheduled',
     });
 
-    this.owner.lookup('service:game-clock').date = new Date(
-      new Date().getTime() - 1000 * 60 * 2,
-    );
+    this.setGameClock(new Date(new Date().getTime() - 1000 * 60 * 2));
 
     await visit('/');
 
     assert.dom('[data-test-active-game]').doesNotExist();
 
-    this.owner.lookup('service:game-clock').date = new Date(
-      new Date().getTime() - 1000 * 30,
-    );
+    this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
     await settled();
 
     assert.dom('[data-test-active-game]').exists();
 
-    this.owner.lookup('service:game-clock').date = new Date(
-      new Date().getTime() + 1000 * 30 * 2,
-    );
+    this.setGameClock(new Date(new Date().getTime() + 1000 * 30 * 2));
     await settled();
 
     assert.dom('[data-test-active-game]').doesNotExist();
   });
 
   test('the active game counts taps and reports back when it ends', async function(assert) {
-    this.owner.register('service:game-clock', MockClockService);
-    this.owner.lookup('service:game-clock').date = new Date(
-      new Date().getTime() - 1000 * 30,
-    );
+    this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
 
     const concept = this.server.create('concept', {
       name: 'clicky',
@@ -133,9 +121,7 @@ module('Acceptance | active game', function(hooks) {
       },
     );
 
-    this.owner.lookup('service:game-clock').date = new Date(
-      new Date().getTime() + 1000 * 60 * 2,
-    );
+    this.setGameClock(new Date(new Date().getTime() + 1000 * 60 * 2));
     await settled();
 
     await settled(); // Twice because of the reporting action? 🧐
@@ -147,12 +133,3 @@ module('Acceptance | active game', function(hooks) {
       .hasText('4');
   });
 });
-
-class MockClockService extends Service {
-  @tracked date;
-
-  constructor() {
-    super(...arguments);
-    this.date = new Date();
-  }
-}
