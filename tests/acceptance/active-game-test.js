@@ -43,6 +43,7 @@ module('Acceptance | active game', function(hooks) {
     assert
       .dom('[data-test-active-game] [data-test-concept-name]')
       .hasText('an in-progress concept');
+    assert.dom('[data-test-time-remaining]').hasText('59 seconds remaining');
 
     assert.dom('[data-test-active-game]').exists({ count: 1 });
   });
