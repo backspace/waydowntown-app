@@ -12,5 +12,4 @@ export default function() {
   this.patch('/games/:id/report', function({ games }, { params }) {
     return games.find(params.id);
   });
-  this.logging = true;
 }
