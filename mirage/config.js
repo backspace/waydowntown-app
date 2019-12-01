@@ -1,8 +1,4 @@
 export default function() {
-  this.post('/games/request', schema => {
-    return schema.games.first();
-  });
-
   this.post('/auth', ({ members }, { requestHeaders }) => {
     return members.find(requestHeaders.authorization.split(' ')[1]);
   });

@@ -8,4 +8,10 @@ export default class TeamModel extends Model {
 
   @hasMany() members;
   @hasMany() participations;
+
+  get cannotRequest() {
+    return this.participations.any(
+      participation => participation.state !== 'finished',
+    );
+  }
 }

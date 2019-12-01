@@ -36,6 +36,8 @@ export default class GameModel extends Model {
   request = resourceAction('request', {
     method: 'POST',
     pushToStore: true,
-    queryParams: { include: 'incarnation,incarnation.concept' },
+    queryParams: {
+      include: 'incarnation,incarnation.concept,participations.team',
+    },
   });
 }

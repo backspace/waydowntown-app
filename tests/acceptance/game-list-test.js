@@ -13,28 +13,6 @@ module('Acceptance | game list', function(hooks) {
   mockCable(hooks);
   mockGameClock(hooks);
 
-  test('a requested game is displayed as an invitation', async function(assert) {
-    const concept = this.server.create('concept', {
-      name: 'a requested concept',
-    });
-    const incarnation = concept.createIncarnation();
-    const game = incarnation.createGame();
-    game.createParticipation({
-      team: this.team,
-      state: 'invited',
-    });
-
-    await visit('/');
-    await click('[data-test-request]');
-    await settled();
-
-    assert
-      .dom(
-        `[data-test-invitations] [data-test-game-id='${game.id}'] [data-test-concept-name]`,
-      )
-      .hasText('a requested concept');
-  });
-
   test('a received invitation is displayed and can be accepted', async function(assert) {
     const concept = this.server.create('concept', {
       name: 'an invited concept',
