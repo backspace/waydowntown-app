@@ -16,6 +16,6 @@
   </ul>
 
   {{#if @game.beginsAt}}
-    <p data-test-begins-at>Begins in {{moment-diff (now interval=200) @game.beginsAt precision="seconds" interval=200}} seconds</p>
+    <p data-test-begins-at>Begins in {{moment-diff this.gameClock.date @game.beginsAt precision="seconds" interval=200}} seconds</p>
   {{/if}}
 </li>

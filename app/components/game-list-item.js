@@ -1,7 +1,10 @@
 import Component from '@glimmer/component';
 import { task } from 'ember-concurrency';
+import { inject as service } from '@ember/service';
 
 export default class GameListItem extends Component {
+  @service gameClock;
+
   get teamParticipation() {
     return this.args.game.participations.find(
       participation => participation.get('team.id') === this.args.team.id,

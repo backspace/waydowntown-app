@@ -4,12 +4,14 @@ import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import setToken from '../set-token';
 import mockCable from '../mock-cable';
+import mockGameClock from '../mock-game-clock';
 
 module('Acceptance | game list', function(hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
   setToken(hooks);
   mockCable(hooks);
+  mockGameClock(hooks);
 
   test('a requested game is displayed as an invitation', async function(assert) {
     const concept = this.server.create('concept', {
@@ -99,13 +101,17 @@ module('Acceptance | game list', function(hooks) {
     assert.dom('[data-test-convergings]').exists();
     assert.dom('[data-test-scheduleds]').doesNotExist();
 
+    const now = new Date();
+    const gameStartTime = new Date(now.getTime() + 1000 * 60);
+    this.setGameClock(now);
+
     this.server.patch(`/games/${game.id}/arrive`, function({
       participations,
       games,
     }) {
       participations.find(teamParticipation.id).update('state', 'scheduled');
       const serverGame = games.find(game.id);
-      serverGame.update('beginsAt', new Date());
+      serverGame.update('beginsAt', gameStartTime);
       return serverGame;
     });
 
@@ -115,7 +121,9 @@ module('Acceptance | game list', function(hooks) {
     assert.dom('[data-test-convergings]').doesNotExist();
     assert.dom('[data-test-scheduleds]').exists();
 
-    assert.dom('[data-test-scheduleds] [data-test-begins-at]').exists();
+    assert
+      .dom('[data-test-scheduleds] [data-test-begins-at]')
+      .hasText('Begins in 60 seconds');
   });
 
   test('existing invitations, acceptances, and pendings are listed', async function(assert) {
