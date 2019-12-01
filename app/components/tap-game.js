@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { task } from 'ember-concurrency';
+import { getOwner } from '@ember/application';
 
 export default class TapGame extends Component {
   @tracked taps = 0;
@@ -11,9 +11,12 @@ export default class TapGame extends Component {
     this.taps += 1;
   }
 
-  @task(function*() {
-    yield this.args.game.report({ result: this.taps });
-    return this.game;
-  })
-  report;
+  willDestroy() {
+    // super(...arguments);
+
+    // TODO will this always call/complete? Extract some kind of game handler?
+    if (!getOwner(this).isDestroying) {
+      this.args.game.report({ result: this.taps });
+    }
+  }
 }

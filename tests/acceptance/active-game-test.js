@@ -86,7 +86,12 @@ module('Acceptance | active game', function(hooks) {
     assert.dom('[data-test-active-game]').doesNotExist();
   });
 
-  test('the active game counts taps and reports back manually', async function(assert) {
+  test('the active game counts taps and reports back when it ends', async function(assert) {
+    this.owner.register('service:game-clock', MockClockService);
+    this.owner.lookup('service:game-clock').date = new Date(
+      new Date().getTime() - 1000 * 30,
+    );
+
     const concept = this.server.create('concept', {
       name: 'clicky',
     });
@@ -123,13 +128,17 @@ module('Acceptance | active game', function(hooks) {
         const result = JSON.parse(requestBody).result;
         participations
           .findBy({ teamId: this.team.id })
-          .update('result', result);
+          .update({ result: result, state: 'finished' });
         return games.find(game.id);
       },
     );
 
-    await click('[data-test-report]');
+    this.owner.lookup('service:game-clock').date = new Date(
+      new Date().getTime() + 1000 * 60 * 2,
+    );
     await settled();
+
+    await settled(); // Twice because of the reporting action? 🧐
 
     assert
       .dom(

@@ -11,6 +11,17 @@
   </div>
 {{/each}}
 
+{{#if this.finishedGames}}
+  Finished games:
+  <ul data-test-results>
+    {{#each this.finishedGames as |game|}}
+      <li class="border border-black p-1">
+        <span data-test-concept-name>{{game.incarnation.concept.name}}</span>: <GameResults @game={{game}} />
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
+
 <button class="border border-black" {{on "click" (perform this.requestGame)}} data-test-request>Request</button>
 
 {{#if this.invitations}}

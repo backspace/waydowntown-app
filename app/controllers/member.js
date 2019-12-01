@@ -86,6 +86,14 @@ export default class ApplicationController extends Controller {
     });
   }
 
+  get finishedGames() {
+    return this.games.filter(game => {
+      return game.participations.any(
+        participation => participation.state === 'finished',
+      );
+    });
+  }
+
   setupConsumer() {
     this.consumer = this.cable.createConsumer(
       `${wsHost}/cable?token=${this.token}`,
