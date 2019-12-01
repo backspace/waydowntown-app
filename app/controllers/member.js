@@ -4,6 +4,9 @@ import { storageFor } from 'ember-local-storage';
 import { alias } from '@ember/object/computed';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
+import { get, set } from '@ember/object';
+
+import Ember from 'ember';
 
 import config from 'waydowntown/config/environment';
 
@@ -103,7 +106,32 @@ export default class ApplicationController extends Controller {
       connected() {},
       received: message => {
         if (message.type === 'invitation') {
-          this.store.push(message.content);
+          // FIXME why does this massaging need to happen AND why the push/pushPayload dichotomy?
+          const data = get(message, 'content.data');
+          let dataArray;
+
+          if (data && data.length) {
+            dataArray = data;
+          } else if (data) {
+            dataArray = [data];
+          }
+
+          if (dataArray) {
+            dataArray.filterBy('type', 'game').forEach(model => {
+              set(
+                model,
+                'attributes.beginsAt',
+                get(model, 'attributes.begins-at'),
+              );
+              set(model, 'attributes.endsAt', get(model, 'attributes.ends-at'));
+            });
+          }
+
+          if (Ember.testing) {
+            this.store.push(message.content);
+          } else {
+            this.store.pushPayload(message.content);
+          }
         }
       },
       disconnected() {},

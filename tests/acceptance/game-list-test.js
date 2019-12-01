@@ -217,4 +217,40 @@ module('Acceptance | game list', function(hooks) {
       )
       .doesNotExist();
   });
+
+  test('a game becoming scheduled via the socket shows the time until it starts', async function(assert) {
+    const now = new Date();
+    const concept = this.server.create('concept');
+    const incarnation = concept.createIncarnation();
+    const game = incarnation.createGame();
+
+    game.createParticipation({
+      team: this.team,
+      state: 'scheduled',
+    });
+
+    await visit('/');
+
+    assert.dom('[data-test-scheduleds] [data-test-begins-at]').doesNotExist();
+
+    game.attrs.beginsAt = new Date(now.getTime() + 1000 * 60);
+    game.attrs.endsAt = new Date();
+    game.save();
+
+    await this.cable.handlers.received({
+      type: 'invitation',
+      content: this.server.serializerOrRegistry.serialize(game, {
+        queryParams: {
+          include:
+            'participations,participations.team,incarnation,incarnation.concept',
+        },
+      }),
+    });
+
+    await settled();
+
+    assert
+      .dom('[data-test-scheduleds] [data-test-begins-at]')
+      .hasText('Begins in 59 seconds');
+  });
 });
