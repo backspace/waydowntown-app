@@ -5,6 +5,7 @@ import { setupMirage } from 'ember-cli-mirage/test-support';
 import setToken from '../helpers/set-token';
 import mockCable from '../helpers/mock-cable';
 import mockGameClock from '../helpers/mock-game-clock';
+import mockVibration from '../helpers/mock-vibration';
 
 module('Acceptance | active game', function(hooks) {
   setupApplicationTest(hooks);
@@ -12,6 +13,7 @@ module('Acceptance | active game', function(hooks) {
   setToken(hooks);
   mockCable(hooks);
   mockGameClock(hooks);
+  mockVibration(hooks);
 
   test('an active game is displayed and an inactive one is not', async function(assert) {
     const concept = this.server.create('concept', {
@@ -48,7 +50,7 @@ module('Acceptance | active game', function(hooks) {
     assert.dom('[data-test-active-game]').exists({ count: 1 });
   });
 
-  test('a game can become active and inactive again as time passes', async function(assert) {
+  test('a game can become active, causing vibration, and then inactive again as time passes', async function(assert) {
     const concept = this.server.create('concept');
     const incarnation = concept.createIncarnation();
     const game = incarnation.createGame({
@@ -66,11 +68,13 @@ module('Acceptance | active game', function(hooks) {
     await visit('/');
 
     assert.dom('[data-test-active-game]').doesNotExist();
+    assert.equal(this.mockVibration.calls, 0);
 
     this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
     await settled();
 
     assert.dom('[data-test-active-game]').exists();
+    assert.equal(this.mockVibration.calls, 1);
 
     this.setGameClock(new Date(new Date().getTime() + 1000 * 30 * 2));
     await settled();

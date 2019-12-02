@@ -5,6 +5,7 @@ import { setupMirage } from 'ember-cli-mirage/test-support';
 import setToken from '../helpers/set-token';
 import mockCable from '../helpers/mock-cable';
 import mockGameClock from '../helpers/mock-game-clock';
+import mockVibration from '../helpers/mock-vibration';
 
 module('Acceptance | game list', function(hooks) {
   setupApplicationTest(hooks);
@@ -12,14 +13,17 @@ module('Acceptance | game list', function(hooks) {
   setToken(hooks);
   mockCable(hooks);
   mockGameClock(hooks);
+  mockVibration(hooks);
 
-  test('a received invitation is displayed and can be accepted', async function(assert) {
+  test('a received invitation is displayed, triggers vibration, and can be accepted', async function(assert) {
     const concept = this.server.create('concept', {
       name: 'an invited concept',
     });
     const incarnation = concept.createIncarnation();
 
     await visit('/');
+
+    assert.equal(this.mockVibration.calls, 0);
 
     const game = incarnation.createGame();
     game.createParticipation({
@@ -28,6 +32,7 @@ module('Acceptance | game list', function(hooks) {
     const teamParticipation = game.createParticipation({
       team: this.team,
       state: 'invited',
+      initiator: false,
     });
 
     await this.cable.handlers.received({
@@ -48,6 +53,7 @@ module('Acceptance | game list', function(hooks) {
       )
       .hasText('an invited concept');
     assert.dom('[data-test-acceptances]').doesNotExist();
+    assert.equal(this.mockVibration.calls, 1);
 
     this.server.patch(`/games/${game.id}/accept`, function({
       participations,

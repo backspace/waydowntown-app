@@ -1,4 +1,5 @@
 <li class="border border-black p-1" data-test-game-id={{@game.id}}>
+  {{#if this.shouldVibrate}}<span {{did-insert this.vibration.vibrate}}>{{!-- FIXME can a modifier be conditionally included above? --}}</span>{{/if}}
   <p>Game name: <span data-test-concept-name>{{@game.incarnation.concept.name}}</span></p>
 
   {{#if this.canAccept}}

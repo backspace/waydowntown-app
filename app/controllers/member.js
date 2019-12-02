@@ -17,6 +17,7 @@ export default class ApplicationController extends Controller {
   @service cable;
   @service gameClock;
   @service store;
+  @service vibration;
 
   @storageFor('token') tokenStorage;
 

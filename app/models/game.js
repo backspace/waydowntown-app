@@ -37,7 +37,8 @@ export default class GameModel extends Model {
     method: 'POST',
     pushToStore: true,
     queryParams: {
-      include: 'incarnation,incarnation.concept,participations.team',
+      include:
+        'incarnation,incarnation.concept,participations,participations.team',
     },
   });
 }

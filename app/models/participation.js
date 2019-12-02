@@ -6,6 +6,7 @@ export default class ParticipationModel extends Model {
   @belongsTo() team;
 
   @attr() state;
+  @attr('boolean') initiator;
 
   @attr() result;
 

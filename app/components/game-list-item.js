@@ -4,10 +4,23 @@ import { inject as service } from '@ember/service';
 
 export default class GameListItem extends Component {
   @service gameClock;
+  @service vibration;
 
   get teamParticipation() {
     return this.args.game.participations.find(
       participation => participation.get('team.id') === this.args.team.id,
+    );
+  }
+
+  get shouldVibrate() {
+    if (!this.teamParticipation) {
+      // TODO why does this ever happen?
+      return false;
+    }
+
+    return (
+      this.teamParticipation.state === 'invited' &&
+      !this.teamParticipation.initiator
     );
   }
 
