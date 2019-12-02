@@ -2,9 +2,9 @@ import { module, test } from 'qunit';
 import { click, settled, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import setToken from '../set-token';
-import mockCable from '../mock-cable';
-import mockGameClock from '../mock-game-clock';
+import setToken from '../helpers/set-token';
+import mockCable from '../helpers/mock-cable';
+import mockGameClock from '../helpers/mock-game-clock';
 
 module('Acceptance | game list', function(hooks) {
   setupApplicationTest(hooks);

@@ -4,7 +4,7 @@ import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { Response } from 'ember-cli-mirage';
 import resetStorages from 'ember-local-storage/test-support/reset-storage';
-import mockCable from '../mock-cable';
+import mockCable from '../helpers/mock-cable';
 
 module('Acceptance | require setup', function(hooks) {
   setupApplicationTest(hooks);
