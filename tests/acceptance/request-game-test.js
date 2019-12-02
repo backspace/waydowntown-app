@@ -5,7 +5,7 @@ import { setupMirage } from 'ember-cli-mirage/test-support';
 import setToken from '../helpers/set-token';
 import mockCable from '../helpers/mock-cable';
 
-module('Acceptance | game list', function(hooks) {
+module('Acceptance | request game', function(hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
   setToken(hooks);
