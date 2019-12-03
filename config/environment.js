@@ -18,7 +18,7 @@ module.exports = function(environment) {
     },
 
     APP: {
-      server: 'http://localhost:3000',
+      server: process.env.API_ENDPOINT || 'http://localhost:3000',
     },
 
     'ember-local-storage': {
