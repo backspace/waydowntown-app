@@ -25,13 +25,11 @@ export default class GameListItem extends Component {
   }
 
   get canAccept() {
-    return this.teamParticipation && this.teamParticipation.state === 'invited';
+    return this.teamParticipation?.state === 'invited';
   }
 
   get canArrive() {
-    return (
-      this.teamParticipation && this.teamParticipation.state === 'converging'
-    );
+    return this.teamParticipation?.state === 'converging';
   }
 
   get otherTeams() {

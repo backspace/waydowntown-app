@@ -56,8 +56,7 @@ export default class ApplicationController extends Controller {
       );
 
       return (
-        participationForThisTeam &&
-        participationForThisTeam.accepted &&
+        participationForThisTeam?.accepted &&
         game.participations.any(
           participation =>
             participation !== participationForThisTeam &&
@@ -111,7 +110,7 @@ export default class ApplicationController extends Controller {
           const data = get(message, 'content.data');
           let dataArray;
 
-          if (data && data.length) {
+          if (data?.length) {
             dataArray = data;
           } else if (data) {
             dataArray = [data];

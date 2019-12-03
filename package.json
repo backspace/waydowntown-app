@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@algonauti/ember-cable": "^0.9.2",
+    "@babel/plugin-proposal-optional-chaining": "^7.7.4",
     "@ember/edition-utils": "^1.1.1",
     "@ember/optional-features": "^1.0.0",
     "@ember/render-modifiers": "^1.0.2",
