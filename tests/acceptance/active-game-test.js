@@ -17,7 +17,7 @@ module('Acceptance | active game', function(hooks) {
 
   test('an active game is displayed and an inactive one is not', async function(assert) {
     const concept = this.server.create('concept', {
-      name: 'an in-progress concept',
+      name: 'tap',
     });
     const incarnation = concept.createIncarnation();
     const game = incarnation.createGame({
@@ -44,14 +44,14 @@ module('Acceptance | active game', function(hooks) {
 
     assert
       .dom('[data-test-active-game] [data-test-concept-name]')
-      .hasText('an in-progress concept');
+      .hasText('tap');
     assert.dom('[data-test-time-remaining]').hasText('59 seconds remaining');
 
     assert.dom('[data-test-active-game]').exists({ count: 1 });
   });
 
   test('a game can become active, causing vibration, and then inactive again as time passes', async function(assert) {
-    const concept = this.server.create('concept');
+    const concept = this.server.create('concept', { name: 'tap' });
     const incarnation = concept.createIncarnation();
     const game = incarnation.createGame({
       beginsAt: new Date(new Date().getTime() - 1000 * 60),
@@ -82,11 +82,11 @@ module('Acceptance | active game', function(hooks) {
     assert.dom('[data-test-active-game]').doesNotExist();
   });
 
-  test('the active game counts taps and reports back when it ends', async function(assert) {
+  test('the tap game counts taps and reports back when it ends', async function(assert) {
     this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
 
     const concept = this.server.create('concept', {
-      name: 'clicky',
+      name: 'tap',
     });
     const incarnation = concept.createIncarnation();
     const game = incarnation.createGame({

@@ -9,7 +9,9 @@
       {{moment-diff this.gameClock.date game.endsAt precision="seconds" interval=200}} seconds remaining
     </p>
 
-    <TapGame @game={{game}} />
+    {{#let (component (concat game.incarnation.concept.id '-game')) as |Game|}}
+      <Game @game={{game}} />
+    {{/let}}
 
     <GameResults @game={{game}} />
   </div>
