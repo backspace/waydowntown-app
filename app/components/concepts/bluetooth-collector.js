@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { getOwner } from '@ember/application';
 
-export default class TapGame extends Component {
+export default class BluetoothCollector extends Component {
   @service bluetooth;
 
   get bluetoothEnabled() {

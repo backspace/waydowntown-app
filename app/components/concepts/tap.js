@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { getOwner } from '@ember/application';
 
-export default class TapGame extends Component {
+export default class Tap extends Component {
   @tracked taps = 0;
 
   @action

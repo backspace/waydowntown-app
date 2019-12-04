@@ -9,7 +9,7 @@
       {{moment-diff this.gameClock.date game.endsAt precision="seconds" interval=200}} seconds remaining
     </p>
 
-    {{#let (component (concat game.incarnation.concept.id '-game')) as |Game|}}
+    {{#let (component (concat "concepts/" game.incarnation.concept.id)) as |Game|}}
       <Game @game={{game}} />
     {{/let}}
 
