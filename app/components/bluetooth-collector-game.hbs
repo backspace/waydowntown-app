@@ -1,0 +1,9 @@
+<p {{did-insert (action this.bluetooth.check)}}>Bluetooth status: <span data-test-bluetooth-status>{{this.bluetooth.status}}</span></p>
+{{#if this.bluetoothEnabled}}
+  <p>Detected device count: <span data-test-bluetooth-count>{{this.bluetooth.devices.length}}</span></p>
+  <ul {{did-insert (action this.bluetooth.start)}}>
+    {{#each this.bluetooth.devices as |device|}}
+      <li data-test-bluetooth-device>{{device}}</li>
+    {{/each}}
+  </ul>
+{{/if}}

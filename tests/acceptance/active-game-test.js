@@ -137,4 +137,91 @@ module('Acceptance | active game', function(hooks) {
       )
       .hasText('4');
   });
+
+  test('the bluetooth-collector game counts Bluetooth devices and reports back when it ends', async function(assert) {
+    this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
+
+    const concept = this.server.create('concept', {
+      name: 'bluetooth-collector',
+    });
+    const incarnation = concept.createIncarnation();
+    const game = incarnation.createGame({
+      beginsAt: new Date(new Date().getTime() - 1000 * 60),
+      endsAt: new Date(new Date().getTime() + 1000 * 60),
+    });
+
+    game.createParticipation({
+      team: this.team,
+      state: 'scheduled',
+    });
+
+    let scanResultHandler;
+
+    const mockBluetooth = {
+      initialize(f) {
+        f({ status: 'enabled' });
+      },
+
+      startScan(resultHandler) {
+        scanResultHandler = resultHandler;
+      },
+
+      stopScan() {},
+    };
+
+    window.bluetoothle = mockBluetooth;
+
+    await visit('/');
+
+    assert.dom('[data-test-bluetooth-status]').hasText('enabled');
+
+    assert.dom('[data-test-bluetooth-device]').doesNotExist();
+
+    scanResultHandler({
+      status: 'scanResult',
+      name: 'A',
+    });
+
+    await settled();
+
+    assert.dom('[data-test-bluetooth-count]').hasText('1');
+    assert.dom('[data-test-bluetooth-device]').hasText('A');
+
+    scanResultHandler({
+      status: 'scanResult',
+      name: 'B',
+    });
+
+    scanResultHandler({
+      status: 'scanResult',
+      name: 'A',
+    });
+
+    await settled();
+
+    assert.dom('[data-test-bluetooth-count]').hasText('2');
+    assert.dom('[data-test-bluetooth-device]:nth-child(2)').hasText('B');
+
+    this.server.patch(
+      `/games/${game.id}/report`,
+      ({ participations, games }, { requestBody }) => {
+        const result = JSON.parse(requestBody).result;
+        participations
+          .findBy({ teamId: this.team.id })
+          .update({ result: result, state: 'finished' });
+        return games.find(game.id);
+      },
+    );
+
+    this.setGameClock(new Date(new Date().getTime() + 1000 * 60 * 2));
+    await settled();
+
+    await settled(); // Twice because of the reporting action? 🧐
+
+    assert
+      .dom(
+        `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-result]`,
+      )
+      .hasText('2');
+  });
 });
