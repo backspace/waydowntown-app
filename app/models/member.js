@@ -6,5 +6,8 @@ export default class MemberModel extends Model {
   @attr('number') lat;
   @attr('number') lon;
 
+  @attr('string') registrationId;
+  @attr('string') registrationType;
+
   @belongsTo() team;
 }

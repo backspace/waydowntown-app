@@ -25,8 +25,26 @@ module('Acceptance | require setup', function(hooks) {
     assert.dom('.text-2xl').doesNotExist();
   });
 
-  test('filling in a token shows the logged-in interface with team name', async function(assert) {
+  test('filling in a token shows the logged-in interface with team name and registers the device', async function(assert) {
+    const done = assert.async();
+
     const member = this.server.create('member', { name: 'me' });
+
+    let registrationHandler;
+
+    const mockPushNotification = {
+      init() {
+        return {
+          on(event, handler) {
+            if (event === 'registration') {
+              registrationHandler = handler;
+            }
+          },
+        };
+      },
+    };
+
+    window.PushNotification = mockPushNotification;
 
     await visit('/');
 
@@ -35,6 +53,19 @@ module('Acceptance | require setup', function(hooks) {
 
     assert.dom('.text-2xl').exists();
     assert.dom('[data-test-member-name]').hasText('me');
+
+    this.server.patch(`/members/:id`, function({ members }, request) {
+      const member = members.find(request.params.id);
+      member.update(this.normalizedRequestAttrs());
+
+      assert.equal(member.attrs.registrationId, '1312');
+      assert.equal(member.attrs.registrationType, '!');
+
+      done();
+      return member;
+    });
+
+    registrationHandler({ registrationId: '1312', registrationType: '!' });
   });
 
   test('it returns to the token field when auth fails', async function(assert) {

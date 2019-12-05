@@ -43,6 +43,22 @@ export default class TeamRoute extends Route {
   }
 
   setupController(controller, { games, member, team }) {
+    // TODO is this the best place for this?
+    if (window.PushNotification) {
+      const push = window.PushNotification.init({
+        ios: {
+          alert: true,
+          badge: true,
+          clearBadge: true,
+        },
+      });
+
+      push.on('registration', ({ registrationId, registrationType }) => {
+        member.setProperties({ registrationId, registrationType });
+        member.save();
+      });
+    }
+
     controller.setProperties({ games, member, team });
   }
 }
