@@ -33,16 +33,18 @@ export default class TeamRoute extends Route {
         include:
           'participations,participations.team,incarnation,incarnation.concept',
       }),
-    }).then(({ games, member }) =>
+      teams: this.store.findAll('team'),
+    }).then(({ games, member, teams }) =>
       hash({
         games,
         member,
         team: member.get('team'),
+        teams,
       }),
     );
   }
 
-  setupController(controller, { games, member, team }) {
+  setupController(controller, { games, member, team, teams }) {
     // TODO is this the best place for this?
     if (window.PushNotification) {
       const push = window.PushNotification.init({
@@ -59,6 +61,6 @@ export default class TeamRoute extends Route {
       });
     }
 
-    controller.setProperties({ games, member, team });
+    controller.setProperties({ games, member, team, teams });
   }
 }

@@ -66,4 +66,12 @@
   </ul>
 {{/if}}
 
+{{#if this.teams}}
+  <ul data-test-teams>
+    {{#each this.teams as |team|}}
+      <li data-test-team>{{team.name}}</li>
+    {{/each}}
+  </ul>
+{{/if}}
+
 {{outlet}}

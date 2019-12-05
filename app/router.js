@@ -20,6 +20,4 @@ Router.map(function() {
   this.route('volume');
 
   this.route('member');
-
-  this.route('teams');
 });
