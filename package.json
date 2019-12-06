@@ -56,6 +56,7 @@
     "ember-source": "https://s3.amazonaws.com/builds.emberjs.com/beta/shas/7d4a746ce41cf68f882d72d52f01f3c67485c233.tgz",
     "ember-template-lint": "^1.5.0",
     "ember-test-selectors": "^2.1.0",
+    "ember-truth-helpers": "^2.1.0",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-ember": "^7.1.0",

@@ -25,9 +25,7 @@ module('Acceptance | request game', function(hooks) {
     await visit('/');
 
     assert.dom(`[data-test-team-id='${others.id}']`).hasClass('bg-red-300');
-    assert
-      .dom(`[data-test-team-id='${this.team.id}']`)
-      .hasClass('bg-green-300');
+    assert.dom(`[data-test-team-id='${this.team.id}']`).doesNotExist();
 
     otherMember.attrs.last_subscribed = new Date();
     otherMember.save();
