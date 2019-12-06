@@ -125,6 +125,19 @@ export default class ApplicationController extends Controller {
               );
               set(model, 'attributes.endsAt', get(model, 'attributes.ends-at'));
             });
+
+            dataArray.filterBy('type', 'member').forEach(model => {
+              set(
+                model,
+                'attributes.lastUnsubscribed',
+                get(model, 'attributes.last-unsubscribed'),
+              );
+              set(
+                model,
+                'attributes.lastSubscribed',
+                get(model, 'attributes.last-subscribed'),
+              );
+            });
           }
 
           if (Ember.testing) {

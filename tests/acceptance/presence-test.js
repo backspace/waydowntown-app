@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit } from '@ember/test-helpers';
+import { settled, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import setToken from '../helpers/set-token';
@@ -17,9 +17,9 @@ module('Acceptance | request game', function(hooks) {
     this.member.save();
 
     const others = this.server.create('team', { name: 'others' });
-    others.createMember({
+    const otherMember = others.createMember({
       last_subscribed: new Date(2010, 1, 1),
-      last_unsubscribed: new Date(),
+      last_unsubscribed: new Date(2011, 1, 1),
     });
 
     await visit('/');
@@ -28,5 +28,17 @@ module('Acceptance | request game', function(hooks) {
     assert
       .dom(`[data-test-team-id='${this.team.id}']`)
       .hasClass('bg-green-300');
+
+    otherMember.attrs.last_subscribed = new Date();
+    otherMember.save();
+
+    await this.cable.handlers.received({
+      type: 'changes',
+      content: this.server.serializerOrRegistry.serialize(otherMember),
+    });
+
+    await settled();
+
+    assert.dom(`[data-test-team-id='${others.id}']`).hasClass('bg-green-300');
   });
 });
