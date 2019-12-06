@@ -89,4 +89,9 @@
   </ul>
 {{/if}}
 
+Start solo games:
+{{#each this.concepts as |concept|}}
+  <button class="border border-black" {{on "click" (perform this.requestGame concept null)}}>{{concept}}</button>
+{{/each}}
+
 {{outlet}}

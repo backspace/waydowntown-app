@@ -183,9 +183,12 @@ export default class ApplicationController extends Controller {
 
     const parameters = {};
 
-    if (conceptId && teamId) {
+    if (conceptId) {
       parameters.concept_id = conceptId;
-      parameters.team_id = teamId;
+
+      if (teamId) {
+        parameters.team_id = teamId;
+      }
     }
 
     const game = yield emptyGame.request(parameters);
