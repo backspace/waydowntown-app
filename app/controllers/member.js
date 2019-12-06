@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { storageFor } from 'ember-local-storage';
-import { alias } from '@ember/object/computed';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
 import { get, set } from '@ember/object';
@@ -20,8 +19,6 @@ export default class ApplicationController extends Controller {
   @service vibration;
 
   @storageFor('token') tokenStorage;
-
-  @alias('tokenStorage.token') token;
 
   @tracked games;
 
@@ -99,7 +96,7 @@ export default class ApplicationController extends Controller {
 
   setupConsumer() {
     this.consumer = this.cable.createConsumer(
-      `${wsHost}/cable?token=${this.token}`,
+      `${wsHost}/cable?token=${this.get('tokenStorage.token')}`,
     );
 
     this.consumer.subscriptions.create('TeamChannel', {
