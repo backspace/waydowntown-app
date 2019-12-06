@@ -11,10 +11,22 @@ module('Acceptance | request game', function(hooks) {
   setToken(hooks);
   mockCable(hooks);
 
-  test('teams are listed', async function(assert) {
-    this.server.create('team', { name: 'others' });
+  test('teams are listed with presence indicators', async function(assert) {
+    this.member.attrs.last_subscribed = new Date();
+    this.member.attrs.last_unsubscribed = new Date(new Date().getTime() - 1000);
+    this.member.save();
+
+    const others = this.server.create('team', { name: 'others' });
+    others.createMember({
+      last_subscribed: new Date(2010, 1, 1),
+      last_unsubscribed: new Date(),
+    });
+
     await visit('/');
 
-    assert.dom('[data-test-teams] [data-test-team]').exists({ count: 2 });
+    assert.dom(`[data-test-team-id='${others.id}']`).hasClass('bg-red-300');
+    assert
+      .dom(`[data-test-team-id='${this.team.id}']`)
+      .hasClass('bg-green-300');
   });
 });

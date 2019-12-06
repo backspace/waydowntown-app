@@ -9,5 +9,12 @@ export default class MemberModel extends Model {
   @attr('string') registrationId;
   @attr('string') registrationType;
 
+  @attr('date') lastSubscribed;
+  @attr('date') lastUnsubscribed;
+
+  get isPresent() {
+    return this.lastSubscribed > this.lastUnsubscribed;
+  }
+
   @belongsTo() team;
 }

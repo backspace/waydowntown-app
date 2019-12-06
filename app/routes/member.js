@@ -33,7 +33,7 @@ export default class TeamRoute extends Route {
         include:
           'participations,participations.team,incarnation,incarnation.concept',
       }),
-      teams: this.store.findAll('team'),
+      teams: this.store.findAll('team', { include: 'members' }),
     }).then(({ games, member, teams }) =>
       hash({
         games,

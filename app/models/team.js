@@ -14,4 +14,8 @@ export default class TeamModel extends Model {
       participation => participation.state !== 'finished',
     );
   }
+
+  get isPresent() {
+    return this.members.any(member => member.isPresent);
+  }
 }

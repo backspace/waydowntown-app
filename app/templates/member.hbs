@@ -69,7 +69,7 @@
 {{#if this.teams}}
   <ul data-test-teams>
     {{#each this.teams as |team|}}
-      <li data-test-team>{{team.name}}</li>
+      <li class={{if team.isPresent "bg-green-300" "bg-red-300"}} data-test-team-id={{team.id}}>{{team.name}}</li>
     {{/each}}
   </ul>
 {{/if}}
