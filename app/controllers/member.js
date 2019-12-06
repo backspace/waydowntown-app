@@ -125,7 +125,33 @@ export default class ApplicationController extends Controller {
               );
               set(model, 'attributes.endsAt', get(model, 'attributes.ends-at'));
             });
+          }
 
+          if (Ember.testing) {
+            this.store.push(message.content);
+          } else {
+            this.store.pushPayload(message.content);
+          }
+        }
+      },
+      disconnected() {},
+    });
+
+    this.consumer.subscriptions.create('PresenceChannel', {
+      connected() {},
+      received: message => {
+        if (message.type === 'changes') {
+          // FIXME why does this massaging need to happen AND why the push/pushPayload dichotomy?
+          const data = get(message, 'content.data');
+          let dataArray;
+
+          if (data?.length) {
+            dataArray = data;
+          } else if (data) {
+            dataArray = [data];
+          }
+
+          if (dataArray) {
             dataArray.filterBy('type', 'member').forEach(model => {
               set(
                 model,

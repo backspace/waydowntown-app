@@ -35,7 +35,7 @@ module('Acceptance | game list', function(hooks) {
       initiator: false,
     });
 
-    await this.cable.handlers.received({
+    await this.cable.TeamChannel.handlers.received({
       type: 'changes',
       content: this.server.serializerOrRegistry.serialize(game, {
         queryParams: {
@@ -221,7 +221,7 @@ module('Acceptance | game list', function(hooks) {
     game.attrs.endsAt = new Date();
     game.save();
 
-    await this.cable.handlers.received({
+    await this.cable.TeamChannel.handlers.received({
       type: 'changes',
       content: this.server.serializerOrRegistry.serialize(game, {
         queryParams: {

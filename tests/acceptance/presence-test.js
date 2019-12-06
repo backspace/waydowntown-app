@@ -32,7 +32,7 @@ module('Acceptance | request game', function(hooks) {
     otherMember.attrs.last_subscribed = new Date();
     otherMember.save();
 
-    await this.cable.handlers.received({
+    await this.cable.PresenceChannel.handlers.received({
       type: 'changes',
       content: this.server.serializerOrRegistry.serialize(otherMember),
     });

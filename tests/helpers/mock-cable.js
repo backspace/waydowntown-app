@@ -12,7 +12,7 @@ class MockConsumer {
   get subscriptions() {
     return {
       create(channel, handlers) {
-        cable.handlers = handlers;
+        cable[channel] = { handlers };
       },
     };
   }
