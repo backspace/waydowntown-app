@@ -12,6 +12,10 @@ export default class GameListItem extends Component {
     );
   }
 
+  get participationIsScheduled() {
+    return this.teamParticipation?.state === 'scheduled';
+  }
+
   get shouldVibrate() {
     if (!this.teamParticipation) {
       // TODO why does this ever happen?

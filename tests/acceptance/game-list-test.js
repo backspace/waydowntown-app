@@ -71,7 +71,7 @@ module('Acceptance | game list', function(hooks) {
 
   test('a team can arrive at a converging game and when it becomes scheduled it shows as that way', async function(assert) {
     const concept = this.server.create('concept', {
-      name: 'a converging concept',
+      name: 'tap',
     });
     const incarnation = concept.createIncarnation();
     const game = incarnation.createGame();
@@ -108,6 +108,9 @@ module('Acceptance | game list', function(hooks) {
     assert
       .dom('[data-test-scheduleds] [data-test-begins-at]')
       .hasText('Begins in 60 seconds');
+    assert
+      .dom('[data-test-scheduleds] [data-test-instructions]')
+      .hasText('Tap the button as many times as you can');
   });
 
   test('existing invitations, acceptances, and pendings are listed', async function(assert) {
