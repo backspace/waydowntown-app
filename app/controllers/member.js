@@ -178,12 +178,21 @@ export default class ApplicationController extends Controller {
     this.consumer.destroy();
   }
 
-  @task(function*() {
+  @task(function*(conceptId, teamId) {
     const emptyGame = this.store.createRecord('game');
 
-    const game = yield emptyGame.request();
+    const parameters = {};
+
+    if (conceptId && teamId) {
+      parameters.concept_id = conceptId;
+      parameters.team_id = teamId;
+    }
+
+    const game = yield emptyGame.request(parameters);
     emptyGame.deleteRecord();
     return game;
   })
   requestGame;
+
+  concepts = ['bluetooth-collector', 'tap'];
 }

@@ -69,7 +69,12 @@
 {{#if this.teams}}
   <ul data-test-teams>
     {{#each this.teams as |team|}}
-      <li class={{if team.isPresent "bg-green-300" "bg-red-300"}} data-test-team-id={{team.id}}>{{team.name}}</li>
+      <li class={{if team.isPresent "bg-green-300" "bg-red-300"}} data-test-team-id={{team.id}}>
+        {{team.name}}
+        {{#each this.concepts as |concept|}}
+          <button class="border border-black" {{on "click" (perform this.requestGame concept team.id)}} data-test-request>{{concept}}</button>
+        {{/each}}
+      </li>
     {{/each}}
   </ul>
 {{/if}}
