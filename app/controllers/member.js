@@ -195,4 +195,9 @@ export default class ApplicationController extends Controller {
   requestGame;
 
   concepts = ['bluetooth-collector', 'tap'];
+
+  @task(function*() {
+    yield this.store.findAll('game', { reload: true });
+  })
+  reloadGames;
 }

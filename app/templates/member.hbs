@@ -30,6 +30,14 @@
 
 <button class="border border-black {{if this.team.cannotRequest "opacity-50 cursor-default"}}" disabled={{this.team.cannotRequest}} {{on "click" (perform this.requestGame)}} data-test-request>Request Game</button>
 
+<button class="border border-black" {{on "click" (perform this.reloadGames)}}>
+  {{#if this.reloadGames.isRunning}}
+    Reloading…
+  {{else}}
+    Reload Games
+  {{/if}}
+</button>
+
 {{#if this.invitations}}
   Invitations:
   <ul data-test-invitations>
