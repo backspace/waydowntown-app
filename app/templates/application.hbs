@@ -1,9 +1,10 @@
 <h1 class="text-2xl"><LinkTo @route="application">waydowntown</LinkTo></h1>
 
-<button class="border border-black" {{on "click" this.url}}>Log URL</button>
-<button class="border border-black" {{on "click" (action (mut this.showDiagnostics) true)}}>Diagnostics</button>
+<button class="border border-black" {{on "click" this.toggleDiagnostics}}>Diagnostics</button>
 
 {{#if this.showDiagnostics}}
+  <p>URL: {{this.url}}</p>
+  <p>API: {{this.api}}</p>
   <nav class="pl-8">
     <ul class="list-disc">
       <li><LinkTo @route="battery">Battery</LinkTo></li>
