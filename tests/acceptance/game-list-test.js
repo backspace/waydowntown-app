@@ -113,7 +113,7 @@ module('Acceptance | game list', function(hooks) {
       .hasText('Tap the button as many times as you can');
   });
 
-  test('existing invitations, acceptances, convergings, and cancellations are listed', async function(assert) {
+  test('existing invitations, acceptances, and convergings have cancel buttons and cancellations are listed', async function(assert) {
     const otherTeam = this.server.create('team', { name: 'other team' });
     const thirdTeam = this.server.create('team', { name: 'a third team' });
 
@@ -182,6 +182,7 @@ module('Acceptance | game list', function(hooks) {
     assert
       .dom(`[data-test-invitations] [data-test-team-id='${this.team.id}']`)
       .doesNotExist();
+    assert.dom(`[data-test-game-id='${game.id}'] [data-test-cancel]`).exists();
 
     assert
       .dom('[data-test-invitations] [data-test-concept-name]')
@@ -198,6 +199,9 @@ module('Acceptance | game list', function(hooks) {
         `[data-test-acceptances] [data-test-game-id='${acceptedGame.id}'] [data-test-accept]`,
       )
       .doesNotExist();
+    assert
+      .dom(`[data-test-game-id='${acceptedGame.id}'] [data-test-cancel]`)
+      .exists();
 
     assert
       .dom('[data-test-convergings] [data-test-concept-name]')
@@ -210,6 +214,9 @@ module('Acceptance | game list', function(hooks) {
         `[data-test-convergings] [data-test-game-id='${convergingGame.id}'] [data-test-accept]`,
       )
       .doesNotExist();
+    assert
+      .dom(`[data-test-game-id='${convergingGame.id}'] [data-test-cancel]`)
+      .exists();
 
     assert
       .dom(
@@ -253,5 +260,31 @@ module('Acceptance | game list', function(hooks) {
     assert
       .dom('[data-test-scheduleds] [data-test-begins-at]')
       .hasText('Begins in 59 seconds');
+  });
+
+  test('a game can be cancelled', async function(assert) {
+    const incarnation = this.server.create('incarnation');
+    const game = incarnation.createGame();
+    const teamParticipation = game.createParticipation({
+      team: this.team,
+      state: 'invited',
+    });
+
+    this.server.patch(`/games/${game.id}/cancel`, function({
+      participations,
+      games,
+    }) {
+      participations.find(teamParticipation.id).update('state', 'cancelled');
+      return games.find(game.id);
+    });
+
+    await visit('/');
+    await click('[data-test-cancel]');
+
+    await settled();
+
+    assert
+      .dom(`[data-test-cancellations] [data-test-game-id='${game.id}']`)
+      .exists();
   });
 });

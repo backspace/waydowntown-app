@@ -10,6 +10,10 @@
     <button class="border border-black" {{on "click" (perform this.arriveGame)}} data-test-arrive>Arrive</button>
   {{/if}}
 
+  {{#if this.canCancel}}
+    <button class="border border-black" {{on "click" (perform this.cancelGame)}} data-test-cancel>Cancel</button>
+  {{/if}}
+
   <ul>
     {{#each this.otherTeams as |team|}}
       <li data-test-team-id={{team.id}}>Team: <span data-test-team-name>{{team.name}}</span></li>

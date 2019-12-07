@@ -36,6 +36,12 @@ export default class GameListItem extends Component {
     return this.teamParticipation?.state === 'converging';
   }
 
+  get canCancel() {
+    return ['invited', 'accepted', 'converging'].includes(
+      this.teamParticipation?.state,
+    );
+  }
+
   get otherTeams() {
     return this.args.game.participations
       .mapBy('team')
@@ -53,4 +59,10 @@ export default class GameListItem extends Component {
     return this.game;
   })
   arriveGame;
+
+  @task(function*() {
+    yield this.args.game.cancel();
+    return this.game;
+  })
+  cancelGame;
 }
