@@ -1,8 +1,10 @@
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 import { storageFor } from 'ember-local-storage';
 import { hash } from 'rsvp';
 
 export default class IndexRoute extends Route {
+  @service('ember-cordova/splash') splash;
   @storageFor('token') tokenStorage;
 
   model() {
@@ -45,6 +47,10 @@ export default class IndexRoute extends Route {
     } else {
       throw new Error('No token');
     }
+  }
+
+  afterModel() {
+    this.splash.hide();
   }
 
   setupController(controller, { games, member, team, teams }) {

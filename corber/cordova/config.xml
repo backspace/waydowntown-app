@@ -16,6 +16,7 @@
     <allow-intent href="sms:*"/>
     <allow-intent href="mailto:*"/>
     <allow-intent href="geo:*"/>
+    <preference name="AutoHideSplashScreen" value="false"/>
     <platform name="android">
         <allow-intent href="market:*"/>
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
@@ -27,6 +28,18 @@
         <icon id="xhdpi" src="res/icon/android/xhdpi.png" density="xhdpi"/>
         <icon id="xxhdpi" src="res/icon/android/xxhdpi.png" density="xxhdpi"/>
         <icon id="xxxhdpi" src="res/icon/android/xxxhdpi.png" density="xxxhdpi"/>
+        <splash id="port-ldpi" src="res/screen/android/port-ldpi.png" density="port-ldpi"/>
+        <splash id="land-ldpi" src="res/screen/android/land-ldpi.png" density="land-ldpi"/>
+        <splash id="port-mdpi" src="res/screen/android/port-mdpi.png" density="port-mdpi"/>
+        <splash id="land-mdpi" src="res/screen/android/land-mdpi.png" density="land-mdpi"/>
+        <splash id="port-hdpi" src="res/screen/android/port-hdpi.png" density="port-hdpi"/>
+        <splash id="land-hdpi" src="res/screen/android/land-hdpi.png" density="land-hdpi"/>
+        <splash id="port-xhdpi" src="res/screen/android/port-xhdpi.png" density="port-xhdpi"/>
+        <splash id="land-xhdpi" src="res/screen/android/land-xhdpi.png" density="land-xhdpi"/>
+        <splash id="port-xxhdpi" src="res/screen/android/port-xxhdpi.png" density="port-xxhdpi"/>
+        <splash id="land-xxhdpi" src="res/screen/android/land-xxhdpi.png" density="land-xxhdpi"/>
+        <splash id="port-xxxhdpi" src="res/screen/android/port-xxxhdpi.png" density="port-xxxhdpi"/>
+        <splash id="land-xxxhdpi" src="res/screen/android/land-xxxhdpi.png" density="land-xxxhdpi"/>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*"/>
@@ -63,5 +76,21 @@
         <icon id="icon-86@2x" src="res/icon/ios/icon-86@2x.png" height="172" width="172"/>
         <icon id="icon-98@2x" src="res/icon/ios/icon-98@2x.png" height="196" width="196"/>
         <icon id="icon-1024" src="res/icon/ios/icon-1024.png" height="1024" width="1024"/>
+        <splash id="640-960" src="res/screen/ios/640-960.png" width="640" height="960"/>
+        <splash id="960-640" src="res/screen/ios/960-640.png" width="960" height="640"/>
+        <splash id="640-1136" src="res/screen/ios/640-1136.png" width="640" height="1136"/>
+        <splash id="1136-640" src="res/screen/ios/1136-640.png" width="1136" height="640"/>
+        <splash id="750-1334" src="res/screen/ios/750-1334.png" width="750" height="1334"/>
+        <splash id="1334-750" src="res/screen/ios/1334-750.png" width="1334" height="750"/>
+        <splash id="1242-2208" src="res/screen/ios/1242-2208.png" width="1242" height="2208"/>
+        <splash id="2208-1242" src="res/screen/ios/2208-1242.png" width="2208" height="1242"/>
+        <splash id="768-1024" src="res/screen/ios/768-1024.png" width="768" height="1024"/>
+        <splash id="1024-768" src="res/screen/ios/1024-768.png" width="1024" height="768"/>
+        <splash id="1536-2048" src="res/screen/ios/1536-2048.png" width="1536" height="2048"/>
+        <splash id="2048-1536" src="res/screen/ios/2048-1536.png" width="2048" height="1536"/>
+        <splash id="2048-2732" src="res/screen/ios/2048-2732.png" width="2048" height="2732"/>
+        <splash id="2732-2048" src="res/screen/ios/2732-2048.png" width="2732" height="2048"/>
+        <splash id="1125-2436" src="res/screen/ios/1125-2436.png" width="1125" height="2436"/>
+        <splash id="2436-1125" src="res/screen/ios/2436-1125.png" width="2436" height="1125"/>
     </platform>
 </widget>
