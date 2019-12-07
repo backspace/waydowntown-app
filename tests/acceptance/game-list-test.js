@@ -223,7 +223,12 @@ module('Acceptance | game list', function(hooks) {
         `[data-test-cancellations] [data-test-game-id='${cancelledGame.id}']`,
       )
       .exists();
-    assert.dom('[data-test-cancellations] button').doesNotExist();
+    assert
+      .dom(`[data-test-game-id='${cancelledGame.id}'] [data-test-cancel]`)
+      .doesNotExist();
+    assert
+      .dom(`[data-test-game-id='${cancelledGame.id}'] [data-test-dismiss]`)
+      .exists();
   });
 
   test('a game becoming scheduled via the socket shows the time until it starts', async function(assert) {
@@ -286,5 +291,29 @@ module('Acceptance | game list', function(hooks) {
     assert
       .dom(`[data-test-cancellations] [data-test-game-id='${game.id}']`)
       .exists();
+  });
+
+  test('a cancelled game can be dismissed', async function(assert) {
+    const incarnation = this.server.create('incarnation');
+    const game = incarnation.createGame();
+    const teamParticipation = game.createParticipation({
+      team: this.team,
+      state: 'cancelled',
+    });
+
+    this.server.patch(`/games/${game.id}/dismiss`, function({
+      participations,
+      games,
+    }) {
+      participations.find(teamParticipation.id).update('state', 'dismissed');
+      return games.find(game.id);
+    });
+
+    await visit('/');
+    await click('[data-test-dismiss]');
+
+    await settled();
+
+    assert.dom(`[data-test-game-id='${game.id}']`).doesNotExist();
   });
 });

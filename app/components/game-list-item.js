@@ -42,6 +42,10 @@ export default class GameListItem extends Component {
     );
   }
 
+  get canDismiss() {
+    return this.teamParticipation?.state === 'cancelled';
+  }
+
   get otherTeams() {
     return this.args.game.participations
       .mapBy('team')
@@ -65,4 +69,10 @@ export default class GameListItem extends Component {
     return this.game;
   })
   cancelGame;
+
+  @task(function*() {
+    yield this.args.game.dismiss();
+    return this.game;
+  })
+  dismissGame;
 }
