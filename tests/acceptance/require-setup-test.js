@@ -62,7 +62,7 @@ module('Acceptance | require setup', function(hooks) {
     registrationHandler({ registrationId: '1312', registrationType: '!' });
   });
 
-  test('it returns to the token field when auth fails', async function(assert) {
+  test('it returns to the token field when auth fails but doesn’t clear it', async function(assert) {
     const applicationController = this.owner.lookup('controller:application');
     applicationController.set('tokenStorage.token', 1);
 
@@ -72,7 +72,7 @@ module('Acceptance | require setup', function(hooks) {
 
     await visitWithAbortedTransition('/');
 
-    assert.dom('[data-test-token-field]').exists();
+    assert.dom('[data-test-token-field]').hasValue('1');
     assert.dom('[data-test-error]').hasText('Error: Authentication failed');
   });
 });

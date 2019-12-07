@@ -7,7 +7,6 @@ export default class IndexErrorController extends Controller {
 
   @action
   saveToken() {
-    this.set('tokenStorage.token', this.tokenFieldValue);
     this.transitionToRoute('index');
   }
 }
