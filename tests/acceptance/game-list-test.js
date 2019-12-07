@@ -113,7 +113,7 @@ module('Acceptance | game list', function(hooks) {
       .hasText('Tap the button as many times as you can');
   });
 
-  test('existing invitations, acceptances, and pendings are listed', async function(assert) {
+  test('existing invitations, acceptances, and convergings are listed', async function(assert) {
     const otherTeam = this.server.create('team', { name: 'other team' });
     const thirdTeam = this.server.create('team', { name: 'a third team' });
 
