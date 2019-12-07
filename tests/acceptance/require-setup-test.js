@@ -55,6 +55,12 @@ module('Acceptance | require setup', function(hooks) {
       assert.equal(member.attrs.registrationId, '1312');
       assert.equal(member.attrs.registrationType, '!');
 
+      const requestAttributes = JSON.parse(request.requestBody).data.attributes;
+
+      assert.notOk(requestAttributes.name);
+      assert.notOk(requestAttributes.lat);
+      assert.notOk(requestAttributes.lon);
+
       done();
       return member;
     });
