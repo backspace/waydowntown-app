@@ -1,9 +1,18 @@
 import { module, test } from 'qunit';
 import { click, settled, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
+import resetStorages from 'ember-local-storage/test-support/reset-storage';
 
 module('Acceptance | debug log', function(hooks) {
   setupApplicationTest(hooks);
+
+  hooks.beforeEach(function() {
+    if (window.localStorage) {
+      window.localStorage.clear();
+    }
+
+    resetStorages();
+  });
 
   test('logging statements are displayed', async function(assert) {
     await visit('/');

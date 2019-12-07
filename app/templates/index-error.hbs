@@ -1,0 +1,7 @@
+{{#if @model}}
+  <p data-test-error>{{@model}}</p>
+{{/if}}
+<label for="token-input">Token</label>
+<Input @id="token-input" @value={{this.tokenFieldValue}} data-test-token-field />
+
+<button class="border border-black" {{on "click" this.saveToken}} data-test-token-save>Save token</button>

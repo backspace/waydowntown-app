@@ -2,15 +2,15 @@ import Route from '@ember/routing/route';
 import { storageFor } from 'ember-local-storage';
 import { hash } from 'rsvp';
 
-export default class TeamRoute extends Route {
+export default class IndexRoute extends Route {
   @storageFor('token') tokenStorage;
 
   model() {
     const adapter = this.store.adapterFor('application');
     const host = adapter.host || '';
 
-    return hash({
-      member: fetch(`${host}/auth?include=team`, {
+    if (this.get('tokenStorage.token')) {
+      return fetch(`${host}/auth?include=team`, {
         headers: new Headers({
           Authorization: `Bearer ${this.get('tokenStorage.token')}`,
         }),
@@ -20,28 +20,31 @@ export default class TeamRoute extends Route {
           if (response.ok) {
             return response.json();
           } else {
-            throw new Error();
+            throw new Error('Authentication failed');
           }
         })
         .then(json => this.store.push(json))
-        .catch(() => {
-          this.tokenStorage.reset();
-          this.controllerFor('application').set('error', 'Invalid token');
-          this.transitionTo('application');
-        }),
-      games: this.store.findAll('game', {
-        include:
-          'participations,participations.team,incarnation,incarnation.concept',
-      }),
-      teams: this.store.findAll('team', { include: 'members' }),
-    }).then(({ games, member, teams }) =>
-      hash({
-        games,
-        member,
-        team: member.get('team'),
-        teams,
-      }),
-    );
+        .then(member => {
+          return hash({
+            member,
+            games: this.store.findAll('game', {
+              include:
+                'participations,participations.team,incarnation,incarnation.concept',
+            }),
+            teams: this.store.findAll('team', { include: 'members' }),
+          });
+        })
+        .then(({ games, member, teams }) =>
+          hash({
+            games,
+            member,
+            team: member.get('team'),
+            teams,
+          }),
+        );
+    } else {
+      throw new Error('No token');
+    }
   }
 
   setupController(controller, { games, member, team, teams }) {

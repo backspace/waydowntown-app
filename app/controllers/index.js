@@ -12,7 +12,7 @@ import config from 'waydowntown/config/environment';
 const host = config.APP.server || '';
 const wsHost = host.replace('http', 'ws');
 
-export default class ApplicationController extends Controller {
+export default class IndexController extends Controller {
   @service cable;
   @service gameClock;
   @service store;
@@ -27,7 +27,9 @@ export default class ApplicationController extends Controller {
   constructor() {
     super(...arguments);
 
-    this.setupConsumer();
+    if (this.get('tokenStorage.token')) {
+      this.setupConsumer();
+    }
   }
 
   get teamId() {
@@ -175,7 +177,7 @@ export default class ApplicationController extends Controller {
   }
 
   willDestroy() {
-    this.consumer.destroy();
+    this.consumer?.destroy();
   }
 
   @task(function*(conceptId, teamId) {

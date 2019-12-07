@@ -19,12 +19,6 @@ module('Acceptance | require setup', function(hooks) {
     resetStorages();
   });
 
-  test('the interface is hidden if no token is present', async function(assert) {
-    await visit('/');
-
-    assert.dom('.text-2xl').doesNotExist();
-  });
-
   test('filling in a token shows the logged-in interface with team name and registers the device', async function(assert) {
     const done = assert.async();
 
@@ -76,11 +70,10 @@ module('Acceptance | require setup', function(hooks) {
       return new Response(401, {}, {});
     });
 
-    await visitWithAbortedTransition('/member');
+    await visitWithAbortedTransition('/');
 
-    assert.dom('.text-2xl').doesNotExist();
     assert.dom('[data-test-token-field]').exists();
-    assert.dom('[data-test-error]').hasText('Invalid token');
+    assert.dom('[data-test-error]').hasText('Error: Authentication failed');
   });
 });
 
