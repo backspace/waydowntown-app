@@ -96,6 +96,16 @@ export default class IndexController extends Controller {
     });
   }
 
+  get cancelledGames() {
+    return this.games.filter(game => {
+      const participationForThisTeam = game.participations.find(
+        participation => participation.get('team.id') === this.teamId,
+      );
+
+      return participationForThisTeam?.state === 'cancelled';
+    });
+  }
+
   setupConsumer() {
     this.consumer = this.cable.createConsumer(
       `${wsHost}/cable?token=${this.get('tokenStorage.token')}`,

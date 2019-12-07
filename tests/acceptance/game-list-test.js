@@ -113,7 +113,7 @@ module('Acceptance | game list', function(hooks) {
       .hasText('Tap the button as many times as you can');
   });
 
-  test('existing invitations, acceptances, and convergings are listed', async function(assert) {
+  test('existing invitations, acceptances, convergings, and cancellations are listed', async function(assert) {
     const otherTeam = this.server.create('team', { name: 'other team' });
     const thirdTeam = this.server.create('team', { name: 'a third team' });
 
@@ -155,6 +155,13 @@ module('Acceptance | game list', function(hooks) {
     convergingGame.createParticipation({
       team: otherTeam,
       state: 'converging',
+    });
+
+    const cancelledIncarnation = this.server.create('incarnation');
+    const cancelledGame = cancelledIncarnation.createGame();
+    cancelledGame.createParticipation({
+      team: this.team,
+      state: 'cancelled',
     });
 
     await visit('/');
@@ -203,6 +210,13 @@ module('Acceptance | game list', function(hooks) {
         `[data-test-convergings] [data-test-game-id='${convergingGame.id}'] [data-test-accept]`,
       )
       .doesNotExist();
+
+    assert
+      .dom(
+        `[data-test-cancellations] [data-test-game-id='${cancelledGame.id}']`,
+      )
+      .exists();
+    assert.dom('[data-test-cancellations] button').doesNotExist();
   });
 
   test('a game becoming scheduled via the socket shows the time until it starts', async function(assert) {

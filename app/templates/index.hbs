@@ -74,6 +74,15 @@
   </ul>
 {{/if}}
 
+{{#if this.cancelledGames}}
+  Cancelled:
+  <ul data-test-cancellations>
+    {{#each this.cancelledGames as |cancelled|}}
+      <GameListItem @game={{cancelled}} @team={{this.team}} />
+    {{/each}}
+  </ul>
+{{/if}}
+
 {{#if this.teams}}
   <ul data-test-teams>
     {{#each this.teams as |team|}}
