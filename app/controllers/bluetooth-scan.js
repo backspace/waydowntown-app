@@ -3,7 +3,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { later } from '@ember/runloop';
 
-export default class ApplicationController extends Controller {
+export default class BluetoothScanController extends Controller {
   @tracked devices = [];
   @tracked status = 'unknown';
 
