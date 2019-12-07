@@ -58,4 +58,27 @@ module('Acceptance | request game', function(hooks) {
 
     assert.dom('[data-test-request]').isDisabled();
   });
+
+  test('cancelled and dismissed games don’t block requests', async function(assert) {
+    const concept = this.server.create('concept', {
+      name: 'a requested concept',
+    });
+    const incarnation = concept.createIncarnation();
+
+    const cancelledGame = incarnation.createGame();
+    cancelledGame.createParticipation({
+      team: this.team,
+      state: 'cancelled',
+    });
+
+    const dismissedGame = incarnation.createGame();
+    dismissedGame.createParticipation({
+      team: this.team,
+      state: 'dismissed',
+    });
+
+    await visit('/');
+
+    assert.dom('[data-test-request]').isNotDisabled();
+  });
 });
