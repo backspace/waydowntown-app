@@ -48,6 +48,15 @@
         <edit-config target="NSMicrophoneUsageDescription" file="*-Info.plist" mode="merge">
             <string>need microphone access to record sounds FIXME</string>
         </edit-config>
+        <config-file target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
+            <string>need camera access for text recognition</string>
+        </config-file>
+        <config-file target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
+            <string>need photo library access to get pictures from there (is it true? FIXME)</string>
+        </config-file>
+        <config-file target="NSPhotoLibraryAddUsageDescription" file="*-Info.plist" mode="merge">
+            <string>need photo library access to save pictures there (is it true? FIXME)</string>
+        </config-file>
         <icon id="icon-40" src="res/icon/ios/icon-40.png" height="40" width="40"/>
         <icon id="icon" src="res/icon/ios/icon.png" height="57" width="57"/>
         <icon id="icon-40@2x" src="res/icon/ios/icon-40@2x.png" height="80" width="80"/>

@@ -14,6 +14,7 @@ Router.map(function() {
   this.route('db-meter');
   this.route('location');
   this.route('motion');
+  this.route('ocr');
   this.route('orientation');
   this.route('sim');
   this.route('vibration');

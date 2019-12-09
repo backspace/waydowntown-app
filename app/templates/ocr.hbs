@@ -1,0 +1,19 @@
+<button class="border border-black" {{on "click" this.recognise}}>Recognise</button>
+
+{{#if this.error}}
+  <p>Camera/recognition error: {{this.error}}</p>
+{{/if}}
+
+{{#if this.photoUrl}}
+  Image not showing 🧐
+  <img src={{this.photoUrl}} class="max-w-xl" alt="image from camera">
+{{/if}}
+
+{{#if this.recognised}}
+  <p>Found text: {{this.recognised.foundText}}</p>
+  <ul>
+    {{#each this.recognised.words.wordtext as |word|}}
+      <li>{{word}}</li>
+    {{/each}}
+  </ul>
+{{/if}}
