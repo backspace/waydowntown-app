@@ -5,10 +5,12 @@ import { action } from '@ember/object';
 export default class LocationController extends Controller {
   @tracked event = [];
 
+  @tracked debug = true;
+
   @action
   start() {
     window.BackgroundGeolocation.configure({
-      debug: true,
+      debug: this.debug,
     });
 
     window.BackgroundGeolocation.on('location', loc => {
