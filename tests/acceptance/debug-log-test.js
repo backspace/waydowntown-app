@@ -28,7 +28,7 @@ module('Acceptance | debug log', function(hooks) {
     assert.dom('[data-test-log-count]').containsText('1');
     assert.dom('[data-test-log-entry]').doesNotExist();
 
-    await click('[data-test-log-drawer]');
+    await click('[data-test-log-drawer] button');
 
     assert.dom('[data-test-log-entry]').containsText('Hello');
   });
