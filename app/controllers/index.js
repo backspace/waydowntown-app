@@ -14,6 +14,7 @@ const wsHost = host.replace('http', 'ws');
 
 export default class IndexController extends Controller {
   @service cable;
+  @service debugLog;
   @service gameClock;
   @service store;
   @service vibration;
@@ -115,6 +116,9 @@ export default class IndexController extends Controller {
       connected() {},
       received: message => {
         if (message.type === 'changes') {
+          this.debugLog.log('TeamChannel received');
+          this.debugLog.log(JSON.stringify(message, null, 2));
+
           // FIXME why does this massaging need to happen AND why the push/pushPayload dichotomy?
           const data = get(message, 'content.data');
           let dataArray;
@@ -149,6 +153,9 @@ export default class IndexController extends Controller {
     this.consumer.subscriptions.create('PresenceChannel', {
       connected() {},
       received: message => {
+        this.debugLog.log('PresenceChannel received');
+        this.debugLog.log(JSON.stringify(message, null, 2));
+
         if (message.type === 'changes') {
           // FIXME why does this massaging need to happen AND why the push/pushPayload dichotomy?
           const data = get(message, 'content.data');
