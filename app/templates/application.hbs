@@ -27,7 +27,9 @@
 
 {{#if this.debugLog.entries}}
   <div class="fixed left-0 bottom-0 bg-gray-200 p-1 w-full h-16 overflow-y-scroll" data-test-log-drawer>
-    <button {{on "click" (action (mut this.showLogEntries true))}} data-test-log-count>{{this.debugLog.entries.length}}</button>
+    <button class="text-center w-full" {{on "click" (action (mut this.showLogEntries true))}} data-test-log-count>
+      Show {{pluralize this.debugLog.entries.length "log entry"}}
+    </button>
     {{#if this.showLogEntries}}
       <ul>
         {{#each this.debugLog.entries as |entry|}}
