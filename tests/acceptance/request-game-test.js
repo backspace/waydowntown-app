@@ -59,7 +59,7 @@ module('Acceptance | request game', function(hooks) {
     assert.dom('[data-test-request]').isDisabled();
   });
 
-  test('cancelled and dismissed games don’t block requests', async function(assert) {
+  test('cancelled, dismissed, and unsent games don’t block requests', async function(assert) {
     const concept = this.server.create('concept', {
       name: 'a requested concept',
     });
@@ -75,6 +75,12 @@ module('Acceptance | request game', function(hooks) {
     dismissedGame.createParticipation({
       team: this.team,
       state: 'dismissed',
+    });
+
+    const unsentGame = incarnation.createGame();
+    unsentGame.createParticipation({
+      team: this.team,
+      state: 'unsent',
     });
 
     await visit('/');

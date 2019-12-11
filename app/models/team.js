@@ -10,10 +10,10 @@ export default class TeamModel extends Model {
   @hasMany() participations;
 
   get cannotRequest() {
-    const completeStates = ['finished', 'cancelled', 'dismissed'];
+    const requestableStates = ['finished', 'cancelled', 'dismissed', 'unsent'];
 
     return this.participations.any(
-      participation => !completeStates.includes(participation.state),
+      participation => !requestableStates.includes(participation.state),
     );
   }
 
