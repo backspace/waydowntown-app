@@ -26,9 +26,9 @@
 {{outlet}}
 
 {{#if this.debugLog.entries}}
-  <div class="fixed left-0 bottom-0 bg-gray-200 p-1 w-full h-16 overflow-y-scroll" data-test-log-drawer>
-    <button class="text-center w-full" {{on "click" (action (mut this.showLogEntries true))}} data-test-log-count>
-      Show {{pluralize this.debugLog.entries.length "log entry"}}
+  <div class="fixed left-0 bottom-0 bg-gray-200 p-1 w-full h-{{if this.showLogEntries "32" "8"}} overflow-y-scroll" data-test-log-drawer>
+    <button class="text-center w-full" {{on "click" this.toggleLogEntries}} data-test-log-count>
+      {{if this.showLogEntries "Hide" "Show"}} {{pluralize this.debugLog.entries.length "log entry"}}
     </button>
     {{#if this.showLogEntries}}
       <ul>

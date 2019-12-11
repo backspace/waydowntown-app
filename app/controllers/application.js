@@ -13,11 +13,18 @@ export default class ApplicationController extends Controller {
   @tracked api;
   @tracked url;
 
+  @tracked showLogEntries = false;
+
   @action
   toggleDiagnostics() {
     this.url = window.location;
     this.api = config.APP.server;
 
     this.showDiagnostics = !this.showDiagnostics;
+  }
+
+  @action
+  toggleLogEntries() {
+    this.showLogEntries = !this.showLogEntries;
   }
 }
