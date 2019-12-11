@@ -5,27 +5,16 @@ import { action } from '@ember/object';
 export default class LocationController extends Controller {
   @tracked event = [];
 
-  @tracked debug = true;
-
   @action
   start() {
-    window.BackgroundGeolocation.configure({
-      debug: this.debug,
+    this.watchId = navigator.geolocation.watchPosition(position => {
+      this.event = position.coords;
+      this.event.date = new Date(position.timestamp);
     });
-
-    window.BackgroundGeolocation.on('location', loc => {
-      window.BackgroundGeolocation.startTask(key => {
-        this.event = loc;
-        this.event.date = new Date(loc.time);
-        window.BackgroundGeolocation.endTask(key);
-      });
-    });
-
-    window.BackgroundGeolocation.start();
   }
 
   @action
   stop() {
-    window.BackgroundGeolocation.removeAllListeners();
+    navigator.geolocation.clearWatch(this.watchId);
   }
 }

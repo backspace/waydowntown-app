@@ -1,8 +1,3 @@
-<p>
-  <label for="debug">Verbose mode?</label>
-  <Input @id="debug" @type="checkbox" @name="debug" @checked={{this.debug}} />
-</p>
-
 <button class="border border-black" {{on "click" this.start}}>Observe</button>
 <button class="border border-black" {{on "click" this.stop}}>Stop</button>
 
@@ -12,7 +7,3 @@
   <li>lon: {{this.event.longitude}}</li>
   <li>alt: {{this.event.altitude}}</li>
 </ul>
-
-<p>Distance: {{this.distance}}</p>
-<p>Close? {{this.close}}</p>
-<p>Was close? {{this.wasClose}}</p>
