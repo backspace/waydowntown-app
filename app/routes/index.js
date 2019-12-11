@@ -25,8 +25,10 @@ export default class IndexRoute extends Route {
             throw new Error('Authentication failed');
           }
         })
-        .then(json => this.store.push(json))
-        .then(member => {
+        .then(json => {
+          this.store.pushPayload(json);
+          const member = this.store.peekRecord('member', json.data.id);
+
           return hash({
             member,
             games: this.store.findAll('game', {
@@ -66,7 +68,10 @@ export default class IndexRoute extends Route {
 
       push.on('registration', ({ registrationId, registrationType }) => {
         member.setProperties({ registrationId, registrationType });
-        member.save();
+
+        if (member.hasDirtyAttributes) {
+          member.save();
+        }
       });
     }
 

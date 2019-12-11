@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { click, fillIn, visit } from '@ember/test-helpers';
+import { click, fillIn, settled, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { Response } from 'ember-cli-mirage';
@@ -66,6 +66,43 @@ module('Acceptance | require setup', function(hooks) {
     });
 
     registrationHandler({ registrationId: '1312', registrationType: '!' });
+  });
+
+  test('no save happens if the registration is the same', async function(assert) {
+    const member = this.server.create('member', {
+      name: 'me',
+      registrationId: '1312',
+      registrationType: '!',
+      lat: 123,
+    });
+
+    let registrationHandler;
+
+    const mockPushNotification = {
+      init() {
+        return {
+          on(event, handler) {
+            if (event === 'registration') {
+              registrationHandler = handler;
+            }
+          },
+        };
+      },
+    };
+
+    window.PushNotification = mockPushNotification;
+
+    await visit('/');
+
+    await fillIn('[data-test-token-field]', member.id);
+    await click('[data-test-token-save');
+
+    assert.dom('.text-2xl').exists();
+    assert.dom('[data-test-member-name]').hasText('me');
+
+    registrationHandler({ registrationId: '1312', registrationType: '!' });
+
+    await settled();
   });
 
   test('it returns to the token field when auth fails but doesn’t clear it', async function(assert) {
