@@ -167,9 +167,6 @@ module('Acceptance | game list', function(hooks) {
     assert
       .dom(`[data-test-invitations] [data-test-game-id='${game.id}']`)
       .exists();
-    assert
-      .dom(`[data-test-invitations] [data-test-team-id='${this.team.id}']`)
-      .doesNotExist();
 
     assert
       .dom(`[data-test-acceptances] [data-test-game-id='${acceptedGame.id}']`)
