@@ -27,7 +27,7 @@ module('Integration | Component | game-list-item', function(hooks) {
       team: this.team,
     });
 
-    await render(hbs`<GameListItem @game={{game}} @team={{this.team}} />`);
+    await render(hbs`<GameListItem @game={{game}} @team={{team}} />`);
 
     assert.dom(`[data-test-concept-name]`).hasText('a concept');
   });
@@ -52,14 +52,14 @@ module('Integration | Component | game-list-item', function(hooks) {
   });
 
   test('an invited game has accept and cancel buttons', async function(assert) {
+    this.set('team', { id: 1 });
     this.set('game', {
       participations: [
         EmberObject.create({ state: 'invited', team: this.team }),
       ],
-      team: this.team,
     });
 
-    await render(hbs`<GameListItem @game={{game}} @team={{this.team}} />`);
+    await render(hbs`<GameListItem @game={{game}} @team={{team}} />`);
 
     assert.dom('[data-test-accept]').exists();
     assert.dom('[data-test-cancel]').exists();
@@ -67,28 +67,28 @@ module('Integration | Component | game-list-item', function(hooks) {
   });
 
   test('an accepted game has a cancel button', async function(assert) {
+    this.set('team', { id: 1 });
     this.set('game', {
       participations: [
         EmberObject.create({ state: 'accepted', team: this.team }),
       ],
-      team: this.team,
     });
 
-    await render(hbs`<GameListItem @game={{game}} @team={{this.team}} />`);
+    await render(hbs`<GameListItem @game={{game}} @team={{team}} />`);
 
     assert.dom('[data-test-cancel]').exists();
     assert.dom('button').exists({ count: 1 });
   });
 
   test('a converging game has arrive and cancel buttons', async function(assert) {
+    this.set('team', { id: 1 });
     this.set('game', {
       participations: [
         EmberObject.create({ state: 'converging', team: this.team }),
       ],
-      team: this.team,
     });
 
-    await render(hbs`<GameListItem @game={{game}} @team={{this.team}} />`);
+    await render(hbs`<GameListItem @game={{game}} @team={{team}} />`);
 
     assert.dom('[data-test-arrive]').exists();
     assert.dom('[data-test-cancel]').exists();
@@ -96,14 +96,14 @@ module('Integration | Component | game-list-item', function(hooks) {
   });
 
   test('a representing game has a represent button', async function(assert) {
+    this.set('team', { id: 1 });
     this.set('game', {
       participations: [
         EmberObject.create({ state: 'representing', team: this.team }),
       ],
-      team: this.team,
     });
 
-    await render(hbs`<GameListItem @game={{game}} @team={{this.team}} />`);
+    await render(hbs`<GameListItem @game={{game}} @team={{team}} />`);
 
     assert.dom('[data-test-represent]').exists();
     assert.dom('button').exists({ count: 1 });
@@ -114,6 +114,7 @@ module('Integration | Component | game-list-item', function(hooks) {
     const gameStartTime = new Date(now.getTime() + 1000 * 60);
     this.setGameClock(now);
 
+    this.set('team', { id: 1 });
     this.set('game', {
       beginsAt: gameStartTime,
       incarnation: {
@@ -124,24 +125,23 @@ module('Integration | Component | game-list-item', function(hooks) {
       participations: [
         EmberObject.create({ state: 'scheduled', team: this.team }),
       ],
-      team: this.team,
     });
 
-    await render(hbs`<GameListItem @game={{game}} @team={{this.team}} />`);
+    await render(hbs`<GameListItem @game={{game}} @team={{team}} />`);
 
     assert.dom('[data-test-instructions]').hasText('Game instructions');
     assert.dom('[data-test-begins-at]').hasText('Begins in 60 seconds');
   });
 
   test('a cancelled game has a dismiss button', async function(assert) {
+    this.set('team', { id: 1 });
     this.set('game', {
       participations: [
         EmberObject.create({ state: 'cancelled', team: this.team }),
       ],
-      team: this.team,
     });
 
-    await render(hbs`<GameListItem @game={{game}} @team={{this.team}} />`);
+    await render(hbs`<GameListItem @game={{game}} @team={{team}} />`);
 
     assert.dom('[data-test-dismiss]').exists();
     assert.dom('button').exists({ count: 1 });
