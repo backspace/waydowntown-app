@@ -32,23 +32,29 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert.dom(`[data-test-concept-name]`).hasText('a concept');
   });
 
-  test('teams are listed', async function(assert) {
+  test('teams and their states are listed', async function(assert) {
     this.set('team', { id: 1, name: 'us' });
     this.set('game', {
       participations: [
         EmberObject.create({ state: 'invited', team: this.team }),
-        EmberObject.create({ state: 'invited', team: { name: 'Other' } }),
-        EmberObject.create({ state: 'invited', team: { name: 'Another' } }),
+        EmberObject.create({ state: 'x', team: { id: 2, name: 'Other' } }),
+        EmberObject.create({ state: 'y', team: { id: 3, name: 'Another' } }),
       ],
       team: this.team,
     });
 
     await render(hbs`<GameListItem @game={{game}} @team={{team}} />`);
 
-    assert.dom('li:nth-child(1) [data-test-team-name]').hasText('us (you)');
-    assert.dom('li:nth-child(2) [data-test-team-name]').hasText('Other');
-    assert.dom('li:nth-child(3) [data-test-team-name]').hasText('Another');
-    assert.dom('[data-test-team-name]').exists({ count: 3 });
+    assert.dom('[data-test-team-id="1"] [data-test-name]').hasText('us (you)');
+    assert.dom('[data-test-team-id="1"] [data-test-state]').hasText('invited');
+
+    assert.dom('[data-test-team-id="2"] [data-test-name]').hasText('Other');
+    assert.dom('[data-test-team-id="2"] [data-test-state]').hasText('x');
+
+    assert.dom('[data-test-team-id="3"] [data-test-name]').hasText('Another');
+    assert.dom('[data-test-team-id="3"] [data-test-state]').hasText('y');
+
+    assert.dom('[data-test-name]').exists({ count: 3 });
   });
 
   test('an invited game has accept and cancel buttons', async function(assert) {

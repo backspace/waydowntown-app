@@ -22,12 +22,17 @@
     <button class="border border-black" {{on "click" (perform this.dismissGame)}} data-test-dismiss>Dismiss</button>
   {{/if}}
 
-  <ul>
-    <li data-test-team-id={{@team.id}}>Team: <span data-test-team-name>{{@team.name}} (you)</span></li>
-    {{#each this.otherTeams as |team|}}
-      <li data-test-team-id={{team.id}}>Team: <span data-test-team-name>{{team.name}}</span></li>
-    {{/each}}
-  </ul>
+  <p>
+    Teams:
+    <ul>
+      {{#each @game.participations as |participation|}}
+        <li data-test-team-id={{participation.team.id}}>
+          <span data-test-name>{{participation.team.name}}{{if (eq participation.team.id @team.id) " (you)"}}</span>:
+          <span data-test-state>{{participation.state}}</span>
+        </li>
+      {{/each}}
+    </ul>
+  </p>
 
   {{#if @game.beginsAt}}
     <p data-test-begins-at>Begins in {{moment-diff this.gameClock.date @game.beginsAt precision="seconds" interval=200}} seconds</p>
