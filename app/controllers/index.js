@@ -4,6 +4,7 @@ import { storageFor } from 'ember-local-storage';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency';
 import { get, set } from '@ember/object';
+import { action } from '@ember/object';
 
 import Ember from 'ember';
 
@@ -24,14 +25,6 @@ export default class IndexController extends Controller {
   @tracked games;
 
   consumer = null;
-
-  constructor() {
-    super(...arguments);
-
-    if (this.get('tokenStorage.token')) {
-      this.setupConsumer();
-    }
-  }
 
   get teamId() {
     return this.team.id;
@@ -116,6 +109,7 @@ export default class IndexController extends Controller {
     });
   }
 
+  @action
   setupConsumer() {
     this.consumer = this.cable.createConsumer(
       `${wsHost}/cable?token=${this.get('tokenStorage.token')}`,
