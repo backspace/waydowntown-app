@@ -74,6 +74,14 @@ export default class IndexController extends Controller {
     });
   }
 
+  get representings() {
+    return this.games.filter(game => {
+      return game.participations.any(
+        participation => participation.state === 'representing',
+      );
+    });
+  }
+
   get scheduleds() {
     return this.games.filter(game => {
       return game.participations.every(

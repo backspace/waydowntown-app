@@ -33,6 +33,14 @@ export default class GameModel extends Model {
     },
   });
 
+  represent = modelAction('represent', {
+    method: 'PATCH',
+    pushToStore: true,
+    queryParams: {
+      include: 'incarnation,incarnation.concept,participations.team',
+    },
+  });
+
   cancel = modelAction('cancel', {
     method: 'PATCH',
     pushToStore: true,

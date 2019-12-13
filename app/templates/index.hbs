@@ -65,6 +65,15 @@
   </ul>
 {{/if}}
 
+{{#if this.representings}}
+  Representings:
+  <ul data-test-representings>
+    {{#each this.representings as |representing|}}
+      <GameListItem @game={{representing}} @team={{this.team}} />
+    {{/each}}
+  </ul>
+{{/if}}
+
 {{#if this.scheduleds}}
   Scheduled:
   <ul data-test-scheduleds>

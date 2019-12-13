@@ -69,7 +69,7 @@ module('Acceptance | game list', function(hooks) {
     assert.dom('[data-test-invitations]').doesNotExist();
   });
 
-  test('a team can arrive at a converging game and when it becomes scheduled it shows as that way', async function(assert) {
+  test('a team can arrive at a converging game and it becomes representing', async function(assert) {
     const concept = this.server.create('concept', {
       name: 'tap',
     });
@@ -83,19 +83,14 @@ module('Acceptance | game list', function(hooks) {
     await visit('/');
 
     assert.dom('[data-test-convergings]').exists();
-    assert.dom('[data-test-scheduleds]').doesNotExist();
-
-    const now = new Date();
-    const gameStartTime = new Date(now.getTime() + 1000 * 60);
-    this.setGameClock(now);
+    assert.dom('[data-test-representings]').doesNotExist();
 
     this.server.patch(`/games/${game.id}/arrive`, function({
       participations,
       games,
     }) {
-      participations.find(teamParticipation.id).update('state', 'scheduled');
+      participations.find(teamParticipation.id).update('state', 'representing');
       const serverGame = games.find(game.id);
-      serverGame.update('beginsAt', gameStartTime);
       return serverGame;
     });
 
@@ -103,17 +98,10 @@ module('Acceptance | game list', function(hooks) {
     await settled();
 
     assert.dom('[data-test-convergings]').doesNotExist();
-    assert.dom('[data-test-scheduleds]').exists();
-
-    assert
-      .dom('[data-test-scheduleds] [data-test-begins-at]')
-      .hasText('Begins in 60 seconds');
-    assert
-      .dom('[data-test-scheduleds] [data-test-instructions]')
-      .hasText('Tap the button as many times as you can');
+    assert.dom('[data-test-representings]').exists();
   });
 
-  test('existing invitations, acceptances, and convergings have cancel buttons and cancellations are listed', async function(assert) {
+  test('existing invitations, acceptances, and convergings have cancel buttons and representings and cancellations are listed', async function(assert) {
     const otherTeam = this.server.create('team', { name: 'other team' });
     const thirdTeam = this.server.create('team', { name: 'a third team' });
 
@@ -155,6 +143,16 @@ module('Acceptance | game list', function(hooks) {
     convergingGame.createParticipation({
       team: otherTeam,
       state: 'converging',
+    });
+
+    const representingConcept = this.server.create('concept', {
+      name: 'a representing concept',
+    });
+    const representingIncarnation = representingConcept.createIncarnation();
+    const representingGame = representingIncarnation.createGame();
+    representingGame.createParticipation({
+      team: this.team,
+      state: 'representing',
     });
 
     const cancelledIncarnation = this.server.create('incarnation');
@@ -220,6 +218,15 @@ module('Acceptance | game list', function(hooks) {
 
     assert
       .dom(
+        `[data-test-representings] [data-test-game-id='${representingGame.id}']`,
+      )
+      .exists();
+    assert
+      .dom(`[data-test-game-id='${representingGame.id}'] [data-test-cancel]`)
+      .doesNotExist();
+
+    assert
+      .dom(
         `[data-test-cancellations] [data-test-game-id='${cancelledGame.id}']`,
       )
       .exists();
@@ -229,6 +236,58 @@ module('Acceptance | game list', function(hooks) {
     assert
       .dom(`[data-test-game-id='${cancelledGame.id}'] [data-test-dismiss]`)
       .exists();
+  });
+
+  test('a representing game can be represented and when it becomes scheduled it shows as that way', async function(assert) {
+    const concept = this.server.create('concept', {
+      name: 'tap',
+    });
+    const incarnation = concept.createIncarnation();
+    const game = incarnation.createGame();
+    const teamParticipation = game.createParticipation({
+      team: this.team,
+      state: 'representing',
+    });
+    const memberRepresentation = teamParticipation.createRepresentation({
+      member: this.member,
+    });
+
+    await visit('/');
+
+    assert.dom('[data-test-representings]').exists();
+    assert.dom('[data-test-scheduleds]').doesNotExist();
+
+    const now = new Date();
+    const gameStartTime = new Date(now.getTime() + 1000 * 60);
+    this.setGameClock(now);
+
+    this.server.patch(`/games/${game.id}/represent`, function({
+      participations,
+      representations,
+      games,
+    }) {
+      representations
+        .find(memberRepresentation.id)
+        .update('representing', true);
+
+      participations.find(teamParticipation.id).update('state', 'scheduled');
+      const serverGame = games.find(game.id);
+      serverGame.update('beginsAt', gameStartTime);
+      return serverGame;
+    });
+
+    await click(`[data-test-game-id='${game.id}'] [data-test-represent]`);
+    await settled();
+
+    assert.dom('[data-test-representings]').doesNotExist();
+    assert.dom('[data-test-scheduleds]').exists();
+
+    assert
+      .dom('[data-test-scheduleds] [data-test-begins-at]')
+      .hasText('Begins in 60 seconds');
+    assert
+      .dom('[data-test-scheduleds] [data-test-instructions]')
+      .hasText('Tap the button as many times as you can');
   });
 
   test('a game becoming scheduled via the socket shows the time until it starts', async function(assert) {

@@ -36,6 +36,10 @@ export default class GameListItem extends Component {
     return this.teamParticipation?.state === 'converging';
   }
 
+  get canRepresent() {
+    return this.teamParticipation?.state === 'representing';
+  }
+
   get canCancel() {
     return ['invited', 'accepted', 'converging'].includes(
       this.teamParticipation?.state,
@@ -63,6 +67,12 @@ export default class GameListItem extends Component {
     return this.game;
   })
   arriveGame;
+
+  @task(function*() {
+    yield this.args.game.represent();
+    return this.game;
+  })
+  representGame;
 
   @task(function*() {
     yield this.args.game.cancel();
