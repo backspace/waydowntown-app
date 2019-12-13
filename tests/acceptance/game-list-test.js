@@ -168,52 +168,15 @@ module('Acceptance | game list', function(hooks) {
       .dom(`[data-test-invitations] [data-test-game-id='${game.id}']`)
       .exists();
     assert
-      .dom(
-        `[data-test-invitations] [data-test-team-id='${otherTeam.id}'] [data-test-team-name]`,
-      )
-      .hasText('other team');
-    assert
-      .dom(
-        `[data-test-invitations] [data-test-team-id='${thirdTeam.id}'] [data-test-team-name]`,
-      )
-      .hasText('a third team');
-    assert
       .dom(`[data-test-invitations] [data-test-team-id='${this.team.id}']`)
       .doesNotExist();
-    assert.dom(`[data-test-game-id='${game.id}'] [data-test-cancel]`).exists();
 
-    assert
-      .dom('[data-test-invitations] [data-test-concept-name]')
-      .exists({ count: 1 });
-
-    assert
-      .dom('[data-test-acceptances] [data-test-concept-name]')
-      .exists({ count: 1 });
     assert
       .dom(`[data-test-acceptances] [data-test-game-id='${acceptedGame.id}']`)
       .exists();
-    assert
-      .dom(
-        `[data-test-acceptances] [data-test-game-id='${acceptedGame.id}'] [data-test-accept]`,
-      )
-      .doesNotExist();
-    assert
-      .dom(`[data-test-game-id='${acceptedGame.id}'] [data-test-cancel]`)
-      .exists();
 
     assert
-      .dom('[data-test-convergings] [data-test-concept-name]')
-      .exists({ count: 1 });
-    assert
       .dom(`[data-test-convergings] [data-test-game-id='${convergingGame.id}']`)
-      .exists();
-    assert
-      .dom(
-        `[data-test-convergings] [data-test-game-id='${convergingGame.id}'] [data-test-accept]`,
-      )
-      .doesNotExist();
-    assert
-      .dom(`[data-test-game-id='${convergingGame.id}'] [data-test-cancel]`)
       .exists();
 
     assert
@@ -221,20 +184,11 @@ module('Acceptance | game list', function(hooks) {
         `[data-test-representings] [data-test-game-id='${representingGame.id}']`,
       )
       .exists();
-    assert
-      .dom(`[data-test-game-id='${representingGame.id}'] [data-test-cancel]`)
-      .doesNotExist();
 
     assert
       .dom(
         `[data-test-cancellations] [data-test-game-id='${cancelledGame.id}']`,
       )
-      .exists();
-    assert
-      .dom(`[data-test-game-id='${cancelledGame.id}'] [data-test-cancel]`)
-      .doesNotExist();
-    assert
-      .dom(`[data-test-game-id='${cancelledGame.id}'] [data-test-dismiss]`)
       .exists();
   });
 
