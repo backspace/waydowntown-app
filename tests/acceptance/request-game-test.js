@@ -15,17 +15,12 @@ module('Acceptance | request game', function(hooks) {
 
   test('a requested game is displayed as an invitation but does not trigger vibration', async function(assert) {
     this.server.post('/games/request', () => {
-      const concept = this.server.create('concept', {
-        name: 'a requested concept',
-      });
-      const incarnation = concept.createIncarnation();
-      const game = incarnation.createGame();
-      game.createParticipation({
-        team: this.team,
+      const game = this.server.create('game', {
+        conceptName: 'a requested concept',
         state: 'invited',
-        initiator: true,
       });
-      game.save();
+
+      this.server.schema.participations.all().update('initiator', true);
 
       return game;
     });
@@ -44,13 +39,7 @@ module('Acceptance | request game', function(hooks) {
   });
 
   test('a game cannot be requested when an unfinished one exists', async function(assert) {
-    const concept = this.server.create('concept', {
-      name: 'a requested concept',
-    });
-    const incarnation = concept.createIncarnation();
-    const game = incarnation.createGame();
-    game.createParticipation({
-      team: this.team,
+    this.server.create('game', {
       state: 'invited',
     });
 
@@ -60,28 +49,9 @@ module('Acceptance | request game', function(hooks) {
   });
 
   test('cancelled, dismissed, and unsent games don’t block requests', async function(assert) {
-    const concept = this.server.create('concept', {
-      name: 'a requested concept',
-    });
-    const incarnation = concept.createIncarnation();
-
-    const cancelledGame = incarnation.createGame();
-    cancelledGame.createParticipation({
-      team: this.team,
-      state: 'cancelled',
-    });
-
-    const dismissedGame = incarnation.createGame();
-    dismissedGame.createParticipation({
-      team: this.team,
-      state: 'dismissed',
-    });
-
-    const unsentGame = incarnation.createGame();
-    unsentGame.createParticipation({
-      team: this.team,
-      state: 'unsent',
-    });
+    this.server.create('game', { state: 'cancelled' });
+    this.server.create('game', { state: 'dismissed' });
+    this.server.create('game', { state: 'unsent' });
 
     await visit('/');
 

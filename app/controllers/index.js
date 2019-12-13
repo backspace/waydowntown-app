@@ -55,6 +55,7 @@ export default class IndexController extends Controller {
         participation => participation.get('team.id') === this.teamId,
       );
 
+      // FIXME does it make sense that one participation has to be not accepted?
       return (
         participationForThisTeam?.accepted &&
         game.participations.any(

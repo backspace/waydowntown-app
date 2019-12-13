@@ -103,69 +103,36 @@ module('Acceptance | game list', function(hooks) {
 
   test('invitations, acceptances, convergings, representings, cancellations are listed', async function(assert) {
     const otherTeam = this.server.create('team', { name: 'other team' });
-    const thirdTeam = this.server.create('team', { name: 'a third team' });
+    this.server.create('team', { name: 'a third team' });
 
-    const concept = this.server.create('concept', {
-      name: 'an invited concept',
+    const invitedGame = this.server.create('game', {
+      state: 'invited',
     });
-    const incarnation = concept.createIncarnation();
-    const game = incarnation.createGame();
-    game.createParticipation({
-      team: otherTeam,
-    });
-    game.createParticipation({
-      team: thirdTeam,
-    });
-    game.createParticipation({ team: this.team, state: 'invited' });
 
-    const acceptedConcept = this.server.create('concept', {
-      name: 'an accepted concept',
-    });
-    const acceptedIncarnation = acceptedConcept.createIncarnation();
-    const acceptedGame = acceptedIncarnation.createGame();
-    acceptedGame.createParticipation({
-      team: this.team,
+    const acceptedGame = this.server.create('game', {
       state: 'accepted',
     });
-    acceptedGame.createParticipation({
-      team: otherTeam,
-    });
+    this.server.schema.participations
+      .findBy({ gameId: acceptedGame.id, teamId: otherTeam.id })
+      .update({ state: 'invited' });
+    // FIXME see index controller: why is this needed?
 
-    const convergingConcept = this.server.create('concept', {
-      name: 'a converging concept',
-    });
-    const convergingIncarnation = convergingConcept.createIncarnation();
-    const convergingGame = convergingIncarnation.createGame();
-    convergingGame.createParticipation({
-      team: this.team,
-      state: 'converging',
-    });
-    convergingGame.createParticipation({
-      team: otherTeam,
+    const convergingGame = this.server.create('game', {
       state: 'converging',
     });
 
-    const representingConcept = this.server.create('concept', {
-      name: 'a representing concept',
-    });
-    const representingIncarnation = representingConcept.createIncarnation();
-    const representingGame = representingIncarnation.createGame();
-    representingGame.createParticipation({
-      team: this.team,
+    const representingGame = this.server.create('game', {
       state: 'representing',
     });
 
-    const cancelledIncarnation = this.server.create('incarnation');
-    const cancelledGame = cancelledIncarnation.createGame();
-    cancelledGame.createParticipation({
-      team: this.team,
+    const cancelledGame = this.server.create('game', {
       state: 'cancelled',
     });
 
     await visit('/');
 
     assert
-      .dom(`[data-test-invitations] [data-test-game-id='${game.id}']`)
+      .dom(`[data-test-invitations] [data-test-game-id='${invitedGame.id}']`)
       .exists();
 
     assert
@@ -190,16 +157,14 @@ module('Acceptance | game list', function(hooks) {
   });
 
   test('a representing game can be represented and when it becomes scheduled it shows as that way', async function(assert) {
-    const concept = this.server.create('concept', {
-      name: 'tap',
-    });
-    const incarnation = concept.createIncarnation();
-    const game = incarnation.createGame();
-    const teamParticipation = game.createParticipation({
-      team: this.team,
+    const game = this.server.create('game', {
+      conceptName: 'tap',
       state: 'representing',
     });
-    const memberRepresentation = teamParticipation.createRepresentation({
+    const teamParticipation = this.server.schema.participations.findBy({
+      teamId: this.team.id,
+    });
+    teamParticipation.createRepresentation({
       member: this.member,
     });
 
@@ -217,11 +182,9 @@ module('Acceptance | game list', function(hooks) {
       representations,
       games,
     }) {
-      representations
-        .find(memberRepresentation.id)
-        .update('representing', true);
+      representations.all().update('representing', true);
 
-      participations.find(teamParticipation.id).update('state', 'scheduled');
+      participations.all().update('state', 'scheduled');
       const serverGame = games.find(game.id);
       serverGame.update('beginsAt', gameStartTime);
       return serverGame;
@@ -243,12 +206,7 @@ module('Acceptance | game list', function(hooks) {
 
   test('a game becoming scheduled via the socket shows the time until it starts', async function(assert) {
     const now = new Date();
-    const concept = this.server.create('concept');
-    const incarnation = concept.createIncarnation();
-    const game = incarnation.createGame();
-
-    game.createParticipation({
-      team: this.team,
+    const game = this.server.create('game', {
       state: 'scheduled',
     });
 
@@ -278,10 +236,7 @@ module('Acceptance | game list', function(hooks) {
   });
 
   test('a game can be cancelled', async function(assert) {
-    const incarnation = this.server.create('incarnation');
-    const game = incarnation.createGame();
-    const teamParticipation = game.createParticipation({
-      team: this.team,
+    const game = this.server.create('game', {
       state: 'invited',
     });
 
@@ -289,7 +244,7 @@ module('Acceptance | game list', function(hooks) {
       participations,
       games,
     }) {
-      participations.find(teamParticipation.id).update('state', 'cancelled');
+      participations.all().update('state', 'cancelled');
       return games.find(game.id);
     });
 
@@ -304,10 +259,7 @@ module('Acceptance | game list', function(hooks) {
   });
 
   test('a cancelled game can be dismissed', async function(assert) {
-    const incarnation = this.server.create('incarnation');
-    const game = incarnation.createGame();
-    const teamParticipation = game.createParticipation({
-      team: this.team,
+    const game = this.server.create('game', {
       state: 'cancelled',
     });
 
@@ -315,7 +267,7 @@ module('Acceptance | game list', function(hooks) {
       participations,
       games,
     }) {
-      participations.find(teamParticipation.id).update('state', 'dismissed');
+      participations.all().update('state', 'dismissed');
       return games.find(game.id);
     });
 

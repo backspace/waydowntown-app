@@ -16,28 +16,18 @@ module('Acceptance | active game', function(hooks) {
   mockVibration(hooks);
 
   test('an active game is displayed and an inactive one is not', async function(assert) {
-    const concept = this.server.create('concept', {
-      name: 'tap',
-    });
-    const incarnation = concept.createIncarnation();
-    const game = incarnation.createGame({
+    this.server.create('game', {
+      conceptName: 'tap',
+      state: 'scheduled',
       beginsAt: new Date(new Date().getTime() - 1000 * 60),
       endsAt: new Date(new Date().getTime() + 1000 * 60),
     });
 
-    game.createParticipation({
-      team: this.team,
+    this.server.create('game', {
+      conceptName: 'tap',
       state: 'scheduled',
-    });
-
-    const inactiveGame = incarnation.createGame({
       beginsAt: new Date(new Date().getTime() - 1000 * 60),
       endsAt: new Date(new Date().getTime() - 1000 * 59),
-    });
-
-    inactiveGame.createParticipation({
-      team: this.team,
-      state: 'scheduled',
     });
 
     await visit('/');
@@ -51,16 +41,11 @@ module('Acceptance | active game', function(hooks) {
   });
 
   test('a game can become active, causing vibration, and then inactive again as time passes', async function(assert) {
-    const concept = this.server.create('concept', { name: 'tap' });
-    const incarnation = concept.createIncarnation();
-    const game = incarnation.createGame({
+    this.server.create('game', {
+      conceptName: 'tap',
+      state: 'scheduled',
       beginsAt: new Date(new Date().getTime() - 1000 * 60),
       endsAt: new Date(new Date().getTime() + 1000 * 60),
-    });
-
-    game.createParticipation({
-      team: this.team,
-      state: 'scheduled',
     });
 
     this.setGameClock(new Date(new Date().getTime() - 1000 * 60 * 2));
@@ -85,18 +70,11 @@ module('Acceptance | active game', function(hooks) {
   test('the tap game counts taps and reports back when it ends', async function(assert) {
     this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
 
-    const concept = this.server.create('concept', {
-      name: 'tap',
-    });
-    const incarnation = concept.createIncarnation();
-    const game = incarnation.createGame({
+    const game = this.server.create('game', {
+      conceptName: 'tap',
+      state: 'scheduled',
       beginsAt: new Date(new Date().getTime() - 1000 * 60),
       endsAt: new Date(new Date().getTime() + 1000 * 60),
-    });
-
-    game.createParticipation({
-      team: this.team,
-      state: 'scheduled',
     });
 
     await visit('/');
@@ -119,9 +97,7 @@ module('Acceptance | active game', function(hooks) {
       `/games/${game.id}/report`,
       ({ participations, games }, { requestBody }) => {
         const result = JSON.parse(requestBody).result;
-        participations
-          .findBy({ teamId: this.team.id })
-          .update({ result: result, state: 'finished' });
+        participations.all().update({ result: result, state: 'finished' });
         return games.find(game.id);
       },
     );
@@ -141,18 +117,11 @@ module('Acceptance | active game', function(hooks) {
   test('the bluetooth-collector game counts Bluetooth devices and reports back when it ends', async function(assert) {
     this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
 
-    const concept = this.server.create('concept', {
-      name: 'bluetooth-collector',
-    });
-    const incarnation = concept.createIncarnation();
-    const game = incarnation.createGame({
+    const game = this.server.create('game', {
+      conceptName: 'bluetooth-collector',
+      state: 'scheduled',
       beginsAt: new Date(new Date().getTime() - 1000 * 60),
       endsAt: new Date(new Date().getTime() + 1000 * 60),
-    });
-
-    game.createParticipation({
-      team: this.team,
-      state: 'scheduled',
     });
 
     let scanResultHandler;
