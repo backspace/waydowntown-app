@@ -19,7 +19,7 @@ module('Acceptance | require setup', function(hooks) {
     resetStorages();
   });
 
-  test('filling in a token shows the logged-in interface with team name and registers the device', async function(assert) {
+  test('filling in a token shows the logged-in interface with member name and registers the device', async function(assert) {
     const done = assert.async();
 
     const member = this.server.create('member', { name: 'me' });
