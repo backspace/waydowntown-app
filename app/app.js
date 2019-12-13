@@ -14,7 +14,9 @@ export default class App extends Application {
 
 loadInitializers(App, config.modulePrefix);
 
-Sentry.init({
-  dsn: 'https://33f2ad0ebe0b4daaa89ac7996cb003ef@sentry.io/1848896',
-  integrations: [new Integrations.Ember()],
-});
+if (config.environment !== 'test') {
+  Sentry.init({
+    dsn: 'https://33f2ad0ebe0b4daaa89ac7996cb003ef@sentry.io/1848896',
+    integrations: [new Integrations.Ember()],
+  });
+}
