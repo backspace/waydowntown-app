@@ -23,6 +23,7 @@
   {{/if}}
 
   <ul>
+    <li data-test-team-id={{@team.id}}>Team: <span data-test-team-name>{{@team.name}} (you)</span></li>
     {{#each this.otherTeams as |team|}}
       <li data-test-team-id={{team.id}}>Team: <span data-test-team-name>{{team.name}}</span></li>
     {{/each}}

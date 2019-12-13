@@ -32,8 +32,8 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert.dom(`[data-test-concept-name]`).hasText('a concept');
   });
 
-  test('other teams are listed', async function(assert) {
-    // FIXME should list self team as well
+  test('teams are listed', async function(assert) {
+    this.set('team', { id: 1, name: 'us' });
     this.set('game', {
       participations: [
         EmberObject.create({ state: 'invited', team: this.team }),
@@ -43,11 +43,12 @@ module('Integration | Component | game-list-item', function(hooks) {
       team: this.team,
     });
 
-    await render(hbs`<GameListItem @game={{game}} @team={{this.team}} />`);
+    await render(hbs`<GameListItem @game={{game}} @team={{team}} />`);
 
-    assert.dom('li:nth-child(1) [data-test-team-name]').hasText('Other');
-    assert.dom('li:nth-child(2) [data-test-team-name]').hasText('Another');
-    assert.dom('[data-test-team-name]').exists({ count: 2 });
+    assert.dom('li:nth-child(1) [data-test-team-name]').hasText('us (you)');
+    assert.dom('li:nth-child(2) [data-test-team-name]').hasText('Other');
+    assert.dom('li:nth-child(3) [data-test-team-name]').hasText('Another');
+    assert.dom('[data-test-team-name]').exists({ count: 3 });
   });
 
   test('an invited game has accept and cancel buttons', async function(assert) {
