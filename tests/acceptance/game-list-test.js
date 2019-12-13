@@ -2,10 +2,10 @@ import { module, test } from 'qunit';
 import { click, settled, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import setToken from '../helpers/set-token';
-import mockCable from '../helpers/mock-cable';
-import mockGameClock from '../helpers/mock-game-clock';
-import mockVibration from '../helpers/mock-vibration';
+import setToken from 'waydowntown/tests/helpers/set-token';
+import mockCable from 'waydowntown/tests/helpers/mock-cable';
+import mockGameClock from 'waydowntown/tests/helpers/mock-game-clock';
+import mockVibration from 'waydowntown/tests/helpers/mock-vibration';
 
 module('Acceptance | game list', function(hooks) {
   setupApplicationTest(hooks);
@@ -101,7 +101,7 @@ module('Acceptance | game list', function(hooks) {
     assert.dom('[data-test-representings]').exists();
   });
 
-  test('existing invitations, acceptances, and convergings have cancel buttons and representings and cancellations are listed', async function(assert) {
+  test('invitations, acceptances, convergings, representings, cancellations are listed', async function(assert) {
     const otherTeam = this.server.create('team', { name: 'other team' });
     const thirdTeam = this.server.create('team', { name: 'a third team' });
 

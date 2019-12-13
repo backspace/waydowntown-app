@@ -4,8 +4,8 @@ import { render } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import EmberObject from '@ember/object';
 
-import mockGameClock from '../../helpers/mock-game-clock';
-import mockVibration from '../../helpers/mock-vibration';
+import mockGameClock from 'waydowntown/tests/helpers/mock-game-clock';
+import mockVibration from 'waydowntown/tests/helpers/mock-vibration';
 
 module('Integration | Component | game-list-item', function(hooks) {
   setupRenderingTest(hooks);

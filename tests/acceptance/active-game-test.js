@@ -2,10 +2,10 @@ import { module, test } from 'qunit';
 import { click, settled, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import setToken from '../helpers/set-token';
-import mockCable from '../helpers/mock-cable';
-import mockGameClock from '../helpers/mock-game-clock';
-import mockVibration from '../helpers/mock-vibration';
+import setToken from 'waydowntown/tests/helpers/set-token';
+import mockCable from 'waydowntown/tests/helpers/mock-cable';
+import mockGameClock from 'waydowntown/tests/helpers/mock-game-clock';
+import mockVibration from 'waydowntown/tests/helpers/mock-vibration';
 
 module('Acceptance | active game', function(hooks) {
   setupApplicationTest(hooks);

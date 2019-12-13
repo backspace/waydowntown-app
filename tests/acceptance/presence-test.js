@@ -2,8 +2,8 @@ import { module, test } from 'qunit';
 import { settled, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
-import setToken from '../helpers/set-token';
-import mockCable from '../helpers/mock-cable';
+import setToken from 'waydowntown/tests/helpers/set-token';
+import mockCable from 'waydowntown/tests/helpers/mock-cable';
 
 module('Acceptance | request game', function(hooks) {
   setupApplicationTest(hooks);
