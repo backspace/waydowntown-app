@@ -33,7 +33,7 @@ export default class IndexRoute extends Route {
             member,
             games: this.store.findAll('game', {
               include:
-                'participations,participations.team,incarnation,incarnation.concept',
+                'participations,participations.team,participations.team.members,participations.representations,participations.representations.member,incarnation,incarnation.concept',
             }),
             teams: this.store.findAll('team', { include: 'members' }),
           });

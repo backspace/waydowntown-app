@@ -3,10 +3,16 @@ import { Factory } from 'ember-cli-mirage';
 export default Factory.extend({
   afterCreate(game, server) {
     server.schema.teams.all().models.forEach(team => {
-      game.createParticipation({
+      const participation = game.createParticipation({
         team,
         state: game.state,
       });
+
+      if (game.state === 'representing') {
+        (team.members || { models: [] }).models.forEach(member => {
+          participation.createRepresentation({ member });
+        });
+      }
     });
 
     if (game.attrs.state) {

@@ -40,7 +40,7 @@ module('Acceptance | game list', function(hooks) {
       content: this.server.serializerOrRegistry.serialize(game, {
         queryParams: {
           include:
-            'participations,participations.team,incarnation,incarnation.concept',
+            'participations,participations.team,participations.team.members,participations.representations,participations.representations.member,incarnation,incarnation.concept',
         },
       }),
     });
@@ -85,14 +85,23 @@ module('Acceptance | game list', function(hooks) {
     assert.dom('[data-test-convergings]').exists();
     assert.dom('[data-test-representings]').doesNotExist();
 
-    this.server.patch(`/games/${game.id}/arrive`, function({
-      participations,
-      games,
-    }) {
-      participations.find(teamParticipation.id).update('state', 'representing');
-      const serverGame = games.find(game.id);
-      return serverGame;
-    });
+    this.server.patch(
+      `/games/${game.id}/arrive`,
+      ({ participations, games }) => {
+        participations
+          .find(teamParticipation.id)
+          .update('state', 'representing');
+        console.log('member?', this.member);
+        this.server.create('representation', {
+          member: this.member,
+          participation: teamParticipation,
+          representing: 33,
+        });
+
+        const serverGame = games.find(game.id);
+        return serverGame;
+      },
+    );
 
     await click(`[data-test-game-id='${game.id}'] [data-test-arrive]`);
     await settled();
@@ -223,7 +232,7 @@ module('Acceptance | game list', function(hooks) {
       content: this.server.serializerOrRegistry.serialize(game, {
         queryParams: {
           include:
-            'participations,participations.team,incarnation,incarnation.concept',
+            'participations,participations.team,participations.team.members,participations.representations,participations.representations.member,incarnation,incarnation.concept',
         },
       }),
     });

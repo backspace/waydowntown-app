@@ -70,7 +70,7 @@
   Representings:
   <ul data-test-representings>
     {{#each this.representings as |representing|}}
-      <GameListItem @game={{representing}} @team={{this.team}} />
+      <GameListItem @game={{representing}} @team={{this.team}} @member={{this.member}} />
     {{/each}}
   </ul>
 {{/if}}

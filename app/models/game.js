@@ -13,7 +13,8 @@ export default class GameModel extends Model {
     method: 'PATCH',
     pushToStore: true,
     queryParams: {
-      include: 'incarnation,incarnation.concept,participations.team',
+      include:
+        'incarnation,incarnation.concept,participations.team,participations.team.members,participations.representations,participations.representations.member',
     },
   });
 
@@ -21,7 +22,8 @@ export default class GameModel extends Model {
     method: 'PATCH',
     pushToStore: true,
     queryParams: {
-      include: 'incarnation,incarnation.concept,participations.team',
+      include:
+        'incarnation,incarnation.concept,participations.team,participations.team.members,participations.representations,participations.representations.member',
     },
   });
 
@@ -29,7 +31,8 @@ export default class GameModel extends Model {
     method: 'PATCH',
     pushToStore: true,
     queryParams: {
-      include: 'incarnation,incarnation.concept,participations.team',
+      include:
+        'incarnation,incarnation.concept,participations.team,participations.team.members,participations.representations,participations.representations.member',
     },
   });
 
@@ -37,7 +40,8 @@ export default class GameModel extends Model {
     method: 'PATCH',
     pushToStore: true,
     queryParams: {
-      include: 'incarnation,incarnation.concept,participations.team',
+      include:
+        'incarnation,incarnation.concept,participations.team,participations.team.members,participations.representations,participations.representations.member',
     },
   });
 
@@ -45,7 +49,8 @@ export default class GameModel extends Model {
     method: 'PATCH',
     pushToStore: true,
     queryParams: {
-      include: 'incarnation,incarnation.concept,participations.team',
+      include:
+        'incarnation,incarnation.concept,participations.team,participations.team.members,participations.representations,participations.representations.member',
     },
   });
 
@@ -53,7 +58,8 @@ export default class GameModel extends Model {
     method: 'PATCH',
     pushToStore: true,
     queryParams: {
-      include: 'incarnation,incarnation.concept,participations.team',
+      include:
+        'incarnation,incarnation.concept,participations.team,participations.team.members,participations.representations,participations.representations.member',
     },
   });
 
@@ -61,7 +67,8 @@ export default class GameModel extends Model {
     method: 'PATCH',
     pushToStore: true,
     queryParams: {
-      include: 'incarnation,incarnation.concept,participations.team',
+      include:
+        'incarnation,incarnation.concept,participations.team,participations.team.members,participations.representations,participations.representations.member',
     },
   });
 
@@ -70,7 +77,7 @@ export default class GameModel extends Model {
     pushToStore: true,
     queryParams: {
       include:
-        'incarnation,incarnation.concept,participations,participations.team',
+        'incarnation,incarnation.concept,participations,participations.team,participations.team.members,participations.representations,participations.representations.member',
     },
   });
 }

@@ -101,15 +101,51 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert.dom('button').exists({ count: 2 });
   });
 
-  test('a representing game has a represent button', async function(assert) {
-    this.set('team', { id: 1 });
+  test('a representing game with a self representation has no represent button', async function(assert) {
+    this.set('member', { id: 1 });
+    this.set('team', { id: 1, members: [this.member] });
     this.set('game', {
       participations: [
-        EmberObject.create({ state: 'representing', team: this.team }),
+        EmberObject.create({
+          state: 'representing',
+          team: this.team,
+          representations: [
+            EmberObject.create({ representing: true, member: this.member }),
+          ],
+        }),
       ],
     });
 
-    await render(hbs`<GameListItem @game={{game}} @team={{team}} />`);
+    await render(
+      hbs`<GameListItem @game={{game}} @team={{team}} @member={{member}} />`,
+    );
+
+    assert.dom('[data-test-represent]').doesNotExist();
+    assert.dom('button').doesNotExist();
+  });
+
+  test('a representing game with an other representation has a represent button', async function(assert) {
+    this.set('member', { id: 1 });
+
+    const otherMember = { id: 2 };
+
+    this.set('team', { id: 1, members: [this.member, otherMember] });
+    this.set('game', {
+      participations: [
+        EmberObject.create({
+          state: 'representing',
+          team: this.team,
+          representations: [
+            EmberObject.create({ representing: null, member: this.member }),
+            EmberObject.create({ representing: true, member: otherMember }),
+          ],
+        }),
+      ],
+    });
+
+    await render(
+      hbs`<GameListItem @game={{game}} @team={{team}} @member={{member}} />`,
+    );
 
     assert.dom('[data-test-represent]').exists();
     assert.dom('button').exists({ count: 1 });
