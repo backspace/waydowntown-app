@@ -1,0 +1,17 @@
+<LeafletMap @lat={{this.lat}} @lng={{this.lon}} @zoom={{this.zoom}} class="w-full h-64" data-test-map as |layers|>
+  <layers.tile @url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"></layers.tile>
+
+  {{#each @teams as |team|}}
+    {{#each team.members as |member|}}
+      {{#if (and member.lat member.lon)}}
+        <layers.marker @location={{hash lat=member.lat lon=member.lon}} as |marker|>
+          <marker.popup>
+            <span data-test-marker-popup-member-id={{member.id}}>
+              {{member.name}}
+            </span>
+          </marker.popup>
+        </layers.marker>
+      {{/if}}
+    {{/each}}
+  {{/each}}
+</LeafletMap>

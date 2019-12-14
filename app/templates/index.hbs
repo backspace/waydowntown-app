@@ -108,6 +108,12 @@
   </ul>
 {{/if}}
 
+<button class="border border-black" {{on "click" (toggle-action "showMap" this)}} data-test-toggle-map>{{if this.showMap "Hide" "Show"}} Map</button>
+
+{{#if this.showMap}}
+  <Map @teams={{this.teams}} />
+{{/if}}
+
 Start solo games:
 {{#each this.concepts as |concept|}}
   <button class="border border-black" {{on "click" (perform this.requestGame concept null)}}>{{concept}}</button>

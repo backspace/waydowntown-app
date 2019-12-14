@@ -27,6 +27,8 @@ export default class IndexController extends Controller {
 
   consumer = null;
 
+  @tracked showMap = false;
+
   get teamId() {
     return this.team.id;
   }
