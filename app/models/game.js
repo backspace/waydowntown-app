@@ -57,6 +57,14 @@ export default class GameModel extends Model {
     },
   });
 
+  archive = modelAction('archive', {
+    method: 'PATCH',
+    pushToStore: true,
+    queryParams: {
+      include: 'incarnation,incarnation.concept,participations.team',
+    },
+  });
+
   request = resourceAction('request', {
     method: 'POST',
     pushToStore: true,

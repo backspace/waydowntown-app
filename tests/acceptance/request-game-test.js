@@ -69,9 +69,10 @@ module('Acceptance | request game', function(hooks) {
     assert.dom('[data-test-request]').isDisabled();
   });
 
-  test('cancelled, dismissed, and unsent games don’t block requests', async function(assert) {
+  test('cancelled, dismissed, archived, and unsent games don’t block requests', async function(assert) {
     this.server.create('game', { state: 'cancelled' });
     this.server.create('game', { state: 'dismissed' });
+    this.server.create('game', { state: 'archived' });
     this.server.create('game', { state: 'unsent' });
 
     await visit('/');

@@ -278,4 +278,33 @@ module('Acceptance | game list', function(hooks) {
 
     assert.dom(`[data-test-game-id='${game.id}']`).doesNotExist();
   });
+
+  test('a finished game can be archived', async function(assert) {
+    this.server.logging = true;
+    const game = this.server.create('game', {
+      state: 'finished',
+    });
+
+    game.createParticipation({
+      team: this.server.create('team', { name: 'other team' }),
+      state: 'finished',
+    });
+
+    this.server.patch(
+      `/games/${game.id}/archive`,
+      ({ participations, games }) => {
+        participations
+          .where({ teamId: this.team.id })
+          .update('state', 'archived');
+        return games.find(game.id);
+      },
+    );
+
+    await visit('/');
+    await click('[data-test-archive]');
+
+    await settled();
+
+    assert.dom(`[data-test-game-id='${game.id}']`).doesNotExist();
+  });
 });

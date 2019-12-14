@@ -98,9 +98,11 @@ export default class IndexController extends Controller {
 
   get finishedGames() {
     return this.persistedGames.filter(game => {
-      return game.participations.any(
-        participation => participation.state === 'finished',
+      const participationForThisTeam = game.participations.find(
+        participation => participation.get('team.id') === this.teamId,
       );
+
+      return participationForThisTeam.state === 'finished';
     });
   }
 
@@ -235,4 +237,10 @@ export default class IndexController extends Controller {
     yield this.store.findAll('game', { reload: true });
   })
   reloadGames;
+
+  @task(function*(game) {
+    yield game.archive();
+    return game;
+  })
+  archiveGame;
 }

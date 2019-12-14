@@ -21,8 +21,9 @@
   Finished games:
   <ul data-test-results>
     {{#each this.finishedGames as |game|}}
-      <li class="border border-black p-1">
+      <li class="border border-black p-1" data-test-game-id={{game.id}}>
         <span data-test-concept-name>{{game.incarnation.concept.name}}</span>: <GameResults @game={{game}} />
+        <button class="border border-black" {{on "click" (perform this.archiveGame game)}} data-test-archive>Archive</button>
       </li>
     {{/each}}
   </ul>

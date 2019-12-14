@@ -91,6 +91,7 @@ module('Acceptance | active game', function(hooks) {
 
     assert.dom('[data-test-active-game] [data-test-taps]').hasText('4');
 
+    assert.dom('[data-test-archive]').doesNotExist();
     assert.dom('[data-test-results]').doesNotExist();
 
     this.server.patch(
@@ -112,6 +113,7 @@ module('Acceptance | active game', function(hooks) {
         `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-result]`,
       )
       .hasText('4');
+    assert.dom('[data-test-archive]').exists();
   });
 
   test('the bluetooth-collector game counts Bluetooth devices and reports back when it ends', async function(assert) {
