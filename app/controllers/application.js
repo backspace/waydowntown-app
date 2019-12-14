@@ -7,6 +7,8 @@ import { storageFor } from 'ember-local-storage';
 
 export default class ApplicationController extends Controller {
   @service debugLog;
+  @service flashMessages;
+
   @storageFor('token') tokenStorage;
 
   @tracked showDiagnostics = false;

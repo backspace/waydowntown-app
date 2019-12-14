@@ -16,6 +16,7 @@ const wsHost = host.replace('http', 'ws');
 export default class IndexController extends Controller {
   @service cable;
   @service debugLog;
+  @service flashMessages;
   @service gameClock;
   @service store;
   @service vibration;
@@ -30,8 +31,12 @@ export default class IndexController extends Controller {
     return this.team.id;
   }
 
+  get persistedGames() {
+    return this.games.rejectBy('isNew');
+  }
+
   get invitations() {
-    return this.games.filter(game => {
+    return this.persistedGames.filter(game => {
       const participationForThisTeam = game.participations.find(
         participation => participation.get('team.id') === this.teamId,
       );
@@ -43,7 +48,7 @@ export default class IndexController extends Controller {
   }
 
   get acceptances() {
-    return this.games.filter(game => {
+    return this.persistedGames.filter(game => {
       const participationForThisTeam = game.participations.find(
         participation => participation.get('team.id') === this.teamId,
       );
@@ -61,7 +66,7 @@ export default class IndexController extends Controller {
   }
 
   get convergings() {
-    return this.games.filter(game => {
+    return this.persistedGames.filter(game => {
       return game.participations.any(
         participation => participation.state === 'converging',
       );
@@ -69,7 +74,7 @@ export default class IndexController extends Controller {
   }
 
   get representings() {
-    return this.games.filter(game => {
+    return this.persistedGames.filter(game => {
       return game.participations.any(
         participation => participation.state === 'representing',
       );
@@ -77,7 +82,7 @@ export default class IndexController extends Controller {
   }
 
   get scheduleds() {
-    return this.games.filter(game => {
+    return this.persistedGames.filter(game => {
       return game.participations.every(
         participation => participation.state === 'scheduled',
       );
@@ -86,13 +91,13 @@ export default class IndexController extends Controller {
 
   get activeGames() {
     const now = this.gameClock.date;
-    return this.games.filter(game => {
+    return this.persistedGames.filter(game => {
       return game.beginsAt <= now && game.endsAt >= now;
     });
   }
 
   get finishedGames() {
-    return this.games.filter(game => {
+    return this.persistedGames.filter(game => {
       return game.participations.any(
         participation => participation.state === 'finished',
       );
@@ -100,7 +105,7 @@ export default class IndexController extends Controller {
   }
 
   get cancelledGames() {
-    return this.games.filter(game => {
+    return this.persistedGames.filter(game => {
       const participationForThisTeam = game.participations.find(
         participation => participation.get('team.id') === this.teamId,
       );
@@ -213,9 +218,14 @@ export default class IndexController extends Controller {
       }
     }
 
-    const game = yield emptyGame.request(parameters);
-    emptyGame.deleteRecord();
-    return game;
+    try {
+      const game = yield emptyGame.request(parameters);
+      return game;
+    } catch (e) {
+      this.flashMessages.warning('There was an error requesting a game');
+    } finally {
+      emptyGame.deleteRecord();
+    }
   })
   requestGame;
 
