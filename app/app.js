@@ -14,7 +14,8 @@ export default class App extends Application {
 
 loadInitializers(App, config.modulePrefix);
 
-if (config.environment !== 'test') {
+// FIXME when production builds are working
+if (config.APP.server && config.APP.server.includes('server')) {
   Sentry.init({
     dsn: 'https://33f2ad0ebe0b4daaa89ac7996cb003ef@sentry.io/1848896',
     integrations: [new Integrations.Ember()],
