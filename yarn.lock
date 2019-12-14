@@ -3901,10 +3901,10 @@ corber-ember-livereload@^0.0.2:
     broccoli-funnel "^2.0.1"
     ember-cli-babel "^6.6.0"
 
-corber@1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/corber/-/corber-1.4.1.tgz#813b8fc5d2f8f603e66dc8b8cf0f2ff9efb883ee"
-  integrity sha512-Ai3/c5tlSH8gimshOFoure1yCZg/BEpq0I4ACpzukc9/Mt/lsLUFcc98h53r7f/udyj441vfwmZOuHF+mZa2VA==
+corber@1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/corber/-/corber-1.4.2.tgz#acb2a6622c740f9edcd1f25a46ab3d74c7ff147b"
+  integrity sha512-rAWzjvxq+WOEfx44St1sICPnG/b60Bcnw/jE9bvPJMzx0xQC5O+wPHblHDerEzz0zKb+uCqnsMcoUOyqOeXs5Q==
   dependencies:
     "@babel/core" "^7.3.3"
     babel-plugin-transform-es2015-modules-amd "^6.24.1"
