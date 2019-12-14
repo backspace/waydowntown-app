@@ -15,7 +15,9 @@ module('Acceptance | request game', function(hooks) {
   mockVibration(hooks);
 
   test('a requested game is displayed as an invitation but does not trigger vibration', async function(assert) {
-    this.server.post('/games/request', () => {
+    this.server.post('/games/request', (schema, request) => {
+      assert.equal(request.requestBody, '{}');
+
       const game = this.server.create('game', {
         conceptName: 'a requested concept',
         state: 'invited',
