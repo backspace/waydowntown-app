@@ -5,3 +5,15 @@
 
 @import "tailwindcss/utilities";
 @import "utilities.css";
+
+@font-face {
+  font-family: 'roadgeek';
+  src: url('/assets/fonts/roadgeek.woff2') format('woff2'),
+       url('/assets/fonts/roadgeek.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+html {
+  font-family: 'roadgeek';
+}
