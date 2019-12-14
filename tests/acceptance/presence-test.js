@@ -5,7 +5,7 @@ import { setupMirage } from 'ember-cli-mirage/test-support';
 import resetStorages from 'ember-local-storage/test-support/reset-storage';
 import mockCable from 'waydowntown/tests/helpers/mock-cable';
 
-module('Acceptance | request game', function(hooks) {
+module('Acceptance | presence', function(hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
   mockCable(hooks);
