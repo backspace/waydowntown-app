@@ -76,8 +76,8 @@ export default class GameListItem extends Component {
   })
   arriveGame;
 
-  @task(function*() {
-    yield this.args.game.represent();
+  @task(function*(representing) {
+    yield this.args.game.represent({ representing });
     return this.game;
   })
   representGame;

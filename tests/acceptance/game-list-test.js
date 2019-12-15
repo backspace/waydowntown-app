@@ -186,12 +186,14 @@ module('Acceptance | game list', function(hooks) {
     const gameStartTime = new Date(now.getTime() + 1000 * 60);
     this.setGameClock(now);
 
-    this.server.patch(`/games/${game.id}/represent`, function({
-      participations,
-      representations,
-      games,
-    }) {
-      representations.all().update('representing', true);
+    this.server.patch(`/games/${game.id}/represent`, function(
+      { participations, representations, games },
+      { requestBody },
+    ) {
+      const representing = JSON.parse(requestBody).representing;
+      assert.ok(representing);
+
+      representations.all().update('representing', representing);
 
       participations.all().update('state', 'scheduled');
       const serverGame = games.find(game.id);

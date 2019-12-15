@@ -124,7 +124,7 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert.dom('button').doesNotExist();
   });
 
-  test('a representing game with an other representation has a represent button', async function(assert) {
+  test('a representing game with an other representation has representation buttons', async function(assert) {
     this.set('member', { id: 1 });
 
     const otherMember = { id: 2 };
@@ -148,7 +148,8 @@ module('Integration | Component | game-list-item', function(hooks) {
     );
 
     assert.dom('[data-test-represent]').exists();
-    assert.dom('button').exists({ count: 1 });
+    assert.dom('[data-test-antirepresent]').exists();
+    assert.dom('button').exists({ count: 2 });
   });
 
   test('a scheduled game shows instructions and when it begins', async function(assert) {

@@ -11,7 +11,8 @@
   {{/if}}
 
   {{#if this.canRepresent}}
-    <button class="border border-black" {{on "click" (perform this.representGame)}} data-test-represent>Represent</button>
+    <button class="border border-black" {{on "click" (perform this.representGame true)}} data-test-represent>Represent</button>
+    <button class="border border-black" {{on "click" (perform this.representGame false)}} data-test-antirepresent>Don’t represent</button>
   {{/if}}
 
   {{#if this.canCancel}}
