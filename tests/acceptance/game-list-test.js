@@ -91,11 +91,10 @@ module('Acceptance | game list', function(hooks) {
         participations
           .find(teamParticipation.id)
           .update('state', 'representing');
-        console.log('member?', this.member);
+
         this.server.create('representation', {
           member: this.member,
           participation: teamParticipation,
-          representing: 33,
         });
 
         const serverGame = games.find(game.id);
