@@ -40,8 +40,10 @@
   </div>
 {{/if}}
 
-<div class="fixed left-0 top-0 right-0 z-10 p-4">
-  {{#each this.flashMessages.queue as |flash|}}
-    <Alert @flash={{flash}} />
-  {{/each}}
-</div>
+{{#if this.flashMessages.queue}}
+  <div class="fixed left-0 top-0 right-0 z-10 p-4">
+    {{#each this.flashMessages.queue as |flash|}}
+      <Alert @flash={{flash}} />
+    {{/each}}
+  </div>
+{{/if}}
