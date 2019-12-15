@@ -181,12 +181,9 @@ module('Acceptance | game list', function(hooks) {
     assert.dom('[data-test-representings]').exists();
     assert.dom('[data-test-scheduleds]').doesNotExist();
 
-    const now = new Date();
-    const gameStartTime = new Date(now.getTime() + 1000 * 60);
-    this.setGameClock(now);
 
     this.server.patch(`/games/${game.id}/represent`, function(
-      { participations, representations, games },
+      { representations, games },
       { requestBody },
     ) {
       const representing = JSON.parse(requestBody).representing;
@@ -194,13 +191,38 @@ module('Acceptance | game list', function(hooks) {
 
       representations.all().update('representing', representing);
 
-      participations.all().update('state', 'scheduled');
-      const serverGame = games.find(game.id);
-      serverGame.update('beginsAt', gameStartTime);
-      return serverGame;
+      return games.find(game.id);
     });
 
+    assert.dom('[data-test-represent]').exists();
+    assert.dom('[data-test-antirepresent]').exists();
+    assert.dom('[data-test-unrepresent]').doesNotExist();
+
     await click(`[data-test-game-id='${game.id}'] [data-test-represent]`);
+    await settled();
+
+    assert.dom('[data-test-represent]').doesNotExist();
+    assert.dom('[data-test-antirepresent]').doesNotExist();
+    assert.dom('[data-test-unrepresent]').exists();
+
+    const now = new Date();
+    const gameStartTime = new Date(now.getTime() + 1000 * 60);
+    this.setGameClock(now);
+
+    this.server.schema.participations.all().update('state', 'scheduled');
+    const serverGame = this.server.schema.games.find(game.id);
+    serverGame.update('beginsAt', gameStartTime);
+
+    await this.cable.TeamChannel.handlers.received({
+      type: 'changes',
+      content: this.server.serializerOrRegistry.serialize(serverGame, {
+        queryParams: {
+          include:
+            'participations,participations.team,participations.team.members,participations.representations,participations.representations.member,incarnation,incarnation.concept',
+        },
+      }),
+    });
+
     await settled();
 
     assert.dom('[data-test-representings]').doesNotExist();

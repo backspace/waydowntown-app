@@ -60,7 +60,10 @@ export default class GameListItem extends Component {
       representation => representation.get('member.id') === this.args.member.id,
     );
 
-    return memberRepresentation.representing !== null;
+    return (
+      memberRepresentation.representing !== null &&
+      memberRepresentation.representing !== undefined
+    );
   }
 
   get canCancel() {
