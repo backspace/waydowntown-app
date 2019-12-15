@@ -45,7 +45,22 @@ export default class GameListItem extends Component {
       representation => representation.get('member.id') === this.args.member.id,
     );
 
-    return !memberRepresentation.representing;
+    return (
+      memberRepresentation.representing !== true &&
+      memberRepresentation.representing !== false
+    );
+  }
+
+  get canUnrepresent() {
+    if (this.teamParticipation?.state !== 'representing') {
+      return false;
+    }
+
+    const memberRepresentation = this.teamParticipation.representations.find(
+      representation => representation.get('member.id') === this.args.member.id,
+    );
+
+    return memberRepresentation.representing !== null;
   }
 
   get canCancel() {

@@ -15,6 +15,10 @@
     <button class="border border-black" {{on "click" (perform this.representGame false)}} data-test-antirepresent>Don’t represent</button>
   {{/if}}
 
+  {{#if this.canUnrepresent}}
+    <button class="border border-black" {{on "click" (perform this.representGame null)}} data-test-unrepresent>Clear decision</button>
+  {{/if}}
+
   {{#if this.canCancel}}
     <button class="border border-black" {{on "click" (perform this.cancelGame)}} data-test-cancel>Cancel</button>
   {{/if}}

@@ -101,7 +101,7 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert.dom('button').exists({ count: 2 });
   });
 
-  test('a representing game with a self representation has no represent button', async function(assert) {
+  test('a representing game with a self representation has a button to unrepresent', async function(assert) {
     this.set('member', { id: 1 });
     this.set('team', { id: 1, members: [this.member] });
     this.set('game', {
@@ -110,7 +110,7 @@ module('Integration | Component | game-list-item', function(hooks) {
           state: 'representing',
           team: this.team,
           representations: [
-            EmberObject.create({ representing: true, member: this.member }),
+            EmberObject.create({ representing: false, member: this.member }),
           ],
         }),
       ],
@@ -120,8 +120,8 @@ module('Integration | Component | game-list-item', function(hooks) {
       hbs`<GameListItem @game={{game}} @team={{team}} @member={{member}} />`,
     );
 
-    assert.dom('[data-test-represent]').doesNotExist();
-    assert.dom('button').doesNotExist();
+    assert.dom('[data-test-unrepresent]').exists();
+    assert.dom('button').exists({ count: 1 });
   });
 
   test('a representing game with an other representation has representation buttons', async function(assert) {
