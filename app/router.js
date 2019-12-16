@@ -19,6 +19,4 @@ Router.map(function() {
   this.route('sim');
   this.route('vibration');
   this.route('volume');
-
-  this.route('member');
 });
