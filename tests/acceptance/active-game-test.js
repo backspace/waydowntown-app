@@ -15,7 +15,7 @@ module('Acceptance | active game', function(hooks) {
   mockGameClock(hooks);
   mockVibration(hooks);
 
-  test('an active game is displayed and an inactive one is not', async function(assert) {
+  test('an active game is displayed but not shown as scheduled and an inactive one is not', async function(assert) {
     this.server.create('game', {
       conceptName: 'tap',
       state: 'scheduled',
@@ -38,6 +38,8 @@ module('Acceptance | active game', function(hooks) {
     assert.dom('[data-test-time-remaining]').hasText('59 seconds remaining');
 
     assert.dom('[data-test-active-game]').exists({ count: 1 });
+
+    assert.dom('[data-test-scheduleds]').doesNotExist();
   });
 
   test('a game can become active, causing vibration, and then inactive again as time passes', async function(assert) {

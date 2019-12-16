@@ -85,8 +85,11 @@ export default class IndexController extends Controller {
 
   get scheduleds() {
     return this.persistedGames.filter(game => {
-      return game.participations.every(
-        participation => participation.state === 'scheduled',
+      return (
+        this.gameClock.date < game.beginsAt &&
+        game.participations.every(
+          participation => participation.state === 'scheduled',
+        )
       );
     });
   }
