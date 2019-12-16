@@ -3,28 +3,28 @@
   <p>Game name: <span data-test-concept-name>{{@game.incarnation.concept.name}}</span></p>
 
   {{#if this.canAccept}}
-    <button class="border border-black" {{on "click" (perform this.acceptGame)}} data-test-accept>Accept</button>
+    <GameActionButton @game={{@game}} @action={{@game.accept}} data-test-accept>Accept</GameActionButton>
   {{/if}}
 
   {{#if this.canArrive}}
-    <button class="border border-black" {{on "click" (perform this.arriveGame)}} data-test-arrive>Arrive</button>
+    <GameActionButton @game={{@game}} @action={{@game.arrive}} data-test-arrive>Arrive</GameActionButton>
   {{/if}}
 
   {{#if this.canRepresent}}
-    <button class="border border-black" {{on "click" (perform this.representGame true)}} data-test-represent>Represent</button>
-    <button class="border border-black" {{on "click" (perform this.representGame false)}} data-test-antirepresent>Don’t represent</button>
+    <GameActionButton @game={{@game}} @action={{@game.represent}} @data={{hash representing=true}} data-test-represent>Represent</GameActionButton>
+    <GameActionButton @game={{@game}} @action={{@game.represent}} @data={{hash representing=false}} data-test-antirepresent>Don’t represent</GameActionButton>
   {{/if}}
 
   {{#if this.canUnrepresent}}
-    <button class="border border-black" {{on "click" (perform this.representGame null)}} data-test-unrepresent>Clear decision</button>
+    <GameActionButton @game={{@game}} @action={{@game.represent}} @data={{hash representing=null}} data-test-unrepresent>Clear decision</GameActionButton>
   {{/if}}
 
   {{#if this.canCancel}}
-    <button class="border border-black" {{on "click" (perform this.cancelGame)}} data-test-cancel>Cancel</button>
+    <GameActionButton @game={{@game}} @action={{@game.cancel}} data-test-cancel>Cancel</GameActionButton>
   {{/if}}
 
   {{#if this.canDismiss}}
-    <button class="border border-black" {{on "click" (perform this.dismissGame)}} data-test-dismiss>Dismiss</button>
+    <GameActionButton @game={{@game}} @action={{@game.dismiss}} data-test-dismiss>Dismiss</GameActionButton>
   {{/if}}
 
   <p>

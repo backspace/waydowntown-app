@@ -81,34 +81,4 @@ export default class GameListItem extends Component {
       .mapBy('team')
       .rejectBy('id', this.args.team.id);
   }
-
-  @task(function*() {
-    yield this.args.game.accept();
-    return this.game;
-  })
-  acceptGame;
-
-  @task(function*() {
-    yield this.args.game.arrive();
-    return this.game;
-  })
-  arriveGame;
-
-  @task(function*(representing) {
-    yield this.args.game.represent({ representing });
-    return this.game;
-  })
-  representGame;
-
-  @task(function*() {
-    yield this.args.game.cancel();
-    return this.game;
-  })
-  cancelGame;
-
-  @task(function*() {
-    yield this.args.game.dismiss();
-    return this.game;
-  })
-  dismissGame;
 }
