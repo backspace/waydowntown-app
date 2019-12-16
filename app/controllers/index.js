@@ -239,10 +239,4 @@ export default class IndexController extends Controller {
     yield this.store.findAll('game', { reload: true });
   })
   reloadGames;
-
-  @task(function*(game) {
-    yield game.archive();
-    return game;
-  })
-  archiveGame;
 }
