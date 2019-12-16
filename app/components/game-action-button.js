@@ -2,10 +2,23 @@ import Component from '@glimmer/component';
 import { task } from 'ember-concurrency';
 import { bind } from '@ember/runloop';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import * as Sentry from '@sentry/browser';
 
 export default class GameActionButton extends Component {
   @service flashMessages;
+
+  @tracked showingConfirmation = false;
+
+  @action
+  clicked() {
+    if (this.args.confirmation && !this.showingConfirmation) {
+      this.showingConfirmation = true;
+    } else {
+      this.callAction.perform();
+    }
+  }
 
   @task(function*() {
     try {

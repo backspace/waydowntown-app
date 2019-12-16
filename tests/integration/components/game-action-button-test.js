@@ -77,6 +77,43 @@ module('Integration | Component | game-action-button', function(hooks) {
     await click('button');
   });
 
+  test('there can be a confirmation for a destructive action', async function(assert) {
+    const done = assert.async();
+
+    this.server.patch(`/games/${this.game.id}/arrive`, function() {
+      assert.notOk(true, 'this should not happen');
+    });
+
+    await render(hbs`
+      <GameActionButton @game={{game}} @action={{game.arrive}} @confirmation="Really?" @declination="No" data-test-confirmable>
+        Button text
+      </GameActionButton>
+    `);
+
+    await click('button');
+
+    assert.dom('[data-test-confirmable]').hasText('Really?');
+    assert.dom('[data-test-confirmable]').hasClass('bg-orange-300');
+
+    assert.dom('[data-test-cancel]').hasText('No');
+
+    await click('[data-test-cancel]');
+
+    this.server.patch(`/games/${this.game.id}/arrive`, function(
+      schema,
+      { requestBody },
+    ) {
+      assert.ok(true, 'Action was triggered');
+      assert.equal(requestBody, '{}');
+      done();
+    });
+
+    assert.dom('button').hasText('Button text');
+
+    await click('button');
+    await click('[data-test-confirmable]');
+  });
+
   test('the button is turned off while the action is in progress', async function(assert) {
     assert.expect(2);
 

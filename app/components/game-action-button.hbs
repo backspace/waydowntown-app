@@ -1,3 +1,12 @@
-<button class="border border-black {{if this.callAction.isRunning "opacity-50"}}" {{on "click" (perform this.callAction)}} disabled={{this.callAction.isRunning}} ...attributes>
-  {{yield}}
+{{#if this.showingConfirmation}}
+  <button class="border border-black" {{on "click" (action (mut this.showingConfirmation) false)}} data-test-cancel>
+    {{@declination}}
+  </button>
+{{/if}}
+<button class="border border-black {{if this.callAction.isRunning "opacity-50"}} {{if this.showingConfirmation "bg-orange-300"}}" {{on "click" this.clicked}} disabled={{this.callAction.isRunning}} data-test-action-confirmation={{this.showingConfirmation}} ...attributes>
+  {{#if this.showingConfirmation}}
+    {{@confirmation}}
+  {{else}}
+    {{yield}}
+  {{/if}}
 </button>

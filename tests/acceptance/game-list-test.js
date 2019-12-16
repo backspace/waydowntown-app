@@ -282,6 +282,7 @@ module('Acceptance | game list', function(hooks) {
 
     await visit('/');
     await click('[data-test-cancel]');
+    await click('[data-test-action-confirmation]');
 
     await settled();
 

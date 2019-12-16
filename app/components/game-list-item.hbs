@@ -20,7 +20,7 @@
   {{/if}}
 
   {{#if this.canCancel}}
-    <GameActionButton @game={{@game}} @action={{@game.cancel}} data-test-cancel>Cancel</GameActionButton>
+    <GameActionButton @game={{@game}} @action={{@game.cancel}} @confirmation="Really?" @declination="No" data-test-cancel>Cancel</GameActionButton>
   {{/if}}
 
   {{#if this.canDismiss}}
