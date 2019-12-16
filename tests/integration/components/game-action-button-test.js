@@ -1,8 +1,9 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { click, render } from '@ember/test-helpers';
+import { click, render, settled } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
 import { setupMirage } from 'ember-cli-mirage/test-support';
+import { Response } from 'ember-cli-mirage';
 
 module('Integration | Component | game-action-button', function(hooks) {
   setupRenderingTest(hooks);
@@ -75,5 +76,28 @@ module('Integration | Component | game-action-button', function(hooks) {
 
     await click('button');
   });
-});
 
+  test('a server failure calling the action displays a flash message', async function(assert) {
+    let dangerMessage;
+
+    // This is unfortunate but the addon initialiser means this can’t be stubbed as expected?!
+    this.owner.lookup('service:flash-messages').danger = message => {
+      dangerMessage = message;
+    };
+
+    this.server.patch(`/games/${this.game.id}/arrive`, function() {
+      return new Response(400, {}, {});
+    });
+
+    await render(hbs`
+      <GameActionButton @game={{game}} @action={{game.arrive}}>
+        Button text
+      </GameActionButton>
+    `);
+
+    await click('button');
+    await settled();
+
+    assert.equal(dangerMessage, 'There was an error performing that action');
+  });
+});
