@@ -77,6 +77,27 @@ module('Integration | Component | game-action-button', function(hooks) {
     await click('button');
   });
 
+  test('the button is turned off while the action is in progress', async function(assert) {
+    assert.expect(2);
+
+    this.server.patch(`/games/${this.game.id}/arrive`, async function(schema) {
+      await settled();
+
+      assert.dom('button').isDisabled();
+      assert.dom('button').hasClass('opacity-50');
+
+      return schema.games.first();
+    });
+
+    await render(hbs`
+      <GameActionButton @game={{game}} @action={{game.arrive}} @data={{hash x=1312}}>
+        Button text
+      </GameActionButton>
+    `);
+
+    await click('button');
+  });
+
   test('a server failure calling the action displays a flash message', async function(assert) {
     let dangerMessage;
 
