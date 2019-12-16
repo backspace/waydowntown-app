@@ -43,7 +43,7 @@ module('Acceptance | active game', function(hooks) {
     assert.dom('[data-test-scheduleds]').doesNotExist();
   });
 
-  test('an active but not representing game is shown but cannot be played', async function(assert) {
+  test('an active but not representing game is shown but cannot be played and does not cause vibration', async function(assert) {
     this.server.create('game', {
       conceptName: 'tap',
       state: 'scheduled',
@@ -60,6 +60,7 @@ module('Acceptance | active game', function(hooks) {
     assert
       .dom('[data-test-active-game]')
       .includesText('You are not representing your team in this game');
+    assert.equal(this.mockVibration.calls, 0);
   });
 
   test('a game can become active, causing vibration, and then inactive again as time passes', async function(assert) {
@@ -68,6 +69,7 @@ module('Acceptance | active game', function(hooks) {
       state: 'scheduled',
       beginsAt: new Date(new Date().getTime() - 1000 * 60),
       endsAt: new Date(new Date().getTime() + 1000 * 60),
+      representing: true,
     });
 
     this.setGameClock(new Date(new Date().getTime() - 1000 * 60 * 2));
