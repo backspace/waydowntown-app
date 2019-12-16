@@ -68,6 +68,14 @@ module('Acceptance | require setup', function(hooks) {
     registrationHandler({ registrationId: '1312', registrationType: '!' });
   });
 
+  test('the token can be extracted from the initial URL', async function(assert) {
+    const member = this.server.create('member', { name: 'tokenme' });
+
+    await visit(`/?token=${member.id}`);
+
+    assert.dom('[data-test-member-name]').hasText('tokenme');
+  });
+
   test('no save happens if the registration is the same', async function(assert) {
     const member = this.server.create('member', {
       name: 'me',

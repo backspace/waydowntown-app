@@ -23,6 +23,8 @@ export default class IndexController extends Controller {
 
   @storageFor('token') tokenStorage;
 
+  queryParams = ['token'];
+
   @tracked games;
 
   consumer = null;

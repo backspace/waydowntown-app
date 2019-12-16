@@ -7,9 +7,13 @@ export default class IndexRoute extends Route {
   @service('ember-cordova/splash') splash;
   @storageFor('token') tokenStorage;
 
-  model() {
+  model({ token }) {
     const adapter = this.store.adapterFor('application');
     const host = adapter.host || '';
+
+    if (token) {
+      this.set('tokenStorage.token', token);
+    }
 
     if (this.get('tokenStorage.token')) {
       return fetch(`${host}/auth?include=team`, {
