@@ -15,12 +15,13 @@ module('Acceptance | active game', function(hooks) {
   mockGameClock(hooks);
   mockVibration(hooks);
 
-  test('an active game is displayed but not shown as scheduled and an inactive one is not', async function(assert) {
+  test('an active and representing game is displayed but not shown as scheduled and an inactive one is not', async function(assert) {
     this.server.create('game', {
       conceptName: 'tap',
       state: 'scheduled',
       beginsAt: new Date(new Date().getTime() - 1000 * 60),
       endsAt: new Date(new Date().getTime() + 1000 * 60),
+      representing: true,
     });
 
     this.server.create('game', {
@@ -40,6 +41,25 @@ module('Acceptance | active game', function(hooks) {
     assert.dom('[data-test-active-game]').exists({ count: 1 });
 
     assert.dom('[data-test-scheduleds]').doesNotExist();
+  });
+
+  test('an active but not representing game is shown but cannot be played', async function(assert) {
+    this.server.create('game', {
+      conceptName: 'tap',
+      state: 'scheduled',
+      beginsAt: new Date(new Date().getTime() - 1000 * 60),
+      endsAt: new Date(new Date().getTime() + 1000 * 60),
+      representing: false,
+    });
+
+    await visit('/');
+
+    assert.dom('[data-test-taps]').doesNotExist();
+    assert.dom('[data-test-tap-target]').doesNotExist();
+
+    assert
+      .dom('[data-test-active-game]')
+      .includesText('You are not representing your team in this game');
   });
 
   test('a game can become active, causing vibration, and then inactive again as time passes', async function(assert) {
@@ -77,6 +97,7 @@ module('Acceptance | active game', function(hooks) {
       state: 'scheduled',
       beginsAt: new Date(new Date().getTime() - 1000 * 60),
       endsAt: new Date(new Date().getTime() + 1000 * 60),
+      representing: true,
     });
 
     await visit('/');
@@ -126,6 +147,7 @@ module('Acceptance | active game', function(hooks) {
       state: 'scheduled',
       beginsAt: new Date(new Date().getTime() - 1000 * 60),
       endsAt: new Date(new Date().getTime() + 1000 * 60),
+      representing: true,
     });
 
     let scanResultHandler;
