@@ -181,7 +181,6 @@ module('Acceptance | game list', function(hooks) {
     assert.dom('[data-test-representings]').exists();
     assert.dom('[data-test-scheduleds]').doesNotExist();
 
-
     this.server.patch(`/games/${game.id}/represent`, function(
       { representations, games },
       { requestBody },
