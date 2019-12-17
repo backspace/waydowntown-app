@@ -16,19 +16,22 @@ module('Acceptance | active game', function(hooks) {
   mockVibration(hooks);
 
   test('an active and representing game is displayed but not shown as scheduled and an inactive one is not', async function(assert) {
+    const time = new Date().getTime();
+    this.setGameClock(new Date(time));
+
     this.server.create('game', {
       conceptName: 'tap',
       state: 'scheduled',
-      beginsAt: new Date(new Date().getTime() - 1000 * 60),
-      endsAt: new Date(new Date().getTime() + 1000 * 60),
+      beginsAt: new Date(time - 1000 * 60),
+      endsAt: new Date(time + 1000 * 60),
       representing: true,
     });
 
     this.server.create('game', {
       conceptName: 'tap',
       state: 'scheduled',
-      beginsAt: new Date(new Date().getTime() - 1000 * 60),
-      endsAt: new Date(new Date().getTime() - 1000 * 59),
+      beginsAt: new Date(time - 1000 * 60),
+      endsAt: new Date(time - 1000 * 59),
     });
 
     await visit('/');
@@ -36,7 +39,7 @@ module('Acceptance | active game', function(hooks) {
     assert
       .dom('[data-test-active-game] [data-test-concept-name]')
       .hasText('tap');
-    assert.dom('[data-test-time-remaining]').hasText('59 seconds remaining');
+    assert.dom('[data-test-time-remaining]').hasText('60 seconds remaining');
 
     assert.dom('[data-test-active-game]').exists({ count: 1 });
 
