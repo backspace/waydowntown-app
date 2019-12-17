@@ -125,9 +125,13 @@ export default class IndexController extends Controller {
 
   @action
   setupConsumer() {
-    this.consumer = this.cable.createConsumer(
-      `${wsHost}/cable?token=${this.get('tokenStorage.token')}`,
-    );
+    const token = this.get('tokenStorage.token');
+
+    if (!token) {
+      return;
+    }
+
+    this.consumer = this.cable.createConsumer(`${wsHost}/cable?token=${token}`);
 
     this.consumer.subscriptions.create('TeamChannel', {
       connected() {},
