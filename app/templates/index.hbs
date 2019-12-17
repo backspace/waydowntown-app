@@ -2,6 +2,8 @@
   {{this.member.name}}
 </div>
 
+<LinkTo class="underline" @route="capabilities">Capabilities walkthrough</LinkTo>
+
 {{#each this.activeGames as |game|}}
   <ActiveGame @game={{game}} @team={{this.team}} @member={{this.member}} />
 {{/each}}

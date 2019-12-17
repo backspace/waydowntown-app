@@ -1,0 +1,99 @@
+<div class="absolute bg-gray-100 top-0 left-0 w-full min-h-screen z-10">
+  <StepManager as |w|>
+    <w.step>
+      <h2 class="text-2xl">Capabilities</h2>
+
+      We will walk through required and optional permissions and preferences.
+
+      <button class="border border-black" {{action w.transition-to-next}} data-test-next>
+        Next
+      </button>
+    </w.step>
+
+    {{#each this.hardwareCapabilities as |capability|}}
+      <w.step>
+        <h2 class="text-2xl">Capabilities: {{capability.label}}</h2>
+
+        <p>{{capability.description}}</p>
+
+        {{#unless capability.required}}
+          <button class="border border-black" {{on "click" (action w.transition-to-next)}} data-test-skip>
+            Skip
+          </button>
+        {{/unless}}
+
+        <button class="border border-black" {{on "click" (fn capability.action w)}} data-test-request>
+          Request
+        </button>
+      </w.step>
+    {{/each}}
+
+    <w.step>
+      <h2 class="text-2xl">Capabilities: Physical</h2>
+
+      <p>Some games have a significant physical component or happen in places with accessibility particularities. Let us know what kinds of games and places you can or want to access.</p>
+
+      {{#each this.physicalCapabilities as |capability|}}
+        <div>
+          <label for={{capability.id}}>{{capability.label}}</label>
+          <Input @id={{capability.id}} @type="checkbox" @name={{capability.id}} @checked={{get this.member.capabilities capability.id}} />
+          <p>{{capability.description}}</p>
+        </div>
+      {{/each}}
+
+      <button class="border border-black" {{action w.transition-to-previous}} data-test-previous>
+        Previous
+      </button>
+
+      <button class="border border-black" {{action w.transition-to-next}} data-test-next>
+        Next
+      </button>
+    </w.step>
+
+    <w.step>
+      <h2 class="text-2xl">Capabilities: Phone</h2>
+
+      <p>Games involve particular types of movements on the phone. Let us know which kinds of movements work for you.</p>
+
+      {{#each this.phoneCapabilities as |capability|}}
+        <div>
+          <label for={{capability.id}}>{{capability.label}}</label>
+          <Input @id={{capability.id}} @type="checkbox" @name={{capability.id}} @checked={{get this.member.capabilities capability.id}} />
+          <p>{{capability.description}}</p>
+        </div>
+      {{/each}}
+
+      <button class="border border-black" {{action w.transition-to-previous}} data-test-previous>
+        Previous
+      </button>
+
+      <button class="border border-black" {{action w.transition-to-next}} data-test-next>
+        Next
+      </button>
+    </w.step>
+
+    <w.step>
+      <h2 class="text-2xl">Capabilities: Summary</h2>
+
+      <ul>
+        {{#each-in this.capabilities as |key value|}}
+          <li data-test-capability={{key}}>
+            {{key}}: <span data-test-value>{{value}}</span>
+          </li>
+        {{/each-in}}
+      </ul>
+
+      <button class="border border-black" {{action w.transition-to-previous}} data-test-previous>
+        Previous
+      </button>
+
+      <button class="border border-black" {{on "click" (perform this.save)}} data-test-save>
+        Save
+      </button>
+    </w.step>
+
+    {{#if this.error}}
+      <p>Error: <span data-test-error>{{this.error}}</span></p>
+    {{/if}}
+  </StepManager>
+</div>
