@@ -16,7 +16,7 @@ module('Acceptance | capabilities', function(hooks) {
       cordova: 'a',
       model: 'b',
       platform: 'c',
-      uuid: 'd',
+      uuid: 'uuid',
       version: 'e',
       manufacturer: 'f',
       isVirtual: 'g',
@@ -35,6 +35,7 @@ module('Acceptance | capabilities', function(hooks) {
   });
 
   hooks.afterEach(function() {
+    delete window.device;
     navigator.geolocation.getCurrentPosition = this.oldGetCurrentPosition;
   });
 
@@ -178,5 +179,26 @@ module('Acceptance | capabilities', function(hooks) {
       .lookup('service:store')
       .peekRecord('member', this.member.id);
     assert.notOk(memberRecord.capabilities.hasDirtyAttributes);
+  });
+
+  test('the walkthrough begins automatically when the device details are unknown', async function(assert) {
+    window.device.available = true;
+    this.member.attrs.device = {};
+    this.member.save();
+
+    await visit('/');
+
+    assert.equal(currentURL(), '/member/capabilities');
+  });
+
+  test('the walkthrough begins automatically with an explanation when the device OS version changes', async function(assert) {
+    window.device.available = true;
+    this.member.attrs.device.version = '1312';
+    this.member.save();
+
+    await visit('/');
+
+    assert.equal(currentURL(), '/member/capabilities?forced=true');
+    assert.dom('[role=alert]').exists();
   });
 });

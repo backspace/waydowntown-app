@@ -6,13 +6,15 @@ import { task } from 'ember-concurrency';
 export default class CapabilitiesController extends Controller {
   @tracked error;
 
+  queryParams = ['forced'];
+
   get capabilities() {
     return this.get('member.capabilities').toJSON();
   }
 
   get device() {
-    this.set('member.device', window.device || {});
-    return window.device;
+    this.set('member.device', window.device || { uuid: 'browser' });
+    return this.get('member.device').toJSON();
   }
 
   @action

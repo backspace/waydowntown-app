@@ -5,6 +5,23 @@ export default class MemberRoute extends Route {
     return this.modelFor('member');
   }
 
+  afterModel({ member }) {
+    const device = window.device || { available: false, uuid: 'browser' };
+
+    // This happens in a browser when serving with Cordova
+    if (!device.available) {
+      return;
+    }
+
+    if (!member.get('device.uuid')) {
+      this.transitionTo('member.capabilities');
+    } else if (device.version !== member.get('device.version')) {
+      this.transitionTo('member.capabilities', {
+        queryParams: { forced: true },
+      });
+    }
+  }
+
   setupController(controller, { games, member, team, teams }) {
     controller.setProperties({ games, member, team, teams });
   }
