@@ -14,6 +14,7 @@ export default class MemberModel extends Model {
   @attr('date') lastUnsubscribed;
 
   @fragment('capabilities', { defaultValue: {} }) capabilities;
+  @fragment('device', { defaultValue: {} }) device;
 
   get isPresent() {
     return this.lastSubscribed > this.lastUnsubscribed;

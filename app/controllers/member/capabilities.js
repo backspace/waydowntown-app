@@ -10,6 +10,11 @@ export default class CapabilitiesController extends Controller {
     return this.get('member.capabilities').toJSON();
   }
 
+  get device() {
+    this.set('member.device', window.device);
+    return window.device;
+  }
+
   @action
   requestLocation() {
     navigator.geolocation.getCurrentPosition(

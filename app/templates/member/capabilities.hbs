@@ -31,6 +31,24 @@
       </button>
     </w.step>
 
+    <w.step>
+      <h2 class="text-2xl">Capabilities: Device</h2>
+
+      These are some characteristics of this device.
+
+      <ul>
+        {{#each-in this.device as |key value|}}
+          <li data-test-device={{key}}>
+            {{key}}: <span data-test-value>{{value}}</span>
+          </li>
+        {{/each-in}}
+      </ul>
+
+      <button class="border border-black" {{action w.transition-to-next}} data-test-next>
+        Next
+      </button>
+    </w.step>
+
     {{#each this.hardwareCapabilities as |capability|}}
       <w.step>
         <h2 class="text-2xl">Capabilities: {{capability.label}}</h2>

@@ -12,6 +12,17 @@ module('Acceptance | capabilities', function(hooks) {
   mockCable(hooks);
 
   hooks.beforeEach(function() {
+    window.device = {
+      cordova: 'a',
+      model: 'b',
+      platform: 'c',
+      uuid: 'd',
+      version: 'e',
+      manufacturer: 'f',
+      isVirtual: 'g',
+      serial: 'h',
+    };
+
     this.oldGetCurrentPosition = navigator.geolocation.getCurrentPosition;
 
     navigator.geolocation.getCurrentPosition = (success, error) => {
@@ -27,12 +38,11 @@ module('Acceptance | capabilities', function(hooks) {
     navigator.geolocation.getCurrentPosition = this.oldGetCurrentPosition;
   });
 
-  test('capabilities are requested and obtained in sequence and persisted', async function(assert) {
+  test('device and capabilities are requested and obtained in sequence and persisted', async function(assert) {
     this.member.attrs.capabilities = { stairs: true };
     this.member.save();
 
     const done = assert.async();
-
     const expectedCapabilities = {
       bluetooth: false,
       decibels: false,
@@ -49,6 +59,7 @@ module('Acceptance | capabilities', function(hooks) {
       const member = members.find(request.params.id);
       member.update(this.normalizedRequestAttrs());
 
+      assert.deepEqual(member.attrs.device, window.device);
       assert.deepEqual(member.attrs.capabilities, expectedCapabilities);
 
       done();
@@ -57,6 +68,16 @@ module('Acceptance | capabilities', function(hooks) {
     });
 
     await visit('/member/capabilities');
+
+    await click('[data-test-next]');
+
+    assert.dom('h2').includesText('Device');
+
+    Object.keys(window.device).forEach(key => {
+      assert
+        .dom(`[data-test-device='${key}'] [data-test-value]`)
+        .hasText(window.device[key].toString());
+    });
 
     await click('[data-test-next]');
 
@@ -118,6 +139,7 @@ module('Acceptance | capabilities', function(hooks) {
 
     await visit('/member/capabilities');
     await click('[data-test-next]');
+    await click('[data-test-next]');
     await click('[data-test-request]');
 
     assert.dom('[data-test-error]').hasText('error');
@@ -141,6 +163,7 @@ module('Acceptance | capabilities', function(hooks) {
 
   test('exiting the process when something has changed takes two steps and reverts changes', async function(assert) {
     await visit('/member/capabilities');
+    await click('[data-test-next]');
     await click('[data-test-next]');
     await click('[data-test-request]');
 
