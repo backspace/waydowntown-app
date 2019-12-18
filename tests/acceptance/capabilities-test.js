@@ -111,7 +111,7 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-save]');
   });
 
-  test('a failure to obtain location permissions is displayed', async function(assert) {
+  test('a failure to obtain location permissions is displayed but cleared on the next step', async function(assert) {
     this.getCurrentPositionOverride = (success, error) => {
       error('error');
     };
@@ -121,6 +121,14 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-request]');
 
     assert.dom('[data-test-error]').hasText('error');
+
+    this.getCurrentPositionOverride = success => {
+      success();
+    };
+
+    await click('[data-test-request]');
+
+    assert.dom('[data-test-error]').doesNotExist();
   });
 
   test('exiting the process before anything has changed takes one step', async function(assert) {

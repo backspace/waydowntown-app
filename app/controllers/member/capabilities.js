@@ -11,11 +11,11 @@ export default class CapabilitiesController extends Controller {
   }
 
   @action
-  requestLocation(stepManager) {
+  requestLocation() {
     navigator.geolocation.getCurrentPosition(
       () => {
         this.set('member.capabilities.location', true);
-        stepManager['transition-to-next']();
+        this.transitionToNextStep();
       },
       error => {
         this.error = error;
@@ -24,12 +24,12 @@ export default class CapabilitiesController extends Controller {
   }
 
   @action
-  requestBluetooth(stepManager) {
+  requestBluetooth() {
     try {
       window.bluetoothle.initialize(({ status }) => {
         if (status === 'enabled') {
           this.set('member.capabilities.bluetooth', true);
-          stepManager['transition-to-next']();
+          this.transitionToNextStep();
         } else {
           throw new Error('Failed to obtain access to Bluetooth');
         }
@@ -41,7 +41,7 @@ export default class CapabilitiesController extends Controller {
   }
 
   @action
-  requestDecibels(stepManager) {
+  requestDecibels() {
     let succeeded = false;
 
     try {
@@ -53,7 +53,7 @@ export default class CapabilitiesController extends Controller {
             window.DBMeter.stop(
               () => {
                 this.set('member.capabilities.decibels', true);
-                stepManager['transition-to-next']();
+                this.transitionToNextStep();
               },
               error => {
                 throw error;
@@ -76,6 +76,11 @@ export default class CapabilitiesController extends Controller {
   @action exit() {
     this.member.capabilities.rollbackAttributes();
     this.transitionToRoute('member');
+  }
+
+  transitionToNextStep() {
+    this.error = undefined;
+    this.stepManager['transition-to-next']();
   }
 
   hardwareCapabilities = [
