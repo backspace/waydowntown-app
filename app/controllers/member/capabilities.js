@@ -73,6 +73,11 @@ export default class CapabilitiesController extends Controller {
     }
   }
 
+  @action exit() {
+    this.member.capabilities.rollbackAttributes();
+    this.transitionToRoute('member');
+  }
+
   hardwareCapabilities = [
     {
       label: 'Location',

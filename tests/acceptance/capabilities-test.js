@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { click, visit, settled } from '@ember/test-helpers';
+import { click, currentURL, visit, settled } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import setToken from 'waydowntown/tests/helpers/set-token';
@@ -121,5 +121,31 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-request]');
 
     assert.dom('[data-test-error]').hasText('error');
+  });
+
+  test('exiting the process before anything has changed takes one step', async function(assert) {
+    await visit('/member/capabilities');
+    await click('[data-test-next]');
+    await click('[data-test-exit]');
+
+    assert.equal(currentURL(), '/member');
+  });
+
+  test('exiting the process when something has changed takes two steps and reverts changes', async function(assert) {
+    await visit('/member/capabilities');
+    await click('[data-test-next]');
+    await click('[data-test-request]');
+
+    await click('[data-test-request-exit]');
+    await click('[data-test-cancel-exit]');
+    await click('[data-test-request-exit]');
+    await click('[data-test-exit]');
+
+    assert.equal(currentURL(), '/member');
+
+    const memberRecord = this.owner
+      .lookup('service:store')
+      .peekRecord('member', this.member.id);
+    assert.notOk(memberRecord.capabilities.hasDirtyAttributes);
   });
 });
