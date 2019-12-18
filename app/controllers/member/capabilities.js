@@ -6,7 +6,7 @@ import { task } from 'ember-concurrency';
 export default class CapabilitiesController extends Controller {
   @tracked error;
 
-  queryParams = ['forced'];
+  queryParams = ['first', 'forced'];
 
   get capabilities() {
     return this.get('member.capabilities').toJSON();

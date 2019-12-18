@@ -188,7 +188,8 @@ module('Acceptance | capabilities', function(hooks) {
 
     await visit('/');
 
-    assert.equal(currentURL(), '/member/capabilities');
+    assert.equal(currentURL(), '/member/capabilities?first=true');
+    assert.dom('[data-test-exit]').doesNotExist();
   });
 
   test('the walkthrough begins automatically with an explanation when the device OS version changes', async function(assert) {
