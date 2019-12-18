@@ -3,11 +3,13 @@ import { click, visit, settled } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import setToken from 'waydowntown/tests/helpers/set-token';
+import mockCable from 'waydowntown/tests/helpers/mock-cable';
 
 module('Acceptance | capabilities', function(hooks) {
   setupApplicationTest(hooks);
   setupMirage(hooks);
   setToken(hooks);
+  mockCable(hooks);
 
   hooks.beforeEach(function() {
     this.oldGetCurrentPosition = navigator.geolocation.getCurrentPosition;
@@ -54,7 +56,7 @@ module('Acceptance | capabilities', function(hooks) {
       return member;
     });
 
-    await visit('/capabilities');
+    await visit('/member/capabilities');
 
     await click('[data-test-next]');
 
@@ -114,7 +116,7 @@ module('Acceptance | capabilities', function(hooks) {
       error('error');
     };
 
-    await visit('/capabilities');
+    await visit('/member/capabilities');
     await click('[data-test-next]');
     await click('[data-test-request]');
 

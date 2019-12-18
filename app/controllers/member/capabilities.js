@@ -126,7 +126,7 @@ export default class CapabilitiesController extends Controller {
   @task(function*() {
     try {
       yield this.member.save();
-      this.transitionToRoute('application');
+      this.transitionToRoute('member');
     } catch (e) {
       this.set('error', 'Error saving capabilities: ' + e);
     }

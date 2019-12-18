@@ -1,0 +1,105 @@
+{{#each this.activeGames as |game|}}
+  <ActiveGame @game={{game}} @team={{this.team}} @member={{this.member}} />
+{{/each}}
+
+{{#if this.finishedGames}}
+  Finished games:
+  <ul data-test-results>
+    {{#each this.finishedGames as |game|}}
+      <li class="border border-black p-1" data-test-game-id={{game.id}}>
+        <span data-test-concept-name>{{game.incarnation.concept.name}}</span>: <GameResults @game={{game}} />
+        <GameActionButton @game={{game}} @action={{game.archive}} data-test-archive>Archive</GameActionButton>
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
+
+<button class="border border-black {{if this.team.cannotRequest "opacity-50 cursor-default"}}" disabled={{this.team.cannotRequest}} {{on "click" (perform this.requestGame null null)}} data-test-request>Request Game</button>
+
+<button class="border border-black" {{on "click" (perform this.reloadGames)}}>
+  {{#if this.reloadGames.isRunning}}
+    Reloading…
+  {{else}}
+    Reload Games
+  {{/if}}
+</button>
+
+{{#if this.invitations}}
+  Invitations:
+  <ul data-test-invitations>
+    {{#each this.invitations as |invitation|}}
+      <GameListItem @game={{invitation}} @team={{this.team}} />
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if this.acceptances}}
+  Acceptances:
+  <ul data-test-acceptances>
+    {{#each this.acceptances as |acceptance|}}
+      <GameListItem @game={{acceptance}} @team={{this.team}} />
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if this.convergings}}
+  Convergings:
+  <ul data-test-convergings>
+    {{#each this.convergings as |converging|}}
+      <GameListItem @game={{converging}} @team={{this.team}} />
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if this.representings}}
+  Representings:
+  <ul data-test-representings>
+    {{#each this.representings as |representing|}}
+      <GameListItem @game={{representing}} @team={{this.team}} @member={{this.member}} />
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if this.scheduleds}}
+  Scheduled:
+  <ul data-test-scheduleds>
+    {{#each this.scheduleds as |scheduled|}}
+      <GameListItem @game={{scheduled}} @team={{this.team}} />
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if this.cancelledGames}}
+  Cancelled:
+  <ul data-test-cancellations>
+    {{#each this.cancelledGames as |cancelled|}}
+      <GameListItem @game={{cancelled}} @team={{this.team}} />
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if this.teams}}
+  <ul data-test-teams>
+    {{#each this.teams as |team|}}
+      {{#if (not-eq team.id this.team.id)}}
+        <li class={{if team.isPresent "bg-green-300" "bg-red-300"}} data-test-team-id={{team.id}}>
+          {{team.name}}
+          {{#each this.concepts as |concept|}}
+            <button class="border border-black" {{on "click" (perform this.requestGame concept team.id)}}>{{concept}}</button>
+          {{/each}}
+        </li>
+      {{/if}}
+    {{/each}}
+  </ul>
+{{/if}}
+
+<button class="border border-black" {{on "click" (toggle-action "showMap" this)}} data-test-toggle-map>{{if this.showMap "Hide" "Show"}} Map</button>
+
+{{#if this.showMap}}
+  <Map @teams={{this.teams}} />
+{{/if}}
+
+Start solo games:
+{{#each this.concepts as |concept|}}
+  <button class="border border-black" {{on "click" (perform this.requestGame concept null)}}>{{concept}}</button>
+{{/each}}
