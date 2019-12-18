@@ -11,7 +11,7 @@ export default class CapabilitiesController extends Controller {
   }
 
   get device() {
-    this.set('member.device', window.device);
+    this.set('member.device', window.device || {});
     return window.device;
   }
 
