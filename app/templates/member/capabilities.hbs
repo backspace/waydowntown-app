@@ -64,7 +64,7 @@
         <p>{{capability.description}}</p>
 
         {{#unless capability.required}}
-          <button class="border border-black" {{on "click" (action w.transition-to-next)}} data-test-skip>
+          <button class="border border-black" {{on "click" (action this.transitionToNextStep)}} data-test-skip>
             Skip
           </button>
         {{/unless}}

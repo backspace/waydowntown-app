@@ -85,7 +85,7 @@ export default class CapabilitiesController extends Controller {
     this.transitionToRoute('member');
   }
 
-  transitionToNextStep() {
+  @action transitionToNextStep() {
     this.error = undefined;
     this.stepManager['transition-to-next']();
   }

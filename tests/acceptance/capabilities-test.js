@@ -105,6 +105,8 @@ module('Acceptance | capabilities', function(hooks) {
 
     await click('[data-test-skip]');
 
+    assert.dom('[data-test-error]').doesNotExist();
+
     assert.dom('h2').includesText('Decibel meter');
     await click('[data-test-skip]');
 
