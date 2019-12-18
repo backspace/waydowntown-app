@@ -1,6 +1,6 @@
 <div class="absolute bg-gray-100 top-0 left-0 w-full min-h-screen z-10">
   <StepManager as |w|>
-    <nav class="absolute top-0 right-0 m-4" {{did-insert (set this.stepManager w)}}>
+    <nav class="absolute flex flex-row-reverse top-0 right-0 m-4" {{did-insert (set this.stepManager w)}}>
       {{#if this.member.capabilities.hasDirtyAttributes}}
         {{#if this.requestingExit}}
           <button class="border border-black" {{action (mut this.requestingExit) false}} data-test-cancel-exit>
