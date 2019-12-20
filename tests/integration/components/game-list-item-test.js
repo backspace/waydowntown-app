@@ -165,7 +165,7 @@ module('Integration | Component | game-list-item', function(hooks) {
 
   test('a representing game with an other representation has representation buttons, an explanation, and a countdown', async function(assert) {
     const now = new Date();
-    const representingEndsAt = new Date(now.getTime() + 1000 * 10);
+    const representingEndsAt = new Date(now.getTime() + 1000 * 1);
     this.setGameClock(now);
 
     this.set('member', { id: 1 });
@@ -197,7 +197,7 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert.dom('[data-test-representing-choice]').exists();
     assert
       .dom('[data-test-representing-ends-at]')
-      .hasText('Representing ends in 10 seconds');
+      .hasText('Representing ends in 1 second');
   });
 
   test('a scheduled game shows instructions and when it begins but no representation countdown', async function(assert) {

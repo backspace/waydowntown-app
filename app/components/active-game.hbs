@@ -1,7 +1,7 @@
 <div class="bg-purple-300 p-1" {{did-insert this.vibrateIfRepresenting}} data-test-active-game>
   Game in progress: <span data-test-concept-name>{{@game.incarnation.concept.name}}</span>
   <p data-test-time-remaining>
-    {{moment-diff this.gameClock.date @game.endsAt precision="seconds" interval=200}} seconds remaining
+    {{pluralize (moment-diff this.gameClock.date @game.endsAt precision="seconds" interval=200) "second"}} remaining
   </p>
 
   {{#if this.isRepresenting}}
