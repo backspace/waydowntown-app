@@ -117,35 +117,4 @@ export default class MemberController extends Controller {
   willDestroy() {
     this.consumer?.destroy();
   }
-
-  @task(function*(conceptId, teamId) {
-    const emptyGame = this.store.createRecord('game');
-
-    const parameters = {};
-
-    if (conceptId) {
-      parameters.concept_id = conceptId;
-
-      if (teamId) {
-        parameters.team_id = teamId;
-      }
-    }
-
-    try {
-      const game = yield emptyGame.request(parameters);
-      return game;
-    } catch (e) {
-      this.flashMessages.warning('There was an error requesting a game');
-    } finally {
-      emptyGame.deleteRecord();
-    }
-  })
-  requestGame;
-
-  concepts = ['bluetooth-collector', 'tap'];
-
-  @task(function*() {
-    yield this.store.findAll('game', { reload: true });
-  })
-  reloadGames;
 }
