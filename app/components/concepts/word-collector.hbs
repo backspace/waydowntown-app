@@ -1,0 +1,10 @@
+<button class="border border-black" {{on "click" this.recognise}} data-test-take-photo>Take a photo and extract words</button>
+
+
+{{#if this.words.length}}
+  <ul data-test-words>
+    {{#each this.words as |word|}}
+      <li>{{word}}</li>
+    {{/each}}
+  </ul>
+{{/if}}

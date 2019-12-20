@@ -141,7 +141,7 @@ export default class MemberController extends Controller {
   })
   requestGame;
 
-  concepts = ['bluetooth-collector', 'tap'];
+  concepts = ['bluetooth-collector', 'tap', 'word-collector'];
 
   @task(function*() {
     yield this.store.findAll('game', { reload: true });

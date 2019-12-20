@@ -228,4 +228,79 @@ module('Acceptance | active game', function(hooks) {
       )
       .hasText('2');
   });
+
+  test('the word-collector game collects words via OCR', async function(assert) {
+    this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
+
+    const game = this.server.create('game', {
+      conceptName: 'word-collector',
+      state: 'scheduled',
+      beginsAt: new Date(new Date().getTime() - 1000 * 60),
+      endsAt: new Date(new Date().getTime() + 1000 * 60),
+      representing: true,
+    });
+
+    let recTextHandler;
+
+    navigator.camera = {
+      getPicture(success) {
+        success();
+      },
+    };
+
+    window.textocr = {
+      recText(sourceType, uri, success) {
+        recTextHandler = success;
+      },
+    };
+
+    await visit('/');
+
+    assert.dom('[data-test-words]').doesNotExist();
+    await click('[data-test-take-photo]');
+
+    recTextHandler({
+      words: {
+        wordtext: ['Adjective'],
+      },
+    });
+
+    await settled();
+
+    assert.dom('[data-test-words]').includesText('Adjective');
+
+    recTextHandler({
+      words: {
+        wordtext: ['Noun', 'Adjective'],
+      },
+    });
+
+    await settled();
+
+    assert.dom('[data-test-words]').includesText('Noun');
+    assert.dom('[data-test-words] li').exists({ count: 2 });
+
+    this.server.patch(
+      `/games/${game.id}/report`,
+      ({ participations, representations, games }, { requestBody }) => {
+        const result = JSON.parse(requestBody).result;
+        representations.findBy({ memberId: this.member.id }).update({ result });
+        participations
+          .findBy({ teamId: this.team.id })
+          .update({ state: 'finished' });
+        return games.find(game.id);
+      },
+    );
+
+    this.setGameClock(new Date(new Date().getTime() + 1000 * 60 * 2));
+    await settled();
+
+    await settled(); // Twice because of the reporting action? 🧐
+
+    assert
+      .dom(
+        `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-member-id='${this.member.id}'] [data-test-result]`,
+      )
+      .hasText('2');
+  });
 });
