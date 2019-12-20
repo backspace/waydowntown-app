@@ -211,7 +211,9 @@ module('Acceptance | game list', function(hooks) {
 
     assert.dom('[data-test-represent]').doesNotExist();
     assert.dom('[data-test-antirepresent]').doesNotExist();
-    assert.dom('[data-test-unrepresent]').exists();
+    assert
+      .dom('[data-test-unrepresent]')
+      .hasText('Revert decision to represent');
 
     const gameStartTime = new Date(now.getTime() + 1000 * 60);
 

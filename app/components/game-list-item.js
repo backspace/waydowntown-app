@@ -36,32 +36,32 @@ export default class GameListItem extends Component {
   }
 
   get canRepresent() {
-    if (this.teamParticipation?.state !== 'representing') {
-      return false;
-    }
-
-    const memberRepresentation = this.teamParticipation.representations.find(
-      representation => representation.get('member.id') === this.args.member.id,
-    );
+    const memberRepresentation = this.memberRepresentation;
 
     return (
+      memberRepresentation &&
       memberRepresentation.representing !== true &&
       memberRepresentation.representing !== false
     );
   }
 
   get canUnrepresent() {
+    const memberRepresentation = this.memberRepresentation;
+
+    return (
+      memberRepresentation &&
+      memberRepresentation.representing !== null &&
+      memberRepresentation.representing !== undefined
+    );
+  }
+
+  get memberRepresentation() {
     if (this.teamParticipation?.state !== 'representing') {
       return false;
     }
 
-    const memberRepresentation = this.teamParticipation.representations.find(
+    return this.teamParticipation.representations.find(
       representation => representation.get('member.id') === this.args.member.id,
-    );
-
-    return (
-      memberRepresentation.representing !== null &&
-      memberRepresentation.representing !== undefined
     );
   }
 

@@ -125,7 +125,9 @@ module('Integration | Component | game-list-item', function(hooks) {
       hbs`<GameListItem @game={{game}} @team={{team}} @member={{member}} />`,
     );
 
-    assert.dom('[data-test-unrepresent]').exists();
+    assert
+      .dom('[data-test-unrepresent]')
+      .hasText('Revert decision to not represent');
     assert.dom('button').exists({ count: 1 });
     assert
       .dom('[data-test-representing-ends-at]')

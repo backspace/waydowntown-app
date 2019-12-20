@@ -20,7 +20,9 @@
     {{#if this.isSoloTeam}}
       <p data-test-representing-others>Waiting for everyone to choose representation.</p>
     {{else}}
-      <GameActionButton @game={{@game}} @action={{@game.represent}} @data={{hash representing=null}} data-test-unrepresent>Clear decision</GameActionButton>
+      <GameActionButton @game={{@game}} @action={{@game.represent}} @data={{hash representing=null}} data-test-unrepresent>
+        Revert decision to {{if this.memberRepresentation.representing "" "not"}} represent
+      </GameActionButton>
     {{/if}}
   {{/if}}
 
