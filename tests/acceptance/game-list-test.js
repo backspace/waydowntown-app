@@ -188,6 +188,9 @@ module('Acceptance | game list', function(hooks) {
     assert
       .dom('[data-test-representing-ends-at]')
       .hasText('Representing ends in 10 seconds');
+    assert
+      .dom('[data-test-representings] [data-test-instructions]')
+      .hasText('Tap the button as many times as you can');
     assert.dom('[data-test-scheduleds]').doesNotExist();
 
     this.server.patch(`/games/${game.id}/represent`, function(

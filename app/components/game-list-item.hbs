@@ -60,7 +60,7 @@
     <p data-test-begins-at>Begins in {{moment-diff this.gameClock.date @game.beginsAt precision="seconds" interval=200}} seconds</p>
   {{/if}}
 
-  {{#if this.participationIsScheduled}}
+  {{#if this.memberRepresentation}}
     <p data-test-instructions>{{@game.incarnation.concept.instructions}}</p>
   {{/if}}
 </li>

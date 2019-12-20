@@ -101,7 +101,7 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert.dom('button').exists({ count: 2 });
   });
 
-  test('a representing game with a self representation on a team with other members has a button to unrepresent and a countdown', async function(assert) {
+  test('a representing game with a self representation on a team with other members has a button to unrepresent, a countdown, and instructions', async function(assert) {
     const now = new Date();
     const representingEndsAt = new Date(now.getTime() + 1000 * 10);
     this.setGameClock(now);
@@ -109,6 +109,11 @@ module('Integration | Component | game-list-item', function(hooks) {
     this.set('member', { id: 1 });
     this.set('team', { id: 1, members: [this.member, { id: 2 }] });
     this.set('game', {
+      incarnation: {
+        concept: {
+          instructions: 'Representing game instructions',
+        },
+      },
       participations: [
         EmberObject.create({
           state: 'representing',
@@ -132,6 +137,9 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert
       .dom('[data-test-representing-ends-at]')
       .hasText('Representing ends in 10 seconds');
+    assert
+      .dom('[data-test-instructions]')
+      .hasText('Representing game instructions');
   });
 
   test('a representing game with a self representation on a solo team has no button to unrepresent but has a countdown', async function(assert) {
