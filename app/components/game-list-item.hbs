@@ -13,10 +13,15 @@
   {{#if this.canRepresent}}
     <GameActionButton @game={{@game}} @action={{@game.represent}} @data={{hash representing=true}} data-test-represent>Represent</GameActionButton>
     <GameActionButton @game={{@game}} @action={{@game.represent}} @data={{hash representing=false}} data-test-antirepresent>Don’t represent</GameActionButton>
+    <p data-test-representing-choice>If no one on your team chooses to represent, representation will be chosen for you.</p>
   {{/if}}
 
   {{#if this.canUnrepresent}}
-    <GameActionButton @game={{@game}} @action={{@game.represent}} @data={{hash representing=null}} data-test-unrepresent>Clear decision</GameActionButton>
+    {{#if this.isSoloTeam}}
+      <p data-test-representing-others>Waiting for everyone to choose representation.</p>
+    {{else}}
+      <GameActionButton @game={{@game}} @action={{@game.represent}} @data={{hash representing=null}} data-test-unrepresent>Clear decision</GameActionButton>
+    {{/if}}
   {{/if}}
 
   {{#if (or this.canRepresent this.canUnrepresent)}}

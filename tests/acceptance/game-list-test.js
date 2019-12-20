@@ -180,6 +180,7 @@ module('Acceptance | game list', function(hooks) {
     teamParticipation.createRepresentation({
       member: this.member,
     });
+    this.team.createMember();
 
     await visit('/');
 

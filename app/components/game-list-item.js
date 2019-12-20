@@ -65,6 +65,10 @@ export default class GameListItem extends Component {
     );
   }
 
+  get isSoloTeam() {
+    return this.args.team.members.length === 1;
+  }
+
   get canCancel() {
     return ['invited', 'accepted', 'converging'].includes(
       this.teamParticipation?.state,

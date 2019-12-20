@@ -101,13 +101,13 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert.dom('button').exists({ count: 2 });
   });
 
-  test('a representing game with a self representation has a button to unrepresent and a countdown', async function(assert) {
+  test('a representing game with a self representation on a team with other members has a button to unrepresent and a countdown', async function(assert) {
     const now = new Date();
     const representingEndsAt = new Date(now.getTime() + 1000 * 10);
     this.setGameClock(now);
 
     this.set('member', { id: 1 });
-    this.set('team', { id: 1, members: [this.member] });
+    this.set('team', { id: 1, members: [this.member, { id: 2 }] });
     this.set('game', {
       participations: [
         EmberObject.create({
@@ -132,7 +132,38 @@ module('Integration | Component | game-list-item', function(hooks) {
       .hasText('Representing ends in 10 seconds');
   });
 
-  test('a representing game with an other representation has representation buttons and a countdown', async function(assert) {
+  test('a representing game with a self representation on a solo team has no button to unrepresent but has a countdown', async function(assert) {
+    const now = new Date();
+    const representingEndsAt = new Date(now.getTime() + 1000 * 10);
+    this.setGameClock(now);
+
+    this.set('member', { id: 1 });
+    this.set('team', { id: 1, members: [this.member] });
+    this.set('game', {
+      participations: [
+        EmberObject.create({
+          state: 'representing',
+          team: this.team,
+          representations: [
+            EmberObject.create({ representing: false, member: this.member }),
+          ],
+        }),
+      ],
+      representingEndsAt,
+    });
+
+    await render(
+      hbs`<GameListItem @game={{game}} @team={{team}} @member={{member}} />`,
+    );
+
+    assert.dom('button').doesNotExist();
+    assert.dom('[data-test-representing-others]').exists();
+    assert
+      .dom('[data-test-representing-ends-at]')
+      .hasText('Representing ends in 10 seconds');
+  });
+
+  test('a representing game with an other representation has representation buttons, an explanation, and a countdown', async function(assert) {
     const now = new Date();
     const representingEndsAt = new Date(now.getTime() + 1000 * 10);
     this.setGameClock(now);
@@ -163,6 +194,7 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert.dom('[data-test-represent]').exists();
     assert.dom('[data-test-antirepresent]').exists();
     assert.dom('button').exists({ count: 2 });
+    assert.dom('[data-test-representing-choice]').exists();
     assert
       .dom('[data-test-representing-ends-at]')
       .hasText('Representing ends in 10 seconds');
