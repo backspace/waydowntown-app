@@ -8,7 +8,11 @@ export default Factory.extend({
         state: game.state,
       });
 
-      if (game.state === 'representing' || game.state === 'scheduled') {
+      if (
+        game.state === 'representing' ||
+        game.state === 'scheduled' ||
+        game.state === 'finished'
+      ) {
         (team.members || { models: [] }).models.forEach(member => {
           let representation = { member };
           if (Object.prototype.hasOwnProperty.call(game, 'representing')) {

@@ -96,7 +96,14 @@ export default class MemberController extends Controller {
         participation => participation.get('team.id') === this.teamId,
       );
 
-      return participationForThisTeam.state === 'finished';
+      const representation = participationForThisTeam.representations.find(
+        representation => representation.get('member.id') === this.member.id,
+      );
+
+      return (
+        participationForThisTeam.state === 'finished' &&
+        (!representation || !representation.archived)
+      );
     });
   }
 

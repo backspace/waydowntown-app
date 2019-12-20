@@ -328,17 +328,12 @@ module('Acceptance | game list', function(hooks) {
       state: 'finished',
     });
 
-    game.createParticipation({
-      team: this.server.create('team', { name: 'other team' }),
-      state: 'finished',
-    });
-
     this.server.patch(
       `/games/${game.id}/archive`,
-      ({ participations, games }) => {
-        participations
-          .where({ teamId: this.team.id })
-          .update('state', 'archived');
+      ({ representations, games }) => {
+        representations
+          .where({ memberId: this.member.id })
+          .update('archived', true);
         return games.find(game.id);
       },
     );
