@@ -324,7 +324,6 @@ module('Acceptance | game list', function(hooks) {
   });
 
   test('a finished game can be archived', async function(assert) {
-    this.server.logging = true;
     const game = this.server.create('game', {
       state: 'finished',
     });
