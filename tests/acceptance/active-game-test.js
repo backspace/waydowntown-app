@@ -148,7 +148,6 @@ module('Acceptance | active game', function(hooks) {
   });
 
   test('the bluetooth-collector game counts Bluetooth devices and reports back when it ends', async function(assert) {
-    this.server.logging = true;
     this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
 
     const game = this.server.create('game', {
