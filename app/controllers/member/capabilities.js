@@ -48,6 +48,24 @@ export default class CapabilitiesController extends Controller {
   }
 
   @action
+  requestCamera() {
+    try {
+      navigator.camera.getPicture(
+        () => {
+          this.set('member.capabilities.camera', true);
+          this.transitionToNextStep();
+        },
+        () => {
+          throw new Error('Failed to take a picture');
+        },
+      );
+    } catch (e) {
+      this.set('member.capabilities.camera', false);
+      this.set('error', e.message);
+    }
+  }
+
+  @action
   requestDecibels() {
     let succeeded = false;
 
@@ -80,6 +98,35 @@ export default class CapabilitiesController extends Controller {
     }
   }
 
+  @action
+  requestOCR() {
+    try {
+      navigator.camera.getPicture(
+        photoUrl => {
+          this.photoUrl = photoUrl;
+
+          window.textocr.recText(
+            2,
+            photoUrl,
+            () => {
+              this.set('member.capabilities.ocr', true);
+              this.transitionToNextStep();
+            },
+            error => {
+              throw error;
+            },
+          );
+        },
+        error => {
+          throw error;
+        },
+      );
+    } catch (e) {
+      this.set('member.capabilities.ocr', false);
+      this.set('error', e.message);
+    }
+  }
+
   @action exit() {
     this.member.capabilities.rollbackAttributes();
     this.transitionToRoute('member');
@@ -105,9 +152,20 @@ export default class CapabilitiesController extends Controller {
       action: this.requestBluetooth,
     },
     {
+      label: 'Camera',
+      description: 'We use the camera for text recogintion. (more eventually?)',
+      action: this.requestCamera,
+    },
+    {
       label: 'Decibel meter',
       description: 'We use a decibel meter for some games.',
       action: this.requestDecibels,
+    },
+    {
+      label: 'Text recognition',
+      description:
+        'We use text recognition for some games. This will take a photo and attempt to recognise text within it.',
+      action: this.requestOCR,
     },
   ];
 

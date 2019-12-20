@@ -46,8 +46,10 @@ module('Acceptance | capabilities', function(hooks) {
     const done = assert.async();
     const expectedCapabilities = {
       bluetooth: false,
+      camera: true,
       decibels: false,
       location: true,
+      ocr: true,
 
       exertion: true,
       speed: true,
@@ -107,8 +109,28 @@ module('Acceptance | capabilities', function(hooks) {
 
     assert.dom('[data-test-error]').doesNotExist();
 
+    navigator.camera = {
+      getPicture(success) {
+        success();
+      },
+    };
+
+    assert.dom('h2').includesText('Camera');
+    await click('[data-test-request]');
+    await settled();
+
     assert.dom('h2').includesText('Decibel meter');
     await click('[data-test-skip]');
+
+    window.textocr = {
+      recText(sourceType, uri, success) {
+        success();
+      },
+    };
+
+    assert.dom('h2').includesText('Text recognition');
+    await click('[data-test-request]');
+    await settled();
 
     assert.dom('h2').includesText('Physical');
     await click('#exertion');
