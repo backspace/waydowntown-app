@@ -4,7 +4,7 @@ import { inject as controller } from '@ember/controller';
 import { action } from '@ember/object';
 
 export default class LocationController extends Controller {
-  @controller('index') indexController;
+  @controller('member') memberController;
   @tracked event = [];
 
   @action
@@ -13,8 +13,8 @@ export default class LocationController extends Controller {
       this.event = position.coords;
       this.event.date = new Date(position.timestamp);
 
-      if (this.indexController.member) {
-        const member = this.indexController.member;
+      if (this.memberController.member) {
+        const member = this.memberController.member;
         member.setProperties({
           lat: position.coords.latitude,
           lon: position.coords.longitude,
