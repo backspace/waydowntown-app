@@ -165,8 +165,13 @@ module('Acceptance | game list', function(hooks) {
   });
 
   test('a representing game can be represented and when it becomes scheduled it shows as that way', async function(assert) {
+    const now = new Date();
+    const representingEndsAt = new Date(now.getTime() + 1000 * 10);
+    this.setGameClock(now);
+
     const game = this.server.create('game', {
       conceptName: 'tap',
+      representingEndsAt,
       state: 'representing',
     });
     const teamParticipation = this.server.schema.participations.findBy({
@@ -179,6 +184,9 @@ module('Acceptance | game list', function(hooks) {
     await visit('/');
 
     assert.dom('[data-test-representings]').exists();
+    assert
+      .dom('[data-test-representing-ends-at]')
+      .hasText('Representing ends in 10 seconds');
     assert.dom('[data-test-scheduleds]').doesNotExist();
 
     this.server.patch(`/games/${game.id}/represent`, function(
@@ -204,9 +212,7 @@ module('Acceptance | game list', function(hooks) {
     assert.dom('[data-test-antirepresent]').doesNotExist();
     assert.dom('[data-test-unrepresent]').exists();
 
-    const now = new Date();
     const gameStartTime = new Date(now.getTime() + 1000 * 60);
-    this.setGameClock(now);
 
     this.server.schema.participations.all().update('state', 'scheduled');
     const serverGame = this.server.schema.games.find(game.id);

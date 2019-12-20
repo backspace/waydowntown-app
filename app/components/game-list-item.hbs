@@ -19,6 +19,10 @@
     <GameActionButton @game={{@game}} @action={{@game.represent}} @data={{hash representing=null}} data-test-unrepresent>Clear decision</GameActionButton>
   {{/if}}
 
+  {{#if (or this.canRepresent this.canUnrepresent)}}
+    <p data-test-representing-ends-at>Representing ends in {{moment-diff this.gameClock.date @game.representingEndsAt precision="seconds" interval=200}} seconds</p>
+  {{/if}}
+
   {{#if this.canCancel}}
     <GameActionButton @game={{@game}} @action={{@game.cancel}} @confirmation="Really?" @declination="No" data-test-cancel>Cancel</GameActionButton>
   {{/if}}

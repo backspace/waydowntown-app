@@ -9,6 +9,8 @@ export default class GameModel extends Model {
   @belongsTo() incarnation;
   @hasMany() participations;
 
+  @attr('date') representingEndsAt;
+
   @attr('date') beginsAt;
   @attr('date') endsAt;
 
