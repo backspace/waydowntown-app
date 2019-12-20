@@ -124,9 +124,12 @@ module('Acceptance | active game', function(hooks) {
 
     this.server.patch(
       `/games/${game.id}/report`,
-      ({ participations, games }, { requestBody }) => {
+      ({ participations, representations, games }, { requestBody }) => {
         const result = JSON.parse(requestBody).result;
-        participations.all().update({ result: result, state: 'finished' });
+        representations.findBy({ memberId: this.member.id }).update({ result });
+        participations
+          .findBy({ teamId: this.team.id })
+          .update({ state: 'finished' });
         return games.find(game.id);
       },
     );
@@ -138,13 +141,14 @@ module('Acceptance | active game', function(hooks) {
 
     assert
       .dom(
-        `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-result]`,
+        `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-member-id='${this.member.id}'] [data-test-result]`,
       )
       .hasText('4');
     assert.dom('[data-test-archive]').exists();
   });
 
   test('the bluetooth-collector game counts Bluetooth devices and reports back when it ends', async function(assert) {
+    this.server.logging = true;
     this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
 
     const game = this.server.create('game', {
@@ -204,11 +208,12 @@ module('Acceptance | active game', function(hooks) {
 
     this.server.patch(
       `/games/${game.id}/report`,
-      ({ participations, games }, { requestBody }) => {
+      ({ participations, representations, games }, { requestBody }) => {
         const result = JSON.parse(requestBody).result;
+        representations.findBy({ memberId: this.member.id }).update({ result });
         participations
           .findBy({ teamId: this.team.id })
-          .update({ result: result, state: 'finished' });
+          .update({ state: 'finished' });
         return games.find(game.id);
       },
     );
@@ -220,7 +225,7 @@ module('Acceptance | active game', function(hooks) {
 
     assert
       .dom(
-        `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-result]`,
+        `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-member-id='${this.member.id}'] [data-test-result]`,
       )
       .hasText('2');
   });

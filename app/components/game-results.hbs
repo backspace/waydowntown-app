@@ -3,7 +3,14 @@
   <ul data-test-results>
     {{#each this.participationsWithResults as |participation|}}
       <li data-test-team-id={{participation.team.id}}>
-        {{participation.team.name}}: <span data-test-result>{{participation.result}}</span>
+        {{participation.team.name}}:
+        <ul>
+          {{#each participation.representations as |representation|}}
+            <li data-test-member-id={{representation.member.id}}>
+              {{representation.member.name}}: <span data-test-result>{{representation.result}}</span>
+            </li>
+          {{/each}}
+        </ul>
       </li>
     {{/each}}
   </ul>

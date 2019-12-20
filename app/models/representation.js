@@ -6,5 +6,8 @@ export default class RepresentationModel extends Model {
   @belongsTo() participation;
 
   @attr('boolean', { allowNull: true }) representing;
+
+  @attr() result;
+
   @attr('boolean') archived;
 }
