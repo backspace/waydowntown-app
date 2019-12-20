@@ -39,6 +39,7 @@ export default class GameListItem extends Component {
     const memberRepresentation = this.memberRepresentation;
 
     return (
+      this.teamParticipation?.state === 'representing' &&
       memberRepresentation &&
       memberRepresentation.representing !== true &&
       memberRepresentation.representing !== false
@@ -49,6 +50,7 @@ export default class GameListItem extends Component {
     const memberRepresentation = this.memberRepresentation;
 
     return (
+      this.teamParticipation?.state === 'representing' &&
       memberRepresentation &&
       memberRepresentation.representing !== null &&
       memberRepresentation.representing !== undefined
@@ -56,7 +58,11 @@ export default class GameListItem extends Component {
   }
 
   get memberRepresentation() {
-    if (this.teamParticipation?.state !== 'representing') {
+    const participationState = this.teamParticipation?.state;
+    if (
+      participationState !== 'representing' &&
+      participationState !== 'scheduled'
+    ) {
       return false;
     }
 

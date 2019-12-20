@@ -64,7 +64,7 @@
   Scheduled:
   <ul data-test-scheduleds>
     {{#each this.scheduleds as |scheduled|}}
-      <GameListItem @game={{scheduled}} @team={{this.team}} />
+      <GameListItem @game={{scheduled}} @team={{this.team}} @member={{this.member}} />
     {{/each}}
   </ul>
 {{/if}}

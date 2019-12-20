@@ -202,12 +202,16 @@ module('Integration | Component | game-list-item', function(hooks) {
       .hasText('Representing ends in 1 second');
   });
 
-  test('a scheduled game shows instructions and when it begins but no representation countdown', async function(assert) {
+  test('a scheduled game for a team with multiple members shows instructions, when it begins, and representing status but no representation countdown', async function(assert) {
     const now = new Date();
     const gameStartTime = new Date(now.getTime() + 1000 * 60);
     this.setGameClock(now);
 
-    this.set('team', { id: 1 });
+    this.set('member', { id: 1 });
+
+    const otherMember = { id: 2 };
+
+    this.set('team', { id: 1, members: [this.member, otherMember] });
     this.set('game', {
       beginsAt: gameStartTime,
       incarnation: {
@@ -216,16 +220,51 @@ module('Integration | Component | game-list-item', function(hooks) {
         },
       },
       participations: [
-        EmberObject.create({ state: 'scheduled', team: this.team }),
+        EmberObject.create({
+          state: 'scheduled',
+          team: this.team,
+          representations: [
+            EmberObject.create({ representing: false, member: this.member }),
+            EmberObject.create({ representing: true, member: otherMember }),
+          ],
+        }),
       ],
       representingEndsAt: new Date(),
     });
 
-    await render(hbs`<GameListItem @game={{game}} @team={{team}} />`);
+    await render(
+      hbs`<GameListItem @game={{game}} @team={{team}} @member={{member}} />`,
+    );
 
     assert.dom('[data-test-instructions]').hasText('Game instructions');
     assert.dom('[data-test-begins-at]').hasText('Begins in 60 seconds');
+    assert
+      .dom('[data-test-scheduled-representing]')
+      .hasText('You are not representing your team for this game.');
     assert.dom('[data-test-representing-ends-at]').doesNotExist();
+  });
+
+  test('a scheduled game for a solo team does not show representing status', async function(assert) {
+    this.set('member', { id: 1 });
+    this.set('team', { id: 1, members: [this.member] });
+    this.set('game', {
+      beginsAt: new Date(),
+      participations: [
+        EmberObject.create({
+          state: 'scheduled',
+          team: this.team,
+          representations: [
+            EmberObject.create({ representing: true, member: this.member }),
+          ],
+        }),
+      ],
+    });
+
+    await render(
+      hbs`<GameListItem @game={{game}} @team={{team}} @member={{member}} />`,
+    );
+
+    assert.dom('[data-test-scheduled-representing]').doesNotExist();
   });
 
   test('a cancelled game has a dismiss button', async function(assert) {
