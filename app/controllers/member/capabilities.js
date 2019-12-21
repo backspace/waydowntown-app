@@ -192,7 +192,7 @@ export default class CapabilitiesController extends Controller {
   phoneCapabilities = [
     {
       id: 'fastTapping',
-      name: 'Fast tapping (???)',
+      label: 'Fast tapping (???)',
       description:
         'I am open to playing games where being able to tap the phone screen quickly is an advantage.',
     },
