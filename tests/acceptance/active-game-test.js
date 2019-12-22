@@ -216,7 +216,7 @@ module('Acceptance | active game', function(hooks) {
           .update({ result: { value } });
         participations
           .findBy({ teamId: this.team.id })
-          .update({ state: 'finished' });
+          .update({ score: '4', state: 'finished', winner: true });
         return games.find(game.id);
       },
     );
@@ -231,6 +231,16 @@ module('Acceptance | active game', function(hooks) {
         `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-member-id='${this.member.id}'] [data-test-result]`,
       )
       .hasText('2');
+    assert
+      .dom(
+        `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-score]`,
+      )
+      .hasText('4');
+    assert
+      .dom(
+        `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-winner]`,
+      )
+      .exists();
   });
 
   test('the word-collector game collects words via OCR', async function(assert) {
@@ -293,7 +303,7 @@ module('Acceptance | active game', function(hooks) {
           .update({ result: { value } });
         participations
           .findBy({ teamId: this.team.id })
-          .update({ state: 'finished' });
+          .update({ state: 'finished', winner: false });
         return games.find(game.id);
       },
     );
@@ -308,5 +318,10 @@ module('Acceptance | active game', function(hooks) {
         `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-member-id='${this.member.id}'] [data-test-result]`,
       )
       .hasText('2');
+    assert
+      .dom(
+        `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-winner]`,
+      )
+      .doesNotExist();
   });
 });

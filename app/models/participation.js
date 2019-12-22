@@ -10,6 +10,9 @@ export default class ParticipationModel extends Model {
   @attr() state;
   @attr('boolean') initiator;
 
+  @attr('boolean') winner;
+  @attr('number') score;
+
   get accepted() {
     return this.state === 'accepted';
   }
