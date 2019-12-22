@@ -109,7 +109,7 @@ module('Acceptance | game list', function(hooks) {
     assert.dom('[data-test-representings]').exists();
   });
 
-  test('invitations, acceptances, convergings, representings, cancellations are listed', async function(assert) {
+  test('invitations, acceptances, convergings, representings, cancellations, scorings are listed', async function(assert) {
     const otherTeam = this.server.create('team', { name: 'other team' });
     this.server.create('team', { name: 'a third team' });
 
@@ -137,6 +137,10 @@ module('Acceptance | game list', function(hooks) {
       state: 'cancelled',
     });
 
+    const scoringGame = this.server.create('game', {
+      state: 'scoring',
+    });
+
     await visit('/');
 
     assert
@@ -161,6 +165,10 @@ module('Acceptance | game list', function(hooks) {
       .dom(
         `[data-test-cancellations] [data-test-game-id='${cancelledGame.id}']`,
       )
+      .exists();
+
+    assert
+      .dom(`[data-test-scorings] [data-test-game-id='${scoringGame.id}']`)
       .exists();
   });
 

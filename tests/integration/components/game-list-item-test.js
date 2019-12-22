@@ -288,4 +288,21 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert.dom('[data-test-dismiss]').exists();
     assert.dom('button').exists({ count: 1 });
   });
+
+  test('a scoring game has a message to wait but no buttons or countdown', async function(assert) {
+    this.set('member', { id: 1 });
+    this.set('team', { id: 1, members: [this.member] });
+    this.set('game', {
+      beginsAt: new Date(),
+      participations: [
+        EmberObject.create({ state: 'scoring', team: this.team }),
+      ],
+    });
+
+    await render(hbs`<GameListItem @game={{game}} @team={{team}} />`);
+
+    assert.dom('[data-test-scoring]').exists();
+    assert.dom('[data-test-begins-at]').doesNotExist();
+    assert.dom('button').doesNotExist();
+  });
 });

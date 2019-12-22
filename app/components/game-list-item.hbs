@@ -56,11 +56,15 @@
     </ul>
   </p>
 
-  {{#if @game.beginsAt}}
-    {{#unless this.isSoloTeam}}
-      <p data-test-scheduled-representing>You are {{if this.memberRepresentation.representing "" "not"}} representing your team for this game.</p>
-    {{/unless}}
+  {{#if this.isScoring}}
+    <p data-test-scoring>Awaiting results…</p>
+  {{else}}
+    {{#if @game.beginsAt}}
+      {{#unless this.isSoloTeam}}
+        <p data-test-scheduled-representing>You are {{if this.memberRepresentation.representing "" "not"}} representing your team for this game.</p>
+      {{/unless}}
 
-    <p data-test-begins-at>Begins in {{pluralize (moment-diff this.gameClock.date @game.beginsAt precision="seconds" interval=200) "second"}}</p>
+      <p data-test-begins-at>Begins in {{pluralize (moment-diff this.gameClock.date @game.beginsAt precision="seconds" interval=200) "second"}}</p>
+    {{/if}}
   {{/if}}
 </li>

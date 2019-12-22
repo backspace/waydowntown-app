@@ -117,6 +117,16 @@ export default class MemberController extends Controller {
     });
   }
 
+  get scoringGames() {
+    return this.persistedGames.filter(game => {
+      const participationForThisTeam = game.participations.find(
+        participation => participation.get('team.id') === this.teamId,
+      );
+
+      return participationForThisTeam?.state === 'scoring';
+    });
+  }
+
   @task(function*(conceptId, teamId) {
     const emptyGame = this.store.createRecord('game');
 

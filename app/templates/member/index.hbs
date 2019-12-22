@@ -14,6 +14,15 @@
   </ul>
 {{/if}}
 
+{{#if this.scoringGames}}
+  Scorings:
+  <ul data-test-scorings>
+    {{#each this.scoringGames as |scoring|}}
+      <GameListItem @game={{scoring}} @team={{this.team}} />
+    {{/each}}
+  </ul>
+{{/if}}
+
 <button class="border border-black {{if this.team.cannotRequest "opacity-50 cursor-default"}}" disabled={{this.team.cannotRequest}} {{on "click" (perform this.requestGame null null)}} data-test-request>Request Game</button>
 
 <button class="border border-black" {{on "click" (perform this.reloadGames)}}>

@@ -85,6 +85,10 @@ export default class GameListItem extends Component {
     return this.teamParticipation?.state === 'cancelled';
   }
 
+  get isScoring() {
+    return this.teamParticipation?.state === 'scoring';
+  }
+
   get otherTeams() {
     return this.args.game.participations
       .mapBy('team')
