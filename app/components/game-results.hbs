@@ -7,7 +7,7 @@
         <ul>
           {{#each participation.representations as |representation|}}
             <li data-test-member-id={{representation.member.id}}>
-              {{representation.member.name}}: <span data-test-result>{{representation.result}}</span>
+              {{representation.member.name}}: <span data-test-result>{{representation.result.value}}</span>
             </li>
           {{/each}}
         </ul>

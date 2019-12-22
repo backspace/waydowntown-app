@@ -16,7 +16,7 @@ export default class Tap extends Component {
 
     // TODO will this always call/complete? Extract some kind of game handler?
     if (!getOwner(this).isDestroying) {
-      this.args.game.report({ result: this.taps });
+      this.args.game.report({ value: this.taps });
     }
   }
 }

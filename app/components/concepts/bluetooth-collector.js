@@ -13,7 +13,7 @@ export default class BluetoothCollector extends Component {
     // TODO will this always call/complete? Extract some kind of game handler?
     if (!getOwner(this).isDestroying) {
       this.bluetooth.stop();
-      this.args.game.report({ result: this.bluetooth.devices.length });
+      this.args.game.report({ value: this.bluetooth.devices.length });
       this.bluetooth.clear();
     }
   }

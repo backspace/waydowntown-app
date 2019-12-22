@@ -125,8 +125,10 @@ module('Acceptance | active game', function(hooks) {
     this.server.patch(
       `/games/${game.id}/report`,
       ({ participations, representations, games }, { requestBody }) => {
-        const result = JSON.parse(requestBody).result;
-        representations.findBy({ memberId: this.member.id }).update({ result });
+        const value = JSON.parse(requestBody).value;
+        representations
+          .findBy({ memberId: this.member.id })
+          .update({ result: { value } });
         participations
           .findBy({ teamId: this.team.id })
           .update({ state: 'finished' });
@@ -208,8 +210,10 @@ module('Acceptance | active game', function(hooks) {
     this.server.patch(
       `/games/${game.id}/report`,
       ({ participations, representations, games }, { requestBody }) => {
-        const result = JSON.parse(requestBody).result;
-        representations.findBy({ memberId: this.member.id }).update({ result });
+        const value = JSON.parse(requestBody).value;
+        representations
+          .findBy({ memberId: this.member.id })
+          .update({ result: { value } });
         participations
           .findBy({ teamId: this.team.id })
           .update({ state: 'finished' });
@@ -283,8 +287,10 @@ module('Acceptance | active game', function(hooks) {
     this.server.patch(
       `/games/${game.id}/report`,
       ({ participations, representations, games }, { requestBody }) => {
-        const result = JSON.parse(requestBody).result;
-        representations.findBy({ memberId: this.member.id }).update({ result });
+        const value = JSON.parse(requestBody).value;
+        representations
+          .findBy({ memberId: this.member.id })
+          .update({ result: { value } });
         participations
           .findBy({ teamId: this.team.id })
           .update({ state: 'finished' });

@@ -33,7 +33,7 @@ export default class WordCollector extends Component {
     // TODO will this always call/complete? Extract some kind of game handler?
     if (!getOwner(this).isDestroying) {
       // FIXME should report the words, not just the count
-      this.args.game.report({ result: this.words.length });
+      this.args.game.report({ value: this.words.length });
     }
   }
 }
