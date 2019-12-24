@@ -65,6 +65,7 @@ export default class MemberRoute extends Route {
     // TODO is this the best place for this?
     if (window.PushNotification) {
       const push = window.PushNotification.init({
+        android: {},
         ios: {
           alert: true,
           badge: true,
