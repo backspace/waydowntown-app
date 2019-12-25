@@ -14,6 +14,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "cordova-android": "^8.1.0",
+    "cordova-android-play-services-gradle-release": "^4.0.0",
     "cordova-ios": "^5.1.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-battery-status": "^2.0.3",
@@ -66,7 +67,8 @@
         "ANDROID_HOST": " ",
         "ANDROID_PATHPREFIX": "/"
       },
-      "cordova-plugin-device": {}
+      "cordova-plugin-device": {},
+      "cordova-android-play-services-gradle-release": {}
     },
     "platforms": [
       "android",
