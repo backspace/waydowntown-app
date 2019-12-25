@@ -9,6 +9,9 @@
     </author>
     <content src="index.html"/>
     <plugin name="cordova-plugin-whitelist" spec="1"/>
+    <plugin name="phonegap-plugin-push" spec="~2.2.0">
+        <variable name="FCM_VERSION" value="15.0.0"/>
+    </plugin>
     <access origin="*"/>
     <access origin="sentry.io"/>
     <allow-intent href="http://*/*"/>
@@ -41,6 +44,7 @@
         <splash id="land-xxhdpi" src="res/screen/android/land-xxhdpi.png" density="land-xxhdpi"/>
         <splash id="port-xxxhdpi" src="res/screen/android/port-xxxhdpi.png" density="port-xxxhdpi"/>
         <splash id="land-xxxhdpi" src="res/screen/android/land-xxxhdpi.png" density="land-xxxhdpi"/>
+        <resource-file src="google-services.json" target="app/google-services.json"/>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*"/>
