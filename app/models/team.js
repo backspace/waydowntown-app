@@ -11,6 +11,7 @@ export default class TeamModel extends Model {
 
   get cannotRequest() {
     const requestableStates = [
+      'scoring',
       'finished',
       'cancelled',
       'dismissed',
