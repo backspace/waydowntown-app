@@ -196,7 +196,8 @@ export default class CapabilitiesController extends Controller {
     },
     {
       label: 'Decibel meter',
-      description: 'We use a decibel meter for some games.',
+      description:
+        'We use a decibel meter for some games, which requires microphone permissions.',
       action: this.requestDecibels,
     },
     {
