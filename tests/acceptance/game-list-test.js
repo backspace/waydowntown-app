@@ -331,8 +331,13 @@ module('Acceptance | game list', function(hooks) {
     assert.dom(`[data-test-game-id='${game.id}']`).doesNotExist();
   });
 
-  test('a finished game can be archived', async function(assert) {
+  test('a finished game can be archived and shows on the archived games route', async function(assert) {
+    const now = new Date();
+    const endedAt = new Date(now.getTime() - 1000 * 185);
+    this.setGameClock(now);
+
     const game = this.server.create('game', {
+      endsAt: endedAt,
       state: 'finished',
     });
 
@@ -352,5 +357,10 @@ module('Acceptance | game list', function(hooks) {
     await settled();
 
     assert.dom(`[data-test-game-id='${game.id}']`).doesNotExist();
+
+    await click('[data-test-archived]');
+
+    assert.dom(`[data-test-game-id='${game.id}']`).exists();
+    assert.dom('[data-test-ended-at]').hasText('Ended 3 minutes ago');
   });
 });

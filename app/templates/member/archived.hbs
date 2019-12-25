@@ -1,0 +1,10 @@
+<h2 class="text-xl">Archived games</h2>
+
+<ul data-test-results>
+  {{#each @model as |game|}}
+    <li class="border border-black p-1" data-test-game-id={{game.id}}>
+      <span data-test-concept-name>{{game.incarnation.concept.name}}</span>: <GameResults @game={{game}} />
+      <p data-test-ended-at>Ended {{moment-to this.gameClock.date game.endsAt}}</p>
+    </li>
+  {{/each}}
+</ul>
