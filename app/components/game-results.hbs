@@ -11,7 +11,7 @@
         <ul>
           {{#each participation.representations as |representation|}}
             <li data-test-member-id={{representation.member.id}}>
-              {{representation.member.name}}: <span data-test-result>{{representation.result.value}}</span>
+              {{representation.member.name}}: <span data-test-result>{{if representation.result.value representation.result.value representation.result.values}}</span>
             </li>
           {{/each}}
         </ul>

@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { getOwner } from '@ember/application';
 
-export default class WordCollector extends Component {
+export default class WordFinder extends Component {
   @tracked words = [];
 
   @action
@@ -32,8 +32,7 @@ export default class WordCollector extends Component {
   willDestroy() {
     // TODO will this always call/complete? Extract some kind of game handler?
     if (!getOwner(this).isDestroying) {
-      // FIXME should report the words, not just the count
-      this.args.game.report({ value: this.words.length });
+      this.args.game.report({ values: this.words });
     }
   }
 }

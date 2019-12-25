@@ -243,11 +243,11 @@ module('Acceptance | active game', function(hooks) {
       .exists();
   });
 
-  test('the word-collector game collects words via OCR', async function(assert) {
+  test('the word-finder game finds words via OCR', async function(assert) {
     this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
 
     const game = this.server.create('game', {
-      conceptName: 'word-collector',
+      conceptName: 'word-finder',
       state: 'scheduled',
       beginsAt: new Date(new Date().getTime() - 1000 * 60),
       endsAt: new Date(new Date().getTime() + 1000 * 60),
@@ -297,10 +297,10 @@ module('Acceptance | active game', function(hooks) {
     this.server.patch(
       `/games/${game.id}/report`,
       ({ participations, representations, games }, { requestBody }) => {
-        const value = JSON.parse(requestBody).value;
+        const values = JSON.parse(requestBody).values;
         representations
           .findBy({ memberId: this.member.id })
-          .update({ result: { value } });
+          .update({ result: { values } });
         participations
           .findBy({ teamId: this.team.id })
           .update({ state: 'finished', winner: false });
@@ -317,7 +317,7 @@ module('Acceptance | active game', function(hooks) {
       .dom(
         `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-member-id='${this.member.id}'] [data-test-result]`,
       )
-      .hasText('2');
+      .hasText('Adjective,Noun');
     assert
       .dom(
         `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-winner]`,
