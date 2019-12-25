@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { click, fillIn, settled, visit } from '@ember/test-helpers';
+import { click, currentURL, fillIn, settled, visit } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { Response } from 'ember-cli-mirage';
@@ -79,6 +79,21 @@ module('Acceptance | require setup', function(hooks) {
     await visit(`/?token=${member.id}`);
 
     assert.dom('[data-test-member-name]').hasText('tokenme');
+  });
+
+  test('can return to the login route after logging in while preserving the token', async function(assert) {
+    const member = this.server.create('member', { name: 'me' });
+
+    await visit('/');
+    await fillIn('[data-test-token-field]', member.id);
+    await click('[data-test-token-save');
+
+    assert.dom('[data-test-member-name]').hasText('me');
+
+    await click('[data-test-return-to-login]');
+
+    assert.equal(currentURL(), '/?stop=true');
+    assert.dom('[data-test-token-field]').hasValue(member.id);
   });
 
   test('no save happens if the registration is the same', async function(assert) {
