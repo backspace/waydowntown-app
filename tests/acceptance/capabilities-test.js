@@ -49,6 +49,7 @@ module('Acceptance | capabilities', function(hooks) {
       camera: true,
       decibels: false,
       location: true,
+      notifications: true,
       ocr: true,
 
       exertion: true,
@@ -87,6 +88,23 @@ module('Acceptance | capabilities', function(hooks) {
     assert.dom('h2').includesText('Location');
 
     await click('[data-test-request]');
+
+    window.PushNotification = {
+      init() {
+        return {
+          on(event, handler) {
+            if (event === 'registration') {
+              handler({ registrationType: 'X', registrationId: 'Y' });
+            }
+          },
+        };
+      },
+    };
+
+    assert.dom('h2').includesText('Notifications');
+
+    await click('[data-test-request]');
+    await settled();
 
     const mockBluetooth = {
       initialize(f) {

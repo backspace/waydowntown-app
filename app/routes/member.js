@@ -64,7 +64,7 @@ export default class MemberRoute extends Route {
 
   setupController(controller, { games, member, team, teams }) {
     // TODO is this the best place for this?
-    if (window.PushNotification) {
+    if (window.PushNotification && member.get('capabilities.notifications')) {
       const push = window.PushNotification.init({
         android: {},
         ios: {

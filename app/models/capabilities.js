@@ -6,6 +6,7 @@ export default Fragment.extend({
   camera: attr('boolean'),
   decibels: attr('boolean'),
   location: attr('boolean'),
+  notifications: attr('boolean'),
   ocr: attr('boolean'),
 
   exertion: attr('boolean'),

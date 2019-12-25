@@ -22,7 +22,12 @@ module('Acceptance | require setup', function(hooks) {
   test('filling in a token shows the logged-in interface with member name and registers the device', async function(assert) {
     const done = assert.async();
 
-    const member = this.server.create('member', { name: 'me' });
+    const member = this.server.create('member', {
+      name: 'me',
+      capabilities: {
+        notifications: true,
+      },
+    });
 
     let registrationHandler;
 
@@ -79,6 +84,9 @@ module('Acceptance | require setup', function(hooks) {
   test('no save happens if the registration is the same', async function(assert) {
     const member = this.server.create('member', {
       name: 'me',
+      capabilities: {
+        notifications: true,
+      },
       registrationId: '1312',
       registrationType: '!',
       lat: 123,

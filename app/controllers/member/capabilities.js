@@ -99,6 +99,37 @@ export default class CapabilitiesController extends Controller {
   }
 
   @action
+  requestNotifications() {
+    try {
+      const member = this.get('member');
+      const push = window.PushNotification.init({
+        android: {},
+        ios: {
+          alert: true,
+          badge: true,
+          clearBadge: true,
+        },
+      });
+
+      push.on('registration', ({ registrationId, registrationType }) => {
+        member.setProperties({ registrationId, registrationType });
+
+        if (member.hasDirtyAttributes) {
+          this.set('member.capabilities.notifications', true);
+          this.transitionToNextStep();
+        }
+      });
+
+      push.on('error', error => {
+        throw error;
+      });
+    } catch (e) {
+      this.set('member.capabilities.notifications', false);
+      this.set('error', e.message);
+    }
+  }
+
+  @action
   requestOCR() {
     try {
       navigator.camera.getPicture(
@@ -143,6 +174,13 @@ export default class CapabilitiesController extends Controller {
       description:
         'We need to track your location to be able to connect you with nearby teams for games. This will only be used during the adventure and beta testing.',
       action: this.requestLocation,
+      required: true,
+    },
+    {
+      label: 'Notifications',
+      description:
+        'We need to send push notifications to let you know about games if the app isn’t open.',
+      action: this.requestNotifications,
       required: true,
     },
     {
