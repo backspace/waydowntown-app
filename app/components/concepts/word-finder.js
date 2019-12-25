@@ -26,6 +26,9 @@ export default class WordFinder extends Component {
         );
       },
       error => (this.error = error),
+      {
+        correctOrientation: true,
+      },
     );
   }
 

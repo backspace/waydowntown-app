@@ -21,6 +21,9 @@ export default class OcrController extends Controller {
         );
       },
       error => (this.error = error),
+      {
+        correctOrientation: true,
+      },
     );
   }
 }

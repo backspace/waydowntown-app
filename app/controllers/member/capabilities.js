@@ -151,6 +151,9 @@ export default class CapabilitiesController extends Controller {
         error => {
           throw error;
         },
+        {
+          correctOrientation: true,
+        },
       );
     } catch (e) {
       this.set('member.capabilities.ocr', false);
