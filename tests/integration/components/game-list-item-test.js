@@ -16,8 +16,9 @@ module('Integration | Component | game-list-item', function(hooks) {
     this.set('team', { id: '1' });
   });
 
-  test('the concept name is rendered', async function(assert) {
+  test('the concept name and duration are rendered', async function(assert) {
     this.set('game', {
+      duration: 30,
       incarnation: {
         concept: {
           name: 'a concept',
@@ -30,6 +31,7 @@ module('Integration | Component | game-list-item', function(hooks) {
     await render(hbs`<GameListItem @game={{game}} @team={{team}} />`);
 
     assert.dom(`[data-test-concept-name]`).hasText('a concept');
+    assert.dom('[data-test-duration]').hasText('30 seconds');
   });
 
   test('teams and their states are listed', async function(assert) {

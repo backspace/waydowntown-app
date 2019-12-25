@@ -14,6 +14,8 @@ export default class GameModel extends Model {
   @attr('date') beginsAt;
   @attr('date') endsAt;
 
+  @attr('number') duration;
+
   request = resourceAction('request', {
     method: 'POST',
     pushToStore: true,
