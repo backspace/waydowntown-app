@@ -55,7 +55,7 @@ module('Acceptance | capabilities', function(hooks) {
       speed: true,
       stairs: false,
 
-      fastTapping: true,
+      fastNavigation: true,
     };
 
     this.server.patch(`/members/:id`, function({ members }, request) {
@@ -139,7 +139,7 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-next]');
 
     assert.dom('h2').includesText('Phone');
-    await click('#fastTapping');
+    await click('#fastNavigation');
     await click('[data-test-next]');
 
     assert.dom('h2').includesText('Summary');

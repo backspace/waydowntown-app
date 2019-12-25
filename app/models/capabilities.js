@@ -12,5 +12,5 @@ export default Fragment.extend({
   speed: attr('boolean'),
   stairs: attr('boolean'),
 
-  fastTapping: attr('boolean'),
+  fastNavigation: attr('boolean'),
 });
