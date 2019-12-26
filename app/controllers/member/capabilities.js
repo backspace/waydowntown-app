@@ -100,6 +100,8 @@ export default class CapabilitiesController extends Controller {
 
   @action
   requestNotifications() {
+    this.set('error', undefined);
+
     try {
       const member = this.get('member');
       const push = window.PushNotification.init({
@@ -113,11 +115,23 @@ export default class CapabilitiesController extends Controller {
 
       push.on('registration', ({ registrationId, registrationType }) => {
         member.setProperties({ registrationId, registrationType });
+        member
+          .save()
+          .then(m => m.notify())
+          .then(() => {
+            this.set('member.capabilities.notifications', true);
+            this.validatingNotifications = true;
+          })
+          .catch(e => {
+            this.set('member.capabilities.notifications', false);
+            this.set('error', e.message);
+            this.validatingNotifications = false;
+          });
 
-        if (member.hasDirtyAttributes) {
-          this.set('member.capabilities.notifications', true);
-          this.transitionToNextStep();
-        }
+        // if (member.hasDirtyAttributes) {
+        //   this.set('member.capabilities.notifications', true);
+        //   this.transitionToNextStep();
+        // }
       });
 
       push.on('error', error => {
@@ -185,6 +199,7 @@ export default class CapabilitiesController extends Controller {
         'We need to send push notifications to let you know about games if the app isn’t open.',
       action: this.requestNotifications,
       required: true,
+      validationMessage: 'Did you receive a notification?',
     },
     {
       label: 'Bluetooth',
@@ -239,6 +254,8 @@ export default class CapabilitiesController extends Controller {
         'I am open to playing games where being able to navigate the app interface quickly is an advantage.',
     },
   ];
+
+  @tracked validatingNotifications;
 
   @task(function*() {
     try {

@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import { click, currentURL, visit, settled } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
+import { Response } from 'ember-cli-mirage';
 import setToken from 'waydowntown/tests/helpers/set-token';
 import mockCable from 'waydowntown/tests/helpers/mock-cable';
 
@@ -59,14 +60,21 @@ module('Acceptance | capabilities', function(hooks) {
       fastNavigation: true,
     };
 
+    let updateCalls = 0;
+
     this.server.patch(`/members/:id`, function({ members }, request) {
       const member = members.find(request.params.id);
+
       member.update(this.normalizedRequestAttrs());
 
-      assert.deepEqual(member.attrs.device, window.device);
-      assert.deepEqual(member.attrs.capabilities, expectedCapabilities);
+      if (updateCalls == 2) {
+        assert.deepEqual(member.attrs.device, window.device);
+        assert.deepEqual(member.attrs.capabilities, expectedCapabilities);
 
-      done();
+        done();
+      }
+
+      updateCalls++;
 
       return member;
     });
@@ -101,9 +109,33 @@ module('Acceptance | capabilities', function(hooks) {
       },
     };
 
+    this.server.post(`/members/${this.member.id}/notify`, () => {
+      return new Response(500, {}, {});
+    });
+
     assert.dom('h2').includesText('Notifications');
 
     await click('[data-test-request]');
+    await settled();
+    await settled();
+
+    assert.dom('[data-test-error]').exists();
+    assert.dom('[data-test-request]').hasText('Try again');
+
+    this.server.post(`/members/${this.member.id}/notify`, () => {
+      return new Response(201, {}, {});
+    });
+
+    await click('[data-test-request]');
+    await settled();
+    await settled();
+
+    assert.dom('[data-test-error]').doesNotExist();
+    assert
+      .dom('[data-test-validation]')
+      .hasText('Did you receive a notification?');
+
+    await click('[data-test-validate]');
     await settled();
 
     const mockBluetooth = {

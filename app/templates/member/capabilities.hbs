@@ -69,9 +69,19 @@
           </button>
         {{/unless}}
 
-        <button class="border border-black" {{on "click" capability.action}} data-test-request>
-          Request
-        </button>
+        {{#if (or (and capability.validationMessage (get this (concat "validating" capability.label))))}}
+          <p data-test-validation>{{capability.validationMessage}}</p>
+          <button class="border border-black" {{on "click" (action this.transitionToNextStep)}} data-test-validate>
+            Yes
+          </button>
+          <button class="border border-black" {{on "click" capability.action}} data-test-request>
+            Try again
+          </button>
+        {{else}}
+          <button class="border border-black" {{on "click" capability.action}} data-test-request>
+            {{#if this.error}}Try again{{else}}Request{{/if}}
+          </button>
+        {{/if}}
       </w.step>
     {{/each}}
 

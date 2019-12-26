@@ -1,6 +1,7 @@
 import DS from 'ember-data';
 const { Model, attr, belongsTo } = DS;
 import { fragment } from 'ember-data-model-fragments/attributes';
+import { modelAction } from 'ember-custom-actions';
 
 export default class MemberModel extends Model {
   @attr('string') name;
@@ -21,4 +22,9 @@ export default class MemberModel extends Model {
   }
 
   @belongsTo() team;
+
+  notify = modelAction('notify', {
+    method: 'POST',
+    pushToStore: false,
+  });
 }
