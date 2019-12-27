@@ -11,9 +11,11 @@ module('Acceptance | map', function(hooks) {
   setToken(hooks);
   mockCable(hooks);
 
-  test('members show on the live-updating map', async function(assert) {
+  test('members show on the live-updating map for an admin (?)', async function(assert) {
+    this.member.attrs.admin = true;
     this.member.attrs.lat = 49.897561;
     this.member.attrs.lon = -97.140272;
+
     const others = this.server.create('team', { name: 'others' });
     const otherMember = others.createMember();
 

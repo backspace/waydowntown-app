@@ -18,8 +18,8 @@ module('Acceptance | presence', function(hooks) {
     resetStorages();
   });
 
-  test('teams are listed with presence indicators', async function(assert) {
-    const member = this.server.create('member', { name: 'me' });
+  test('teams are listed with presence indicators for an admin (?)', async function(assert) {
+    const member = this.server.create('member', { name: 'me', admin: true });
     const team = member.createTeam({ name: 'our team' });
 
     const others = this.server.create('team', { name: 'others' });
