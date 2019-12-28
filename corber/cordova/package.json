@@ -26,6 +26,7 @@
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-magnetometer": "^1.0.0",
     "cordova-plugin-mobile-ocr": "^3.1.1",
+    "cordova-plugin-qr-barcode-scanner": "^8.0.3",
     "cordova-plugin-sim": "^1.3.3",
     "cordova-plugin-vibration": "^3.1.1",
     "cordova-simple-volume": "^1.0.4",
@@ -68,7 +69,10 @@
         "ANDROID_PATHPREFIX": "/"
       },
       "cordova-plugin-device": {},
-      "cordova-android-play-services-gradle-release": {}
+      "cordova-android-play-services-gradle-release": {},
+      "cordova-plugin-qr-barcode-scanner": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      }
     },
     "platforms": [
       "android",

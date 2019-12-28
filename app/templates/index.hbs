@@ -5,3 +5,12 @@
 <Input @id="token-input" @value={{this.tokenStorage.token}} @size="40" placeholder="Paste your token here" @class="border-b border-black" data-test-token-field />
 
 <button class="border border-black" {{on "click" this.saveToken}} data-test-token-save>Log in</button>
+
+<br>
+<button class="border border-black" {{on "click" this.scan}} data-test-scan>Scan QR code</button>
+
+{{#if this.scanError}}
+  <div class="bg-orange-100 border border-orange-400 text-orange-700 px-4 py-3 rounded relative w-full" role="alert" data-test-alert>
+    There was an error with the QR code scanner: {{this.scanError}}
+  </div>
+{{/if}}

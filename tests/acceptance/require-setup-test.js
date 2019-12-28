@@ -81,6 +81,43 @@ module('Acceptance | require setup', function(hooks) {
     assert.dom('[data-test-member-name]').hasText('tokenme');
   });
 
+  test('the token can be entered by scanning a QR code', async function(assert) {
+    const member = this.server.create('member', {
+      name: 'me',
+    });
+
+    window.cordova = {
+      plugins: {
+        barcodeScanner: {
+          scan(success, error) {
+            error('Error');
+          },
+        },
+      },
+    };
+
+    await visit('/');
+    await click('[data-test-scan]');
+
+    assert
+      .dom('[data-test-alert]')
+      .hasText('There was an error with the QR code scanner: Error');
+
+    window.cordova = {
+      plugins: {
+        barcodeScanner: {
+          scan(success) {
+            success({ text: member.id });
+          },
+        },
+      },
+    };
+
+    await click('[data-test-scan]');
+
+    assert.dom('[data-test-member-name]').hasText('me');
+  });
+
   test('can return to the login route after logging in while preserving the token', async function(assert) {
     const member = this.server.create('member', { name: 'me' });
 
