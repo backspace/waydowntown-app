@@ -2,6 +2,6 @@
   <p data-test-error>{{this.error}}</p>
 {{/if}}
 <label for="token-input">Token</label>
-<Input @id="token-input" @value={{this.tokenStorage.token}} data-test-token-field />
+<Input @id="token-input" @value={{this.tokenStorage.token}} @size="40" placeholder="Paste your token here" @class="border-b border-black" data-test-token-field />
 
-<button class="border border-black" {{on "click" this.saveToken}} data-test-token-save>Save token</button>
+<button class="border border-black" {{on "click" this.saveToken}} data-test-token-save>Log in</button>
