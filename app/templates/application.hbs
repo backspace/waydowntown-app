@@ -1,6 +1,8 @@
-<h1 class="text-2xl"><LinkTo @route="application">waydowntown</LinkTo></h1>
+<h1 class="text-2xl">
+  <LinkTo @route="application">waydowntown</LinkTo>
 
-<button class="border border-black" {{on "click" this.toggleDiagnostics}}>Diagnostics</button>
+  <button class="text-xs" {{on "click" this.toggleDiagnostics}}>🕷</button>
+</h1>
 
 {{#if this.showDiagnostics}}
   <p>URL: {{this.url}}</p>
