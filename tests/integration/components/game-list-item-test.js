@@ -120,7 +120,7 @@ module('Integration | Component | game-list-item', function(hooks) {
       directions: 'Directions',
       incarnation: {
         concept: {
-          instructions: 'Representing game instructions',
+          description: 'Representing game description',
         },
       },
       participations: [
@@ -147,8 +147,8 @@ module('Integration | Component | game-list-item', function(hooks) {
       .dom('[data-test-representing-ends-at]')
       .hasText('Representing ends in 10 seconds');
     assert
-      .dom('[data-test-instructions]')
-      .hasText('Representing game instructions');
+      .dom('[data-test-concept-description]')
+      .hasText('Representing game description');
     assert.dom('[data-test-directions]').hasText('Directions');
   });
 
@@ -235,7 +235,7 @@ module('Integration | Component | game-list-item', function(hooks) {
       directions: 'Directions',
       incarnation: {
         concept: {
-          instructions: 'Game instructions',
+          description: 'Game description',
         },
       },
       participations: [
@@ -255,7 +255,7 @@ module('Integration | Component | game-list-item', function(hooks) {
       hbs`<GameListItem @game={{game}} @team={{team}} @member={{member}} />`,
     );
 
-    assert.dom('[data-test-instructions]').hasText('Game instructions');
+    assert.dom('[data-test-concept-description]').hasText('Game description');
     assert.dom('[data-test-begins-at]').hasText('Begins in 60 seconds');
     assert
       .dom('[data-test-scheduled-representing]')

@@ -5,7 +5,7 @@ export default class ConceptModel extends Model {
   @attr('string') name;
   @hasMany() incarnations;
 
-  get instructions() {
+  get description() {
     return {
       'bluetooth-collector': 'Find Bluetooth devices',
       tap: 'Tap the button',

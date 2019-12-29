@@ -197,7 +197,7 @@ module('Acceptance | game list', function(hooks) {
       .dom('[data-test-representing-ends-at]')
       .hasText('Representing ends in 10 seconds');
     assert
-      .dom('[data-test-representings] [data-test-instructions]')
+      .dom('[data-test-representings] [data-test-concept-description]')
       .hasText('Tap the button');
     assert.dom('[data-test-scheduleds]').doesNotExist();
 
@@ -251,7 +251,7 @@ module('Acceptance | game list', function(hooks) {
       .dom('[data-test-scheduleds] [data-test-begins-at]')
       .hasText('Begins in 60 seconds');
     assert
-      .dom('[data-test-scheduleds] [data-test-instructions]')
+      .dom('[data-test-scheduleds] [data-test-concept-description]')
       .hasText('Tap the button');
   });
 
