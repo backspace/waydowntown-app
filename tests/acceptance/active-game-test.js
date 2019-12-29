@@ -25,6 +25,7 @@ module('Acceptance | active game', function(hooks) {
       beginsAt: new Date(time - 1000 * 60),
       endsAt: new Date(time + 1000 * 60),
       representing: true,
+      instructions: 'Tap tap tap',
     });
 
     this.server.create('game', {
@@ -40,6 +41,8 @@ module('Acceptance | active game', function(hooks) {
       .dom('[data-test-active-game] [data-test-concept-name]')
       .hasText('tap');
     assert.dom('[data-test-time-remaining]').hasText('60 seconds remaining');
+
+    assert.dom('[data-test-instructions]').hasText('Instructions: Tap tap tap');
 
     assert.dom('[data-test-active-game]').exists({ count: 1 });
 

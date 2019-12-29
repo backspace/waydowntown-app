@@ -16,6 +16,8 @@ export default class GameModel extends Model {
 
   @attr('number') duration;
 
+  @attr('string') instructions;
+
   request = resourceAction('request', {
     method: 'POST',
     pushToStore: true,
