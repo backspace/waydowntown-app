@@ -198,7 +198,7 @@ module('Acceptance | game list', function(hooks) {
       .hasText('Representing ends in 10 seconds');
     assert
       .dom('[data-test-representings] [data-test-instructions]')
-      .hasText('Tap the button as many times as you can');
+      .hasText('Tap the button');
     assert.dom('[data-test-scheduleds]').doesNotExist();
 
     this.server.patch(`/games/${game.id}/represent`, function(
@@ -252,7 +252,7 @@ module('Acceptance | game list', function(hooks) {
       .hasText('Begins in 60 seconds');
     assert
       .dom('[data-test-scheduleds] [data-test-instructions]')
-      .hasText('Tap the button as many times as you can');
+      .hasText('Tap the button');
   });
 
   test('a game becoming scheduled via the socket shows the time until it starts', async function(assert) {
