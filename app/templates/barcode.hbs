@@ -1,0 +1,13 @@
+<button class="border border-black" {{on "click" this.scan}}>Scan</button>
+
+{{#if this.error}}
+  <p>Error: {{this.error}}</p>
+{{/if}}
+
+<ul>
+  {{#each this.barcodes as |barcode|}}
+    <li>{{barcode}}</li>
+  {{else}}
+    <li>no barcodes</li>
+  {{/each}}
+</ul>

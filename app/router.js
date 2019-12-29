@@ -12,6 +12,7 @@ Router.map(function() {
     this.route('capabilities');
   });
 
+  this.route('barcode');
   this.route('battery');
   this.route('bluetooth-scan');
   this.route('brightness');
