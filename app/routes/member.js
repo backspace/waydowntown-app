@@ -82,6 +82,11 @@ export default class MemberRoute extends Route {
         }
       });
 
+      push.on('notification', data => {
+        this.debugLog.log('Push received');
+        this.debugLog.log(JSON.stringify(data));
+      });
+
       push.on('error', error =>
         this.debugLog.log('Push notification registration error!', error),
       );
