@@ -89,6 +89,12 @@ export default class GameListItem extends Component {
     return this.teamParticipation?.state === 'scoring';
   }
 
+  get showDirections() {
+    return ['converging', 'representing', 'scheduled'].includes(
+      this.teamParticipation?.state,
+    );
+  }
+
   get otherTeams() {
     return this.args.game.participations
       .mapBy('team')

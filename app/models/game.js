@@ -16,6 +16,7 @@ export default class GameModel extends Model {
 
   @attr('number') duration;
 
+  @attr('string') directions;
   @attr('string') instructions;
 
   request = resourceAction('request', {

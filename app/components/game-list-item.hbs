@@ -7,6 +7,10 @@
     <p data-test-instructions>{{@game.incarnation.concept.instructions}}</p>
   {{/if}}
 
+  {{#if this.showDirections}}
+    <p data-test-directions>{{@game.directions}}</p>
+  {{/if}}
+
   {{#if this.canAccept}}
     <GameActionButton @game={{@game}} @action={{@game.accept}} data-test-accept>Accept</GameActionButton>
   {{/if}}

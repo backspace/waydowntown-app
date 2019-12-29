@@ -16,8 +16,9 @@ module('Integration | Component | game-list-item', function(hooks) {
     this.set('team', { id: '1' });
   });
 
-  test('the concept name and duration are rendered', async function(assert) {
+  test('the concept name and duration are rendered but directions are not without the proper participation state', async function(assert) {
     this.set('game', {
+      directions: 'Directions',
       duration: 30,
       incarnation: {
         concept: {
@@ -32,6 +33,7 @@ module('Integration | Component | game-list-item', function(hooks) {
 
     assert.dom(`[data-test-concept-name]`).hasText('a concept');
     assert.dom('[data-test-duration]').hasText('30 seconds');
+    assert.dom('[data-test-directions]').doesNotExist();
   });
 
   test('teams and their states are listed', async function(assert) {
@@ -88,9 +90,10 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert.dom('button').exists({ count: 1 });
   });
 
-  test('a converging game has arrive and cancel buttons', async function(assert) {
+  test('a converging game has directions and arrive and cancel buttons', async function(assert) {
     this.set('team', { id: 1 });
     this.set('game', {
+      directions: 'Meet on the third floor outside the elevators.',
       participations: [
         EmberObject.create({ state: 'converging', team: this.team }),
       ],
@@ -100,6 +103,9 @@ module('Integration | Component | game-list-item', function(hooks) {
 
     assert.dom('[data-test-arrive]').exists();
     assert.dom('[data-test-cancel]').exists();
+    assert
+      .dom('[data-test-directions]')
+      .hasText('Meet on the third floor outside the elevators.');
     assert.dom('button').exists({ count: 2 });
   });
 
@@ -111,6 +117,7 @@ module('Integration | Component | game-list-item', function(hooks) {
     this.set('member', { id: 1 });
     this.set('team', { id: 1, members: [this.member, { id: 2 }] });
     this.set('game', {
+      directions: 'Directions',
       incarnation: {
         concept: {
           instructions: 'Representing game instructions',
@@ -142,6 +149,7 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert
       .dom('[data-test-instructions]')
       .hasText('Representing game instructions');
+    assert.dom('[data-test-directions]').hasText('Directions');
   });
 
   test('a representing game with a self representation on a solo team has no button to unrepresent but has a countdown', async function(assert) {
@@ -224,6 +232,7 @@ module('Integration | Component | game-list-item', function(hooks) {
     this.set('team', { id: 1, members: [this.member, otherMember] });
     this.set('game', {
       beginsAt: gameStartTime,
+      directions: 'Directions',
       incarnation: {
         concept: {
           instructions: 'Game instructions',
@@ -252,6 +261,7 @@ module('Integration | Component | game-list-item', function(hooks) {
       .dom('[data-test-scheduled-representing]')
       .hasText('You are not representing your team for this game.');
     assert.dom('[data-test-representing-ends-at]').doesNotExist();
+    assert.dom('[data-test-directions]').hasText('Directions');
   });
 
   test('a scheduled game for a solo team does not show representing status', async function(assert) {
@@ -280,6 +290,7 @@ module('Integration | Component | game-list-item', function(hooks) {
   test('a cancelled game has a dismiss button', async function(assert) {
     this.set('team', { id: 1 });
     this.set('game', {
+      directions: 'Directions',
       participations: [
         EmberObject.create({ state: 'cancelled', team: this.team }),
       ],
@@ -289,6 +300,7 @@ module('Integration | Component | game-list-item', function(hooks) {
 
     assert.dom('[data-test-dismiss]').exists();
     assert.dom('button').exists({ count: 1 });
+    assert.dom('[data-test-directions]').doesNotExist();
   });
 
   test('a scoring game has a message to wait but no buttons or countdown', async function(assert) {
@@ -296,6 +308,7 @@ module('Integration | Component | game-list-item', function(hooks) {
     this.set('team', { id: 1, members: [this.member] });
     this.set('game', {
       beginsAt: new Date(),
+      directions: 'Directions',
       participations: [
         EmberObject.create({ state: 'scoring', team: this.team }),
       ],
@@ -306,5 +319,6 @@ module('Integration | Component | game-list-item', function(hooks) {
     assert.dom('[data-test-scoring]').exists();
     assert.dom('[data-test-begins-at]').doesNotExist();
     assert.dom('button').doesNotExist();
+    assert.dom('[data-test-directions]').doesNotExist();
   });
 });
