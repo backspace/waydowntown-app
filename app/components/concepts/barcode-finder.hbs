@@ -1,0 +1,9 @@
+<button class="border border-black" {{on "click" this.scan}} data-test-scan>Scan barcode</button>
+
+{{#if this.barcodes.length}}
+  <ul data-test-barcodes>
+    {{#each this.barcodes as |barcode|}}
+      <li>{{barcode}}</li>
+    {{/each}}
+  </ul>
+{{/if}}

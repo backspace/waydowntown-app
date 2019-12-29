@@ -246,6 +246,86 @@ module('Acceptance | active game', function(hooks) {
       .exists();
   });
 
+  test('the barcode-finder game scans barcodes', async function(assert) {
+    this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
+
+    const game = this.server.create('game', {
+      conceptName: 'barcode-finder',
+      state: 'scheduled',
+      beginsAt: new Date(new Date().getTime() - 1000 * 60),
+      endsAt: new Date(new Date().getTime() + 1000 * 60),
+      representing: true,
+    });
+
+    let barcodeSuccessHandler;
+
+    window.cordova = {
+      plugins: {
+        barcodeScanner: {
+          scan(success) {
+            barcodeSuccessHandler = success;
+          },
+        },
+      },
+    };
+
+    await visit('/');
+
+    assert.dom('[data-test-barcodes]').doesNotExist();
+    await click('[data-test-scan]');
+
+    barcodeSuccessHandler({
+      text: '1312',
+    });
+
+    await settled();
+
+    assert.dom('[data-test-barcodes]').includesText('1312');
+
+    barcodeSuccessHandler({
+      text: '1919',
+    });
+
+    barcodeSuccessHandler({
+      text: '1312',
+    });
+
+    barcodeSuccessHandler({
+      cancelled: 1,
+      text: 'fake',
+    });
+
+    await settled();
+
+    assert.dom('[data-test-barcodes]').includesText('1919');
+    assert.dom('[data-test-barcodes] li').exists({ count: 2 });
+
+    this.server.patch(
+      `/games/${game.id}/report`,
+      ({ participations, representations, games }, { requestBody }) => {
+        const values = JSON.parse(requestBody).values;
+        representations
+          .findBy({ memberId: this.member.id })
+          .update({ result: { values } });
+        participations
+          .findBy({ teamId: this.team.id })
+          .update({ state: 'finished', winner: false });
+        return games.find(game.id);
+      },
+    );
+
+    this.setGameClock(new Date(new Date().getTime() + 1000 * 60 * 2));
+    await settled();
+
+    await settled(); // Twice because of the reporting action? 🧐
+
+    assert
+      .dom(
+        `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-member-id='${this.member.id}'] [data-test-result]`,
+      )
+      .hasText('1312,1919');
+  });
+
   test('the word-finder game finds words via OCR', async function(assert) {
     this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
 

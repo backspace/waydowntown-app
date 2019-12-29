@@ -7,6 +7,7 @@ export default class ConceptModel extends Model {
 
   get description() {
     return {
+      'barcode-finder': 'Scan barcodes',
       'bluetooth-collector': 'Find Bluetooth devices',
       tap: 'Tap the button',
       'word-collector': 'Find words text-recognition on images from the camera',
