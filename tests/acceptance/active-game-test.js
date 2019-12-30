@@ -326,6 +326,98 @@ module('Acceptance | active game', function(hooks) {
       .hasText('1312,1919');
   });
 
+  test('the magnetometer-magnitude game reports the highest magnitude', async function(assert) {
+    this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
+
+    const game = this.server.create('game', {
+      conceptName: 'magnetometer-magnitude',
+      state: 'scheduled',
+      beginsAt: new Date(new Date().getTime() - 1000 * 60),
+      endsAt: new Date(new Date().getTime() + 1000 * 60),
+      representing: true,
+    });
+
+    let magnetometerSuccessHandler;
+
+    window.cordova = {
+      plugins: {
+        magnetometer: {
+          stop() {},
+          watchReadings(success) {
+            magnetometerSuccessHandler = success;
+          },
+        },
+      },
+    };
+
+    await visit('/');
+
+    assert.dom('[data-test-maximum]').hasText('0');
+    assert.dom('[data-test-current]').hasText('0');
+
+    magnetometerSuccessHandler({
+      magnitude: 100,
+    });
+
+    await settled();
+
+    assert.dom('[data-test-maximum]').hasText('100');
+    assert.dom('[data-test-current]').hasText('100');
+
+    magnetometerSuccessHandler({
+      magnitude: 55,
+    });
+
+    magnetometerSuccessHandler({
+      magnitude: 22,
+    });
+
+    await settled();
+
+    assert.dom('[data-test-maximum]').hasText('100');
+    assert.dom('[data-test-current]').hasText('22');
+    assert.dom('meter').matchesSelector('[max="100"]');
+    assert.dom('meter').matchesSelector('[value="22"]');
+
+    magnetometerSuccessHandler({
+      magnitude: 200,
+    });
+
+    magnetometerSuccessHandler({
+      magnitude: 15,
+    });
+
+    await settled();
+
+    assert.dom('[data-test-maximum]').hasText('200');
+    assert.dom('[data-test-current]').hasText('15');
+
+    this.server.patch(
+      `/games/${game.id}/report`,
+      ({ participations, representations, games }, { requestBody }) => {
+        const value = JSON.parse(requestBody).value;
+        representations
+          .findBy({ memberId: this.member.id })
+          .update({ result: { value } });
+        participations
+          .findBy({ teamId: this.team.id })
+          .update({ state: 'finished', winner: false });
+        return games.find(game.id);
+      },
+    );
+
+    this.setGameClock(new Date(new Date().getTime() + 1000 * 60 * 2));
+    await settled();
+
+    await settled(); // Twice because of the reporting action? 🧐
+
+    assert
+      .dom(
+        `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-member-id='${this.member.id}'] [data-test-result]`,
+      )
+      .hasText('200');
+  });
+
   test('the multiple-choice game asks questions', async function(assert) {
     this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
 

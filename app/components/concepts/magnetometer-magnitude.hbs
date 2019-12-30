@@ -1,0 +1,6 @@
+<p {{did-insert (action this.startWatching)}}>??</p>
+
+<p>Current magnitude: <span data-test-current>{{this.currentMagnitude}}</span></p>
+<p>Maximum magnitude: <span data-test-maximum>{{this.maximumMagnitude}}</span></p>
+
+<meter max={{this.maximumMagnitude}} value={{this.currentMagnitude}} />
