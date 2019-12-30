@@ -1,8 +1,6 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
 import { storageFor } from 'ember-local-storage';
-import { tracked } from '@glimmer/tracking';
-import { task } from 'ember-concurrency';
 import { get, set } from '@ember/object';
 import { action } from '@ember/object';
 
