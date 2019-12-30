@@ -92,6 +92,25 @@ export default class MemberRoute extends Route {
       );
     }
 
+    if (navigator.geolocation && member.get('capabilities.location')) {
+      navigator.geolocation.watchPosition(
+        ({ coords: { latitude, longitude } }) => {
+          member.setProperties({
+            lat: latitude,
+            lon: longitude,
+          });
+
+          if (member.hasDirtyAttributes) {
+            member.save();
+          }
+        },
+        error => {
+          this.debugLog.log('Geolocation error');
+          this.debugLog.log(JSON.stringify(error));
+        },
+      );
+    }
+
     controller.setProperties({ games, member, team, teams });
   }
 }

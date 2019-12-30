@@ -19,12 +19,13 @@ module('Acceptance | require setup', function(hooks) {
     resetStorages();
   });
 
-  test('filling in a token shows the logged-in interface with member name and registers the device', async function(assert) {
+  test('filling in a token shows the logged-in interface with member name, registers the device, and tracks location', async function(assert) {
     const done = assert.async();
 
     const member = this.server.create('member', {
       name: 'me',
       capabilities: {
+        location: true,
         notifications: true,
       },
     });
@@ -45,6 +46,14 @@ module('Acceptance | require setup', function(hooks) {
 
     window.PushNotification = mockPushNotification;
 
+    this.oldGetCurrentPosition = navigator.geolocation.getCurrentPosition;
+
+    let positionHandler;
+
+    navigator.geolocation.watchPosition = success => {
+      positionHandler = success;
+    };
+
     await visit('/');
 
     await fillIn('[data-test-token-field]', member.id);
@@ -53,24 +62,39 @@ module('Acceptance | require setup', function(hooks) {
     assert.dom('.text-2xl').exists();
     assert.dom('[data-test-member-name]').hasText('me');
 
+    let patchCalls = 0;
+
     this.server.patch(`/members/:id`, function({ members }, request) {
       const member = members.find(request.params.id);
       member.update(this.normalizedRequestAttrs());
 
-      assert.equal(member.attrs.registrationId, '1312');
-      assert.equal(member.attrs.registrationType, '!');
-
       const requestAttributes = JSON.parse(request.requestBody).data.attributes;
 
-      assert.notOk(requestAttributes.name);
-      assert.notOk(requestAttributes.lat);
-      assert.notOk(requestAttributes.lon);
+      if (patchCalls == 0) {
+        assert.equal(member.attrs.registrationId, '1312');
+        assert.equal(member.attrs.registrationType, '!');
 
-      done();
+        assert.notOk(requestAttributes.name);
+        assert.notOk(requestAttributes.lat);
+        assert.notOk(requestAttributes.lon);
+
+        patchCalls++;
+      } else {
+        assert.equal(member.attrs.lat, 49);
+        assert.equal(member.attrs.lon, -97);
+
+        assert.notOk(requestAttributes.registrationId);
+        done();
+      }
+
       return member;
     });
 
     registrationHandler({ registrationId: '1312', registrationType: '!' });
+
+    await settled();
+
+    positionHandler({ coords: { latitude: 49, longitude: -97 } });
   });
 
   test('the token can be extracted from the initial URL', async function(assert) {
