@@ -326,6 +326,68 @@ module('Acceptance | active game', function(hooks) {
       .hasText('1312,1919');
   });
 
+  test('the multiple-choice game asks questions', async function(assert) {
+    this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
+
+    const game = this.server.create('game', {
+      state: 'scheduled',
+      beginsAt: new Date(new Date().getTime() - 1000 * 60),
+      endsAt: new Date(new Date().getTime() + 1000 * 60),
+      representing: true,
+      incarnation: this.server.create('incarnation', {
+        concept: this.server.create('concept', { id: 'multiple-choice' }),
+        questions: [
+          {
+            text: 'A or B?',
+            answers: ['A', 'B'],
+          },
+          {
+            text: 'C, D, or E?',
+            answers: ['C', 'D', 'E'],
+          },
+        ],
+      }),
+    });
+
+    await visit('/');
+
+    assert.dom('[data-test-progress]').hasText('Question 1 of 2');
+    assert.dom('[data-test-question]').hasText('A or B?');
+    assert.dom('[data-test-answer]').exists({ count: 2 });
+
+    await click('[data-test-answer-value="A"]');
+
+    assert.dom('[data-test-progress]').hasText('Question 2 of 2');
+    assert.dom('[data-test-question]').hasText('C, D, or E?');
+    assert.dom('[data-test-answer]').exists({ count: 3 });
+
+    this.server.patch(
+      `/games/${game.id}/report`,
+      ({ participations, representations, games }, { requestBody }) => {
+        const values = JSON.parse(requestBody).values;
+        representations
+          .findBy({ memberId: this.member.id })
+          .update({ result: { values } });
+        participations
+          .findBy({ teamId: this.team.id })
+          .update({ state: 'finished', winner: false });
+        return games.find(game.id);
+      },
+    );
+
+    await click('[data-test-answer-value="D"]');
+
+    assert.dom('[data-test-complete]').exists();
+
+    await settled();
+
+    assert
+      .dom(
+        `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-member-id='${this.member.id}'] [data-test-result]`,
+      )
+      .hasText('A,D');
+  });
+
   test('the word-finder game finds words via OCR', async function(assert) {
     this.setGameClock(new Date(new Date().getTime() - 1000 * 30));
 

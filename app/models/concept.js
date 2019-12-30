@@ -9,6 +9,7 @@ export default class ConceptModel extends Model {
     return {
       'barcode-finder': 'Scan barcodes',
       'bluetooth-collector': 'Find Bluetooth devices',
+      'multiple-choice': 'Answer multiple-choice questions',
       tap: 'Tap the button',
       'word-finder': 'Find words via camera text recognition',
     }[this.id];

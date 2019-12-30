@@ -1,0 +1,11 @@
+{{#if this.complete}}
+  <p data-test-complete>Complete!</p>
+{{else}}
+  <p data-test-progress>Question {{this.progress}} of {{this.questions.length}}</p>
+
+  <p data-test-question>{{this.currentQuestion.text}}</p>
+
+  {{#each this.currentQuestion.answers as |answer|}}
+    <button class="border border-black" {{on "click" (fn this.answer answer)}} data-test-answer-value={{answer}} data-test-answer>{{answer}}</button>
+  {{/each}}
+{{/if}}
