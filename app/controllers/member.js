@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { storageFor } from 'ember-local-storage';
 import { get, set } from '@ember/object';
 import { action } from '@ember/object';
+import regionFinder from 'waydowntown/utils/region-finder';
 
 import Ember from 'ember';
 
@@ -110,6 +111,11 @@ export default class MemberController extends Controller {
       },
       disconnected() {},
     });
+  }
+
+  get bodyClass() {
+    const region = regionFinder(this.member.lat, this.member.lon);
+    return `region-${region}`;
   }
 
   willDestroy() {

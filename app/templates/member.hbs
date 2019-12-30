@@ -1,4 +1,6 @@
-<div {{did-insert (action this.setupConsumer)}} class="fixed right-0 top-0 bg-gray-200 p-1 h-8">
+{{set-body-class this.bodyClass}}
+
+<div {{did-insert (action this.setupConsumer)}} class="fixed right-0 top-0 bg-region-contrast text-region-contrast p-1 h-8">
   <span data-test-member-name>{{this.member.name}}</span> <LinkTo @route="index" @query={{hash stop=true}} data-test-return-to-login>×</LinkTo>
 </div>
 

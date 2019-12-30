@@ -19,7 +19,7 @@ module('Acceptance | require setup', function(hooks) {
     resetStorages();
   });
 
-  test('filling in a token shows the logged-in interface with member name, registers the device, and tracks location', async function(assert) {
+  test('filling in a token shows the logged-in interface with member name, registers the device, and tracks location with style changes', async function(assert) {
     const done = assert.async();
 
     const member = this.server.create('member', {
@@ -56,6 +56,8 @@ module('Acceptance | require setup', function(hooks) {
 
     await visit('/');
 
+    assert.ok(document.querySelector('body').className.includes('region-none'));
+
     await fillIn('[data-test-token-field]', member.id);
     await click('[data-test-token-save');
 
@@ -77,15 +79,15 @@ module('Acceptance | require setup', function(hooks) {
         assert.notOk(requestAttributes.name);
         assert.notOk(requestAttributes.lat);
         assert.notOk(requestAttributes.lon);
-
-        patchCalls++;
-      } else {
-        assert.equal(member.attrs.lat, 49);
-        assert.equal(member.attrs.lon, -97);
+      } else if (patchCalls === 1) {
+        assert.equal(member.attrs.lat, 49.892535);
+        assert.equal(member.attrs.lon, -97.147945);
 
         assert.notOk(requestAttributes.registrationId);
         done();
       }
+
+      patchCalls++;
 
       return member;
     });
@@ -94,7 +96,19 @@ module('Acceptance | require setup', function(hooks) {
 
     await settled();
 
-    positionHandler({ coords: { latitude: 49, longitude: -97 } });
+    positionHandler({ coords: { latitude: 49.892535, longitude: -97.147945 } });
+    await settled();
+
+    assert.equal(patchCalls, 2);
+    assert.ok(
+      document.querySelector('body').className.includes('region-portage'),
+    );
+
+    positionHandler({ coords: { latitude: 49.89494, longitude: -97.138679 } });
+    await settled();
+    await settled();
+
+    assert.ok(document.querySelector('body').className.includes('region-main'));
   });
 
   test('the token can be extracted from the initial URL', async function(assert) {
