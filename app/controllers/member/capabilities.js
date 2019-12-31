@@ -99,6 +99,24 @@ export default class CapabilitiesController extends Controller {
   }
 
   @action
+  requestMagnetometer() {
+    try {
+      window.cordova.plugins.magnetometer.getReading(
+        () => {
+          this.set('member.capabilities.magnetometer', true);
+          this.transitionToNextStep();
+        },
+        () => {
+          throw new Error('Failed to get magnetometer reading');
+        },
+      );
+    } catch (e) {
+      this.set('member.capabilities.magnetometer', false);
+      this.set('error', e.message);
+    }
+  }
+
+  @action
   requestMotion() {
     if (
       window.DeviceMotionEvent &&
@@ -238,6 +256,11 @@ export default class CapabilitiesController extends Controller {
       description:
         'We use a decibel meter for some games, which requires microphone permissions.',
       action: this.requestDecibels,
+    },
+    {
+      label: 'Magnetometer',
+      description: 'We detect magnetic field magnitude for some games.',
+      action: this.requestMagnetometer,
     },
     {
       label: 'Motion and orientation',

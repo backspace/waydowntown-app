@@ -51,6 +51,7 @@ module('Acceptance | capabilities', function(hooks) {
       decibels: false,
       devicemotion: true,
       location: true,
+      magnetometer: true,
       notifications: true,
       ocr: true,
 
@@ -172,6 +173,19 @@ module('Acceptance | capabilities', function(hooks) {
 
     assert.dom('h2').includesText('Decibel meter');
     await click('[data-test-skip]');
+
+    window.cordova = {
+      plugins: {
+        magnetometer: {
+          getReading(success) {
+            success();
+          },
+        },
+      },
+    };
+
+    assert.dom('h2').includesText('Magnetometer');
+    await click('[data-test-request]');
 
     window.DeviceMotionEvent = {
       requestPermission() {

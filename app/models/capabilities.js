@@ -7,6 +7,7 @@ export default Fragment.extend({
   decibels: attr('boolean'),
   devicemotion: attr('boolean'),
   location: attr('boolean'),
+  magnetometer: attr('boolean'),
   notifications: attr('boolean'),
   ocr: attr('boolean'),
 
