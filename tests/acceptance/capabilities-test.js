@@ -280,6 +280,12 @@ module('Acceptance | capabilities', function(hooks) {
       .lookup('service:store')
       .peekRecord('member', this.member.id);
     assert.notOk(memberRecord.capabilities.hasDirtyAttributes);
+
+    await visit('/member/capabilities');
+    await click('[data-test-next]');
+    await click('[data-test-next]');
+    await click('[data-test-request]');
+    assert.dom('[data-test-cancel-exit]').doesNotExist();
   });
 
   test('the walkthrough begins automatically when the device details are unknown', async function(assert) {
