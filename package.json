@@ -88,6 +88,7 @@
     "trailingComma": "all"
   },
   "volta": {
-    "node": "12.14.0"
+    "node": "12.14.0",
+    "yarn": "1.21.1"
   }
 }
