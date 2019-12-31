@@ -17,6 +17,10 @@
 .region-graham {
   background-color: #260691;
 
+  .bg-region {
+    background-color: #260691;
+  }
+
   .bg-region-contrast {
     background-color: #a3810b;
   }
@@ -28,10 +32,18 @@
 
 .region-main {
   background-color: #a3810b;
+
+  .bg-region {
+    background-color: #a3810b;
+  }
 }
 
 .region-portage {
   background-color: #119bab;
+
+  .bg-region {
+    background-color: #119bab;
+  }
 }
 
 .region-main, .region-portage, .region-stmary {
@@ -55,6 +67,10 @@
 .region-stmary {
   background-color: white;
   color: black;
+
+  .bg-region {
+    background-color: white;
+  }
 
   .border-region {
     @apply border-black;
