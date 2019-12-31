@@ -99,6 +99,27 @@ export default class CapabilitiesController extends Controller {
   }
 
   @action
+  requestMotion() {
+    if (
+      window.DeviceMotionEvent &&
+      typeof window.DeviceMotionEvent.requestPermission === 'function'
+    ) {
+      DeviceMotionEvent.requestPermission().then(state => {
+        if (state === 'granted') {
+          this.set('member.capabilities.devicemotion', true);
+          this.transitionToNextStep();
+        } else {
+          super.willClearElement(...arguments);
+          this.error = `Permission state: ${state}`;
+        }
+      });
+    } else {
+      this.set('member.capabilities.devicemotion', true);
+      this.transitionToNextStep();
+    }
+  }
+
+  @action
   requestNotifications() {
     this.set('error', undefined);
 
@@ -217,6 +238,11 @@ export default class CapabilitiesController extends Controller {
       description:
         'We use a decibel meter for some games, which requires microphone permissions.',
       action: this.requestDecibels,
+    },
+    {
+      label: 'Motion and orientation',
+      description: 'We use motion and orientation events for some games.',
+      action: this.requestMotion,
     },
     {
       label: 'Text recognition',

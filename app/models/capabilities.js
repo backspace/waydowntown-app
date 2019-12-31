@@ -5,6 +5,7 @@ export default Fragment.extend({
   bluetooth: attr('boolean'),
   camera: attr('boolean'),
   decibels: attr('boolean'),
+  devicemotion: attr('boolean'),
   location: attr('boolean'),
   notifications: attr('boolean'),
   ocr: attr('boolean'),
