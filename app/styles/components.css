@@ -1,0 +1,12 @@
+.btn {
+  @apply p-2;
+  @apply border;
+}
+
+.region-none .btn, .region-graham .btn, .region-portage .btn, .region-main .btn {
+  @apply border-white;
+}
+
+.region-stmary .btn {
+  @apply border-black;
+}

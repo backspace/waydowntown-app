@@ -28,9 +28,9 @@
   </ul>
 {{/if}}
 
-<button class="border border-region {{if this.team.cannotRequest "opacity-50 cursor-default"}}" disabled={{this.team.cannotRequest}} {{on "click" (perform this.requestGame null null)}} data-test-request>Request Game</button>
+<button class="btn {{if this.team.cannotRequest "opacity-50 cursor-default"}}" disabled={{this.team.cannotRequest}} {{on "click" (perform this.requestGame null null)}} data-test-request>Request Game</button>
 
-<button class="border border-region" {{on "click" (perform this.reloadGames)}}>
+<button class="btn" {{on "click" (perform this.reloadGames)}}>
   {{#if this.reloadGames.isRunning}}
     Reloading…
   {{else}}
@@ -100,7 +100,7 @@
           <li class={{if team.isPresent "bg-green-300" "bg-red-300"}} data-test-team-id={{team.id}}>
             {{team.name}}
             {{#each this.concepts as |concept|}}
-              <button class="border border-region" {{on "click" (perform this.requestGame concept team.id)}}>{{concept}}</button>
+              <button class="btn" {{on "click" (perform this.requestGame concept team.id)}}>{{concept}}</button>
             {{/each}}
           </li>
         {{/if}}
@@ -108,7 +108,7 @@
     </ul>
   {{/if}}
 
-  <button class="border border-region" {{on "click" (toggle-action "showMap" this)}} data-test-toggle-map>{{if this.showMap "Hide" "Show"}} Map</button>
+  <button class="btn" {{on "click" (toggle-action "showMap" this)}} data-test-toggle-map>{{if this.showMap "Hide" "Show"}} Map</button>
 
   {{#if this.showMap}}
     <Map @teams={{this.teams}} />
@@ -117,5 +117,5 @@
 
 Start solo games:
 {{#each this.concepts as |concept|}}
-  <button class="border border-region" {{on "click" (perform this.requestGame concept null)}}>{{concept}}</button>
+  <button class="btn" {{on "click" (perform this.requestGame concept null)}}>{{concept}}</button>
 {{/each}}

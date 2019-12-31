@@ -4,10 +4,10 @@
 <label for="token-input">Token</label>
 <Input @id="token-input" @value={{this.tokenStorage.token}} @size="40" placeholder="Paste your token here" @class="border-b border-region" data-test-token-field />
 
-<button class="border border-region" {{on "click" this.saveToken}} data-test-token-save>Log in</button>
+<button class="btn" {{on "click" this.saveToken}} data-test-token-save>Log in</button>
 
 <br>
-<button class="border border-region" {{on "click" this.scan}} data-test-scan>Scan QR code</button>
+<button class="btn" {{on "click" this.scan}} data-test-scan>Scan QR code</button>
 
 {{#if this.scanError}}
   <div class="bg-orange-100 border border-orange-400 text-orange-700 px-4 py-3 rounded relative w-full" role="alert" data-test-alert>

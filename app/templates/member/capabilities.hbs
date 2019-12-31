@@ -4,19 +4,19 @@
       {{#unless this.first}}
         {{#if this.member.capabilities.hasDirtyAttributes}}
           {{#if this.requestingExit}}
-            <button class="border border-region" {{action (mut this.requestingExit) false}} data-test-cancel-exit>
+            <button class="btn" {{action (mut this.requestingExit) false}} data-test-cancel-exit>
               Cancel exit
             </button>
-            <button class="border border-region bg-orange-300" {{action this.exit}} data-test-exit>
+            <button class="btn bg-orange-300" {{action this.exit}} data-test-exit>
               Exit without saving
             </button>
           {{else}}
-            <button class="border border-region " {{action (mut this.requestingExit) true}} data-test-request-exit>
+            <button class="btn" {{action (mut this.requestingExit) true}} data-test-request-exit>
               Exit
             </button>
           {{/if}}
         {{else}}
-          <button class="border border-region absolute" {{action this.exit}} data-test-exit>
+          <button class="btn absolute" {{action this.exit}} data-test-exit>
             Exit
           </button>
         {{/if}}
@@ -34,7 +34,7 @@
         </div>
       {{/if}}
 
-      <button class="border border-region" {{action w.transition-to-next}} data-test-next>
+      <button class="btn" {{action w.transition-to-next}} data-test-next>
         Next
       </button>
     </w.step>
@@ -52,7 +52,7 @@
         {{/each-in}}
       </ul>
 
-      <button class="border border-region" {{action w.transition-to-next}} data-test-next>
+      <button class="btn" {{action w.transition-to-next}} data-test-next>
         Next
       </button>
     </w.step>
@@ -64,21 +64,21 @@
         <p>{{capability.description}}</p>
 
         {{#unless capability.required}}
-          <button class="border border-region" {{on "click" (action this.transitionToNextStep)}} data-test-skip>
+          <button class="btn" {{on "click" (action this.transitionToNextStep)}} data-test-skip>
             Skip
           </button>
         {{/unless}}
 
         {{#if (or (and capability.validationMessage (get this (concat "validating" capability.label))))}}
           <p data-test-validation>{{capability.validationMessage}}</p>
-          <button class="border border-region" {{on "click" (action this.transitionToNextStep)}} data-test-validate>
+          <button class="btn" {{on "click" (action this.transitionToNextStep)}} data-test-validate>
             Yes
           </button>
-          <button class="border border-region" {{on "click" capability.action}} data-test-request>
+          <button class="btn" {{on "click" capability.action}} data-test-request>
             Try again
           </button>
         {{else}}
-          <button class="border border-region" {{on "click" capability.action}} data-test-request>
+          <button class="btn" {{on "click" capability.action}} data-test-request>
             {{#if this.error}}Try again{{else}}Request{{/if}}
           </button>
         {{/if}}
@@ -98,11 +98,11 @@
         </div>
       {{/each}}
 
-      <button class="border border-region" {{action w.transition-to-previous}} data-test-previous>
+      <button class="btn" {{action w.transition-to-previous}} data-test-previous>
         Previous
       </button>
 
-      <button class="border border-region" {{action w.transition-to-next}} data-test-next>
+      <button class="btn" {{action w.transition-to-next}} data-test-next>
         Next
       </button>
     </w.step>
@@ -120,11 +120,11 @@
         </div>
       {{/each}}
 
-      <button class="border border-region" {{action w.transition-to-previous}} data-test-previous>
+      <button class="btn" {{action w.transition-to-previous}} data-test-previous>
         Previous
       </button>
 
-      <button class="border border-region" {{action w.transition-to-next}} data-test-next>
+      <button class="btn" {{action w.transition-to-next}} data-test-next>
         Next
       </button>
     </w.step>
@@ -140,11 +140,11 @@
         {{/each-in}}
       </ul>
 
-      <button class="border border-region" {{action w.transition-to-previous}} data-test-previous>
+      <button class="btn" {{action w.transition-to-previous}} data-test-previous>
         Previous
       </button>
 
-      <button class="border border-region" {{on "click" (perform this.save)}} data-test-save>
+      <button class="btn" {{on "click" (perform this.save)}} data-test-save>
         Save
       </button>
     </w.step>
