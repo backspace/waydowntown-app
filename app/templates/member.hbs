@@ -8,3 +8,13 @@
 <LinkTo class="underline" @route="member.archived" data-test-archived>Archived</LinkTo>
 
 {{outlet}}
+
+{{#if this.member.admin}}
+  <div class="fixed left-0 bottom-0 bg-region-contrast text-region-contrast p-1 z-20">
+    <button {{on "click" (action (mut this.region) "none")}}>N</button>
+    <button {{on "click" (action (mut this.region) "portage")}}>P</button>
+    <button {{on "click" (action (mut this.region) "graham")}}>G</button>
+    <button {{on "click" (action (mut this.region) "stmary")}}>S</button>
+    <button {{on "click" (action (mut this.region) "main")}}>M</button>
+  </div>
+{{/if}}

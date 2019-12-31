@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { storageFor } from 'ember-local-storage';
 import { get, set } from '@ember/object';
 import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import regionFinder from 'waydowntown/utils/region-finder';
 
 import Ember from 'ember';
@@ -21,6 +22,10 @@ export default class MemberController extends Controller {
   @service vibration;
 
   @storageFor('token') tokenStorage;
+
+  queryParams = ['region'];
+
+  @tracked region;
 
   @action
   setupConsumer() {
@@ -114,7 +119,8 @@ export default class MemberController extends Controller {
   }
 
   get bodyClass() {
-    const region = regionFinder(this.member.lat, this.member.lon);
+    const region =
+      this.region || regionFinder(this.member.lat, this.member.lon);
     return `region-${region}`;
   }
 
