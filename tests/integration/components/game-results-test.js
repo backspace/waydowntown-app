@@ -60,7 +60,7 @@ module('Integration | Component | game-results', function(hooks) {
 
     assert.dom('[data-test-team-id="b"] [data-test-score]').hasText('0');
     assert.dom('[data-test-team-id="b"] [data-test-winner]').doesNotExist();
-    assert.dom('[data-test-member-id="b1"]').hasText('B1: x,y,z');
+    assert.dom('[data-test-member-id="b1"]').hasText('B1: x, y, z');
   });
 
   test('it renders nothing when no participations have results', async function(assert) {

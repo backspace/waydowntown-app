@@ -3,9 +3,9 @@
     {{#if result.value}}
       {{result.value}}
     {{else if result.matches}}
-      {{result.matches}} and {{pluralize this.nonmatches "other non-match"}}
+      {{join ", " result.matches}} and {{pluralize this.nonmatches "other non-match"}}
     {{else}}
-      {{result.values}}
+      {{join ", " result.values}}
     {{/if}}
   </span>
 {{/let}}

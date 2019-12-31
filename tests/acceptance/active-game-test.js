@@ -329,7 +329,7 @@ module('Acceptance | active game', function(hooks) {
       .dom(
         `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-member-id='${this.member.id}'] [data-test-result]`,
       )
-      .hasText('1312,1919');
+      .hasText('1312, 1919');
   });
 
   test('the magnetometer-magnitude game reports the highest magnitude', async function(assert) {
@@ -483,7 +483,7 @@ module('Acceptance | active game', function(hooks) {
       .dom(
         `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-member-id='${this.member.id}'] [data-test-result]`,
       )
-      .hasText('A,D');
+      .hasText('A, D');
   });
 
   test('the word-finder game finds words via OCR', async function(assert) {
@@ -560,7 +560,7 @@ module('Acceptance | active game', function(hooks) {
       .dom(
         `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-member-id='${this.member.id}'] [data-test-result]`,
       )
-      .hasText('Adjective,Noun');
+      .hasText('Adjective, Noun');
     assert
       .dom(
         `[data-test-results] [data-test-team-id='${this.team.id}'] [data-test-winner]`,

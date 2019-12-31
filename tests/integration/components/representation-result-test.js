@@ -27,7 +27,7 @@ module('Integration | Component | representation-result', function(hooks) {
       hbs`<RepresentationResult @representation={{representation}} />`,
     );
 
-    assert.dom('[data-test-result]').hasText('1312,1919');
+    assert.dom('[data-test-result]').hasText('1312, 1919');
   });
 
   test('it renders matches and the count of non-matches', async function(assert) {
@@ -39,6 +39,8 @@ module('Integration | Component | representation-result', function(hooks) {
       hbs`<RepresentationResult @representation={{representation}} />`,
     );
 
-    assert.dom('[data-test-result]').hasText('1312,1919 and 1 other non-match');
+    assert
+      .dom('[data-test-result]')
+      .hasText('1312, 1919 and 1 other non-match');
   });
 });
