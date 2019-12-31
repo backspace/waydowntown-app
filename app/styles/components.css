@@ -3,8 +3,10 @@
   @apply border;
 }
 
-.region-none .btn, .region-graham .btn, .region-portage .btn, .region-main .btn {
-  @apply border-white;
+.region-none, .region-graham, .region-portage, .region-main {
+  .btn {
+    @apply border-white;
+  }
 }
 
 .region-stmary .btn {

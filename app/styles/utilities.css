@@ -1,28 +1,30 @@
-.region-none, .region-none .bg-region {
+.region-none {
   background-color: black;
-}
 
-.region-none .bg-region-contrast {
-  @apply bg-white;
-}
+  .bg-region {
+    background-color: black;
+  }
 
-.region-none .text-region-contrast {
-  @apply text-black;
-}
+  .bg-region-contrast {
+    @apply bg-white;
+  }
 
+  .text-region-contrast {
+    @apply text-black;
+  }
+}
 
 .region-graham {
   background-color: #260691;
-}
 
-.region-graham .bg-region-contrast {
-  background-color: #a3810b;
-}
+  .bg-region-contrast {
+    background-color: #a3810b;
+  }
 
-.region-graham .text-region-contrast {
-  @apply text-white;
+  .text-region-contrast {
+    @apply text-white;
+  }
 }
-
 
 .region-main {
   background-color: #a3810b;
@@ -32,31 +34,29 @@
   background-color: #119bab;
 }
 
-.region-stmary {
-  background-color: white;
-}
+.region-main, .region-portage, .region-stmary {
+  .bg-region-contrast {
+    background-color: #260691;
+  }
 
-.region-main .bg-region-contrast, .region-portage .bg-region-contrast, .region-stmary .bg-region-contrast {
-  background-color: #260691;
+  .text-region-contrast {
+    @apply text-white;
+  }
 }
-
-.region-main .text-region-contrast, .region-portage .text-region-contrast, .region-stmary .text-region-contrast {
-  @apply text-white;
-}
-
 
 .region-graham, .region-main, .region-portage, .region-none {
   color: white;
-}
 
-.region-graham .border-region, .region-main .border-region, .region-portage .border-region, .region-none .border-region {
-  @apply border-white;
+  .border-region {
+    @apply border-white;
+  }
 }
 
 .region-stmary {
+  background-color: white;
   color: black;
-}
 
-.region-stmary .border-region {
-  @apply border-black;
+  .border-region {
+    @apply border-black;
+  }
 }
