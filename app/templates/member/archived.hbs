@@ -5,6 +5,11 @@
     <li class="border border-region p-1" data-test-game-id={{game.id}}>
       <span data-test-concept-name>{{game.incarnation.concept.name}}</span>: <GameResults @game={{game}} />
       <p data-test-ended-at>Ended {{moment-to this.gameClock.date game.endsAt precision="seconds" interval=200}}</p>
+      {{#if game.incarnation.credit}}
+        <p data-test-credit>
+          Credit: {{game.incarnation.credit}}
+        </p>
+      {{/if}}
     </li>
   {{/each}}
 </ul>

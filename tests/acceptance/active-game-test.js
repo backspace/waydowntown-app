@@ -26,6 +26,9 @@ module('Acceptance | active game', function(hooks) {
       endsAt: new Date(time + 1000 * 60),
       representing: true,
       instructions: 'Tap tap tap',
+      incarnationAttrs: {
+        credit: 'Sara Ahmed',
+      },
     });
 
     this.server.create('game', {
@@ -43,6 +46,7 @@ module('Acceptance | active game', function(hooks) {
     assert.dom('[data-test-time-remaining]').hasText('60 seconds remaining');
 
     assert.dom('[data-test-instructions]').hasText('Instructions: Tap tap tap');
+    assert.dom('[data-test-credit]').hasText('Credit: Sara Ahmed');
 
     assert.dom('[data-test-active-game]').exists({ count: 1 });
 
@@ -67,6 +71,8 @@ module('Acceptance | active game', function(hooks) {
       .dom('[data-test-active-game]')
       .includesText('You are not representing your team in this game');
     assert.equal(this.mockVibration.calls, 0);
+
+    assert.dom('[data-test-credit]').doesNotExist();
   });
 
   test('a game can become active, causing vibration, and then inactive again as time passes', async function(assert) {

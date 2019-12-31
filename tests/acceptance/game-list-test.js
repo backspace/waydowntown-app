@@ -337,8 +337,12 @@ module('Acceptance | game list', function(hooks) {
     this.setGameClock(now);
 
     const game = this.server.create('game', {
+      conceptName: 'tap',
       endsAt: endedAt,
       state: 'finished',
+      incarnationAttrs: {
+        credit: 'Sara Ahmed',
+      },
     });
 
     this.server.patch(
@@ -352,6 +356,9 @@ module('Acceptance | game list', function(hooks) {
     );
 
     await visit('/');
+
+    assert.dom('[data-test-credit]').hasText('Credit: Sara Ahmed');
+
     await click('[data-test-archive]');
 
     await settled();
@@ -362,5 +369,6 @@ module('Acceptance | game list', function(hooks) {
 
     assert.dom(`[data-test-game-id='${game.id}']`).exists();
     assert.dom('[data-test-ended-at]').hasText('Ended 3 minutes ago');
+    assert.dom('[data-test-credit]').hasText('Credit: Sara Ahmed');
   });
 });

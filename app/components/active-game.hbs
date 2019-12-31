@@ -16,4 +16,10 @@
   {{/if}}
 
   <GameResults @game={{@game}} />
+
+  {{#if @game.incarnation.credit}}
+    <p data-test-credit>
+      Credit: {{@game.incarnation.credit}}
+    </p>
+  {{/if}}
 </div>

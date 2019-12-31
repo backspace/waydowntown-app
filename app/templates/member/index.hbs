@@ -8,6 +8,11 @@
     {{#each this.finishedGames as |game|}}
       <li class="border border-region p-1" data-test-game-id={{game.id}}>
         <span data-test-concept-name>{{game.incarnation.concept.name}}</span>: <GameResults @game={{game}} />
+        {{#if game.incarnation.credit}}
+          <p data-test-credit>
+            Credit: {{game.incarnation.credit}}
+          </p>
+        {{/if}}
         <GameActionButton @game={{game}} @action={{game.archive}} data-test-archive>Archive</GameActionButton>
       </li>
     {{/each}}

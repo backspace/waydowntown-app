@@ -29,7 +29,7 @@ export default Factory.extend({
     }
 
     if (game.conceptName) {
-      const incarnation = game.createIncarnation();
+      const incarnation = game.createIncarnation(game.incarnationAttrs || {});
       incarnation.createConcept({
         name: game.conceptName,
       });

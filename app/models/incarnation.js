@@ -6,4 +6,5 @@ export default class IncarnationModel extends Model {
   @hasMany() games;
 
   @attr() questions;
+  @attr('string') credit;
 }
