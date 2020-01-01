@@ -12,6 +12,14 @@
   .text-region-contrast {
     @apply text-black;
   }
+
+  .bg-region-highlight {
+    background-color: $main;
+  }
+
+  .text-region-highlight {
+    @apply text-black;
+  }
 }
 
 .region-graham {
@@ -28,6 +36,10 @@
   .text-region-contrast {
     @apply text-white;
   }
+
+  .text-region-highlight {
+    color: $graham;
+  }
 }
 
 .region-main {
@@ -36,6 +48,10 @@
   .bg-region {
     background-color: $main;
   }
+
+  .text-region-highlight {
+    color: $main;
+  }
 }
 
 .region-portage {
@@ -43,6 +59,10 @@
 
   .bg-region {
     background-color: $portage;
+  }
+
+  .text-region-highlight {
+    color: $portage;
   }
 }
 
@@ -62,6 +82,10 @@
   .border-region {
     @apply border-white;
   }
+
+  .bg-region-highlight {
+    @apply bg-white;
+  }
 }
 
 .region-stmary {
@@ -74,5 +98,13 @@
 
   .border-region {
     @apply border-black;
+  }
+
+  .bg-region-highlight {
+    background-color: black;
+  }
+
+  .text-region-highlight {
+    color: white;
   }
 }
