@@ -40,9 +40,6 @@ module.exports = function(defaults) {
           },
           {
             module: require('postcss-nested'),
-            options: {
-              path: ['node_modules'],
-            },
           },
           require('tailwindcss')('./app/tailwind/config.js'),
           ...(isProduction ? [purgeCSS] : []),
