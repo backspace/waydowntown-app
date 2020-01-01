@@ -41,6 +41,16 @@ module.exports = function(defaults) {
           {
             module: require('postcss-nested'),
           },
+          {
+            module: require('postcss-simple-vars'),
+            options: {
+              variables: {
+                main: '#a3810b',
+                graham: '#260691',
+                portage: '#119bab',
+              },
+            },
+          },
           require('tailwindcss')('./app/tailwind/config.js'),
           ...(isProduction ? [purgeCSS] : []),
         ],

@@ -15,14 +15,14 @@
 }
 
 .region-graham {
-  background-color: #260691;
+  background-color: $graham;
 
   .bg-region {
-    background-color: #260691;
+    background-color: $graham;
   }
 
   .bg-region-contrast {
-    background-color: #a3810b;
+    background-color: $main;
   }
 
   .text-region-contrast {
@@ -31,24 +31,24 @@
 }
 
 .region-main {
-  background-color: #a3810b;
+  background-color: $main;
 
   .bg-region {
-    background-color: #a3810b;
+    background-color: $main;
   }
 }
 
 .region-portage {
-  background-color: #119bab;
+  background-color: $portage;
 
   .bg-region {
-    background-color: #119bab;
+    background-color: $portage;
   }
 }
 
 .region-main, .region-portage, .region-stmary {
   .bg-region-contrast {
-    background-color: #260691;
+    background-color: $graham;
   }
 
   .text-region-contrast {
