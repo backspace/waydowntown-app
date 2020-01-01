@@ -6,9 +6,41 @@
 .region-none, .region-graham, .region-portage, .region-main {
   .btn {
     @apply border-white;
+
+    &:hover {
+      @apply border-transparent;
+    }
+
+    &:active {
+      @apply bg-white;
+    }
   }
+}
+
+.region-none .btn:active {
+  color: black;
+}
+
+.region-graham .btn:active {
+  color: $graham;
+}
+
+.region-portage .btn:active {
+  color: $portage;
+}
+
+.region-main .btn:active {
+  color: $main;
 }
 
 .region-stmary .btn {
   @apply border-black;
+
+  &:hover {
+    @apply border-transparent;
+  }
+
+  &:active {
+    @apply bg-black text-white;
+  }
 }
