@@ -228,7 +228,7 @@ export default class CapabilitiesController extends Controller {
     {
       label: 'Location',
       description:
-        'We need to track your location to be able to connect you with nearby teams for games. This will only be used during the adventure and beta testing.',
+        'We need to track your location to be able to connect you with nearby teams for games. This will only be used during the adventure and beta testing and no history is stored, only the most recent position.',
       action: this.requestLocation,
       required: true,
     },
