@@ -108,3 +108,71 @@
     color: white;
   }
 }
+
+/* Adapted from https://css-tricks.com/books/volume-i/striped-barberpole-animation/ */
+
+.loading\:bg-region {
+  background-size: 400% 400%;
+  animation: barberpole 40s linear infinite reverse;
+}
+
+@keyframes barberpole {
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.region-none .loading\:bg-region {
+  background-image:
+  repeating-linear-gradient(
+    -45deg,
+    white,
+    white 0.5rem,
+    black 0.5rem,
+    black 1rem
+  );
+}
+
+.region-main .loading\:bg-region {
+  background-image:
+  repeating-linear-gradient(
+    -45deg,
+    white,
+    white 0.5rem,
+    $main 0.5rem,
+    $main 1rem
+  );
+}
+
+.region-stmary .loading\:bg-region {
+  background-image:
+  repeating-linear-gradient(
+    -45deg,
+    black,
+    black 0.5rem,
+    white 0.5rem,
+    white 1rem
+  );
+}
+
+.region-graham .loading\:bg-region {
+  background-image:
+  repeating-linear-gradient(
+    -45deg,
+    white,
+    white 0.5rem,
+    $graham 0.5rem,
+    $graham 1rem
+  );
+}
+
+.region-portage .loading\:bg-region {
+  background-image:
+  repeating-linear-gradient(
+    -45deg,
+    white,
+    white 0.5rem,
+    $portage 0.5rem,
+    $portage 1rem
+  );
+}
