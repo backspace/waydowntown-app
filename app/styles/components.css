@@ -7,10 +7,6 @@
   .btn {
     @apply border-white;
 
-    &:hover {
-      @apply border-transparent;
-    }
-
     &:active {
       @apply bg-white;
     }
@@ -35,10 +31,6 @@
 
 .region-stmary .btn {
   @apply border-black;
-
-  &:hover {
-    @apply border-transparent;
-  }
 
   &:active {
     @apply bg-black text-white;
