@@ -56,6 +56,8 @@ module('Acceptance | capabilities', function(hooks) {
       ocr: true,
 
       exertion: true,
+      height: true,
+      scents: true,
       speed: true,
       stairs: false,
 
@@ -211,6 +213,8 @@ module('Acceptance | capabilities', function(hooks) {
 
     assert.dom('h2').includesText('Physical');
     await click('#exertion');
+    await click('#height');
+    await click('#scents');
     await click('#speed');
     await click('#stairs');
     await click('[data-test-next]');

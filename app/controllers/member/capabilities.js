@@ -283,6 +283,18 @@ export default class CapabilitiesController extends Controller {
         'I can sustain physical exertion for a medium-term period, such as climbing two flights of stairs (? how to ask this without presuming stairs access)',
     },
     {
+      id: 'height',
+      label: 'Height',
+      description:
+        'I can see and reach toward things that are around 2m or 6.5′ from the ground.',
+    },
+    {
+      id: 'scents',
+      label: 'Scents',
+      description:
+        'I can be in spaces that have strong scents, such as those of cleaning products.',
+    },
+    {
       id: 'speed',
       label: 'Speed',
       description:

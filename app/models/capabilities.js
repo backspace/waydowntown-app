@@ -12,6 +12,8 @@ export default Fragment.extend({
   ocr: attr('boolean'),
 
   exertion: attr('boolean'),
+  height: attr('boolean'),
+  scents: attr('boolean'),
   speed: attr('boolean'),
   stairs: attr('boolean'),
 
