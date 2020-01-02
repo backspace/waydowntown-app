@@ -1,0 +1,81 @@
+<div class="absolute bg-region top-0 left-0 w-full min-h-screen z-10 flex flex-col p-2">
+  <nav class="absolute flex flex-row-reverse top-0 right-0 m-4">
+    {{#unless this.first}}
+      {{#if this.member.capabilities.hasDirtyAttributes}}
+        {{#if this.requestingExit}}
+          <button class="btn" {{action (mut this.requestingExit) false}} data-test-cancel-exit>
+            Cancel exit
+          </button>
+          <button class="btn bg-orange-300" {{action this.exit}} data-test-exit>
+            Exit without saving
+          </button>
+        {{else}}
+          <button class="btn" {{action (mut this.requestingExit) true}} data-test-request-exit>
+            Exit
+          </button>
+        {{/if}}
+      {{else}}
+        <button class="absolute" {{action this.exit}} data-test-exit>
+          ↶
+        </button>
+      {{/if}}
+    {{/unless}}
+  </nav>
+
+  {{#let this.step as |s|}}
+    <h2 class="text-2xl">
+      {{s.title}}
+    </h2>
+
+    <p class="mb-2">
+      {{s.description}}
+    </p>
+
+    {{#let (component (concat "walkthrough/" s.property)) (component (concat "capabilities/" s.property)) as |WalkthroughComponent ProviderComponent|}}
+      <ProviderComponent as |provider|>
+        <button class="btn mb-2 {{if provider.request.isRunning "loading:bg-region"}}" {{on "click" (perform provider.request)}} data-test-request>
+          {{#if provider.request.isRunning}}
+            &nbsp;
+          {{else if provider.request.performCount}}
+            Request again
+          {{else}}
+            Request
+          {{/if}}
+        </button>
+
+        <WalkthroughComponent @provider={{provider}} />
+
+        {{#if provider.error}}
+          <p>Error: {{provider.error}}</p>
+
+          {{#if s.required}}
+            <p class="mb-2">Things will be significantly broken without this, but you can proceed.</p>
+          {{/if}}
+        {{/if}}
+
+        <nav class="flex flex-row">
+          <button class="btn flex-1 mr-1 opacity-50" disabled data-test-previous>
+            Previous
+          </button>
+          {{#if provider.request.last.isSuccessful}}
+            <button class="btn flex-1 ml-1" {{action this.next}} data-test-next>
+              Next
+            </button>
+          {{else if provider.error}}
+            <button class="btn flex-1 ml-1" {{action this.skip}} data-test-skip>
+              Ignore
+            </button>
+          {{else if s.required}}
+            <button class="btn flex-1 ml-1 opacity-50" disabled data-test-next>
+              Next
+            </button>
+          {{else}}
+            <button class="btn flex-1 ml-1" {{action this.skip}} data-test-skip>
+              Skip
+            </button>
+          {{/if}}
+        </nav>
+      </ProviderComponent>
+    {{/let}}
+  {{/let}}
+</div>

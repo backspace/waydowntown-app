@@ -1,0 +1,17 @@
+<LeafletMap
+  @lat={{or @provider.position.coords.latitude 49.8913444}}
+  @lng={{or @provider.position.coords.longitude -97.1429387}}
+  @attributionControl={{false}}
+  @dragging={{false}}
+  @zoomControl={{false}}
+  @zoom={{16}}
+  class="w-full flex-grow mb-2"
+  data-test-map as |layers|>
+  <layers.tile
+    @url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png"
+    @opacity={{if @provider.position 1 0.25}} />
+
+  {{#if @provider.position}}
+    <layers.circle @location={{hash lat=@provider.position.coords.latitude lon=@provider.position.coords.longitude}} @radius={{@provider.position.coords.accuracy}} />
+  {{/if}}
+</LeafletMap>

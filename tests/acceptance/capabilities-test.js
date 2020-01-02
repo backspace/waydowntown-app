@@ -313,4 +313,67 @@ module('Acceptance | capabilities', function(hooks) {
     assert.equal(currentURL(), '/member/capabilities?forced=true');
     assert.dom('[role=alert]').exists();
   });
+
+  test('the new walkthrough adds a step to display and confirm capability values', async function(assert) {
+    this.getCurrentPositionOverride = success => {
+      success({
+        coords: {
+          latitude: 100,
+          longitude: 100,
+          accuracy: 1,
+        },
+      });
+    };
+
+    await visit('/member/neocap');
+
+    assert.dom('h2').hasText('Location');
+    assert
+      .dom('.leaflet-tile-pane .leaflet-layer')
+      .hasStyle({ opacity: '0.25' });
+    assert.dom('.leaflet-overlay-pane path').doesNotExist();
+
+    assert.dom('[data-test-previous]').isDisabled();
+    assert.dom('[data-test-next]').isDisabled();
+
+    await click('[data-test-request]');
+    await settled();
+
+    assert.dom('.leaflet-tile-pane .leaflet-layer').hasStyle({ opacity: '1' });
+    assert.dom('.leaflet-overlay-pane path').exists();
+    assert.dom('[data-test-next]').isNotDisabled();
+
+    await click('[data-test-next]');
+
+    assert.dom('h2').includesText('Decibel meter');
+    // assert.dom('[data-test-previous]').isNotDisabled(); FIXME how to handle going backward, shouldn’t have to repeat request
+    assert.dom('[data-test-next]').doesNotExist();
+    assert.dom('[data-test-skip]').exists();
+
+    let DBMeterHandler;
+
+    window.DBMeter = {
+      start(handler) {
+        DBMeterHandler = handler;
+      },
+      stop() {},
+    };
+
+    await click('[data-test-request]');
+
+    assert.dom('[data-test-request]').hasClass('loading:bg-region');
+    assert.dom('[data-test-max]').hasText('0');
+
+    DBMeterHandler(10);
+    await settled();
+
+    assert.dom('[data-test-current]').hasText('10');
+    assert.dom('[data-test-max]').hasText('10');
+
+    DBMeterHandler(5);
+    await settled();
+
+    assert.dom('[data-test-current]').hasText('5');
+    assert.dom('[data-test-max]').hasText('10');
+  });
 });
