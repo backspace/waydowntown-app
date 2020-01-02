@@ -1,6 +1,7 @@
-<button class="btn" {{on "click" this.start}}>Observe</button>
-<button class="btn" {{on "click" this.stop}}>Stop</button>
+<Capabilities::Decibels as |decibels|>
+  <span {{did-insert (perform decibels.request)}}>db: {{decibels.decibels}}</span>
 
-<ul>
-  <li>dB: {{this.dB}}</li>
-</ul>
+  {{#if decibels.error}}
+    <p>Error: {{decibels.error}}</p>
+  {{/if}}
+</Capabilities::Decibels>
