@@ -176,3 +176,13 @@
     $portage 1rem
   );
 }
+
+.top-safe {
+  top: 0;
+}
+
+@supports(top: max(0px)) {
+  .top-safe {
+    top: max(0px, env(safe-area-inset-top));
+  }
+}
