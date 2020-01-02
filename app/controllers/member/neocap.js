@@ -44,5 +44,10 @@ export default class NeocapController extends Controller {
       description:
         'We use a decibel meter for some games, which requires microphone permissions.',
     },
+    {
+      property: 'magnetometer',
+      title: 'Magnetometer',
+      description: 'We detect magnetic field magnitude for some games.',
+    },
   ];
 }

@@ -375,5 +375,38 @@ module('Acceptance | capabilities', function(hooks) {
 
     assert.dom('[data-test-current]').hasText('5');
     assert.dom('[data-test-max]').hasText('10');
+
+    let magnetometerSuccessHandler;
+
+    window.cordova = {
+      plugins: {
+        magnetometer: {
+          stop() {},
+          watchReadings(success) {
+            magnetometerSuccessHandler = success;
+          },
+        },
+      },
+    };
+
+    await click('[data-test-next]');
+
+    assert.dom('h2').includesText('Magnetometer');
+
+    await click('[data-test-request]');
+
+    magnetometerSuccessHandler({
+      magnitude: 10,
+    });
+    await settled();
+
+    assert.dom('[data-test-current]').hasText('10');
+    assert.dom('[data-test-max]').hasText('10');
+
+    magnetometerSuccessHandler({ magnitude: 5 });
+    await settled();
+
+    assert.dom('[data-test-current]').hasText('5');
+    assert.dom('[data-test-max]').hasText('10');
   });
 });
