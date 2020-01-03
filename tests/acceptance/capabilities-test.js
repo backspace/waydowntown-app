@@ -333,8 +333,18 @@ module('Acceptance | capabilities', function(hooks) {
 
     await visit('/member/neocap');
 
+    assert.dom('h2').includesText('Device');
+
+    Object.keys(window.device).forEach(key => {
+      assert
+        .dom(`[data-test-device='${key}'] [data-test-value]`)
+        .hasText(window.device[key].toString());
+    });
+
+    await click('[data-test-next]');
+
     assert.dom('h2').hasText('Location');
-    assert.dom('[data-test-progress]').hasText('1 of 7');
+    assert.dom('[data-test-progress]').hasText('2 of 8');
     assert
       .dom('.leaflet-tile-pane .leaflet-layer')
       .hasStyle({ opacity: '0.25' });
@@ -385,7 +395,7 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-next]');
 
     assert.dom('h2').includesText('Decibel meter');
-    assert.dom('[data-test-progress]').hasText('4 of 7');
+    assert.dom('[data-test-progress]').hasText('5 of 8');
     // assert.dom('[data-test-previous]').isNotDisabled(); FIXME how to handle going backward, shouldn’t have to repeat request
     assert.dom('[data-test-next]').doesNotExist();
     assert.dom('[data-test-skip]').exists();
@@ -525,7 +535,7 @@ module('Acceptance | capabilities', function(hooks) {
       member.update(this.normalizedRequestAttrs());
 
       if (updateCalls == 0) {
-        // assert.deepEqual(member.attrs.device, window.device); FIXME
+        assert.deepEqual(member.attrs.device, window.device);
         assert.deepEqual(member.attrs.capabilities, expectedCapabilitiesServer);
 
         done();

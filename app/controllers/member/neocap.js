@@ -51,6 +51,11 @@ export default class NeocapController extends Controller {
 
   steps = [
     {
+      property: 'device',
+      title: 'Device details',
+      description: 'We will store these characteristics about the device.',
+    },
+    {
       property: 'location',
       title: 'Location',
       description:
