@@ -51,6 +51,12 @@ export default class NeocapController extends Controller {
 
   steps = [
     {
+      property: 'introduction',
+      title: 'Capabilities',
+      description:
+        'We will walk through required and optional permissions and preferences. There are a lot of steps but this helps ensure you won’t be invited to games your device doesn’t support or that aren’t accessible for you.',
+    },
+    {
       property: 'device',
       title: 'Device details',
       description: 'We will store these characteristics about the device.',

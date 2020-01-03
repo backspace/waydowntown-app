@@ -333,6 +333,10 @@ module('Acceptance | capabilities', function(hooks) {
 
     await visit('/member/neocap');
 
+    assert.dom('h2').hasText('Capabilities');
+
+    await click('[data-test-next]');
+
     assert.dom('h2').includesText('Device');
 
     Object.keys(window.device).forEach(key => {
@@ -344,7 +348,7 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-next]');
 
     assert.dom('h2').hasText('Location');
-    assert.dom('[data-test-progress]').hasText('2 of 8');
+    assert.dom('[data-test-progress]').hasText('3 of 9');
     assert
       .dom('.leaflet-tile-pane .leaflet-layer')
       .hasStyle({ opacity: '0.25' });
@@ -395,7 +399,7 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-next]');
 
     assert.dom('h2').includesText('Decibel meter');
-    assert.dom('[data-test-progress]').hasText('5 of 8');
+    assert.dom('[data-test-progress]').hasText('6 of 9');
     // assert.dom('[data-test-previous]').isNotDisabled(); FIXME how to handle going backward, shouldn’t have to repeat request
     assert.dom('[data-test-next]').doesNotExist();
     assert.dom('[data-test-skip]').exists();
