@@ -362,7 +362,7 @@ module('Acceptance | active game', function(hooks) {
     assert.dom('[data-test-current]').hasText('0');
 
     magnetometerSuccessHandler({
-      magnitude: 100,
+      magnitude: '100',
     });
 
     await settled();
@@ -371,11 +371,11 @@ module('Acceptance | active game', function(hooks) {
     assert.dom('[data-test-current]').hasText('100');
 
     magnetometerSuccessHandler({
-      magnitude: 55,
+      magnitude: '55',
     });
 
     magnetometerSuccessHandler({
-      magnitude: 22,
+      magnitude: '22',
     });
 
     await settled();
@@ -386,11 +386,13 @@ module('Acceptance | active game', function(hooks) {
     assert.dom('meter').matchesSelector('[value="22"]');
 
     magnetometerSuccessHandler({
-      magnitude: 200,
+      magnitude: '200',
     });
 
+    await settled();
+
     magnetometerSuccessHandler({
-      magnitude: 15,
+      magnitude: '15',
     });
 
     await settled();

@@ -7,10 +7,18 @@ export default class CapabilitiesMagnetometerComponent extends Component {
 
   @task(function*() {
     return yield new Promise((resolve, reject) => {
-      window.cordova.plugins.magnetometer.watchReadings(reading => {
-        this.reading = reading;
-        resolve();
-      }, reject);
+      window.cordova.plugins.magnetometer.watchReadings(
+        ({ x, y, z, magnitude }) => {
+          this.reading = {
+            x: parseFloat(x),
+            y: parseFloat(y),
+            z: parseFloat(z),
+            magnitude: parseFloat(magnitude),
+          };
+          resolve();
+        },
+        reject,
+      );
     });
   })
   request;

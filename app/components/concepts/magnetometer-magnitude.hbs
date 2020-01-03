@@ -1,6 +1,12 @@
-<p {{did-insert (action this.startWatching)}}>??</p>
+<Capabilities::Magnetometer as |magnetometer|>
+  <p {{did-insert (perform magnetometer.request)}}>
+    Current magnitude: <span data-test-current>{{or magnetometer.reading.magnitude 0}}</span>
+  </p>
 
-<p>Current magnitude: <span data-test-current>{{this.currentMagnitude}}</span></p>
-<p>Maximum magnitude: <span data-test-maximum>{{this.maximumMagnitude}}</span></p>
 
-<meter max={{this.maximumMagnitude}} value={{this.currentMagnitude}} />
+  <p {{did-update this.setNewMax magnetometer.reading.magnitude}}>
+    Maximum magnitude: <span data-test-maximum>{{this.maximumMagnitude}}</span>
+  </p>
+
+  <meter max={{this.maximumMagnitude}} value={{magnetometer.reading.magnitude}} />
+</Capabilities::Magnetometer>

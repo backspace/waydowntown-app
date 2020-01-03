@@ -42,7 +42,7 @@ module('Integration | Component | capabilities/magnetometer', function(hooks) {
     assert.dom('[data-test-running]').hasText('true');
 
     magnetometerSuccessHandler({
-      magnitude: 100,
+      magnitude: '100',
     });
 
     await settled();

@@ -396,14 +396,14 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-request]');
 
     magnetometerSuccessHandler({
-      magnitude: 10,
+      magnitude: '10',
     });
     await settled();
 
     assert.dom('[data-test-current]').hasText('10');
     assert.dom('[data-test-max]').hasText('10');
 
-    magnetometerSuccessHandler({ magnitude: 5 });
+    magnetometerSuccessHandler({ magnitude: '5' });
     await settled();
 
     assert.dom('[data-test-current]').hasText('5');

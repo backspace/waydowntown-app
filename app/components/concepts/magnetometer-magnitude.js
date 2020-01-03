@@ -4,15 +4,12 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
 export default class MagnetometerMagnitude extends Component {
-  @tracked currentMagnitude = 0;
   @tracked maximumMagnitude = 0;
 
-  @action
-  startWatching() {
-    window.cordova.plugins.magnetometer.watchReadings(({ magnitude }) => {
-      this.currentMagnitude = magnitude;
-      this.maximumMagnitude = Math.max(this.maximumMagnitude, magnitude);
-    });
+  @action setNewMax(element, [newCurrent]) {
+    if (newCurrent > this.maximumMagnitude) {
+      this.maximumMagnitude = newCurrent;
+    }
   }
 
   willDestroy() {
