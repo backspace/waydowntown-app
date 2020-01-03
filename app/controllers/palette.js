@@ -16,7 +16,7 @@ export default class PaletteController extends Controller {
     navigator.camera.getPicture(
       photoUrl => {
         this.debugLog.log(`Camera URL: ${photoUrl}`);
-        this.photoUrl = photoUrl;
+        this.photoUrl = `data:image/jpeg;base64,${photoUrl}`;
       },
       error => (this.error = error),
       {
