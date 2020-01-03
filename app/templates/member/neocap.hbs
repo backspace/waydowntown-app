@@ -23,9 +23,12 @@
   </nav>
 
   {{#let this.step as |s|}}
-    <h2 class="text-2xl">
-      {{s.title}}
-    </h2>
+    <header>
+      <h2 class="text-2xl inline">
+        {{s.title}}
+      </h2>
+      <span class="text-sm" data-test-progress>{{this.progress}}</span>
+    </header>
 
     <p class="mb-2">
       {{s.description}}

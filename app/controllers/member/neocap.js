@@ -30,6 +30,10 @@ export default class NeocapController extends Controller {
     return this.steps[this.stepIndex];
   }
 
+  get progress() {
+    return `${this.stepIndex + 1} of ${this.steps.length}`;
+  }
+
   steps = [
     {
       property: 'location',
