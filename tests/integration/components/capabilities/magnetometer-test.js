@@ -52,7 +52,7 @@ module('Integration | Component | capabilities/magnetometer', function(hooks) {
     this.set('show', false);
   });
 
-  test('it displays an error from the DBMeter capability', async function(assert) {
+  test('it displays an error from the magnetometer capability', async function(assert) {
     await render(hbs`
       <Capabilities::Magnetometer as |magnetometer|>
         <button {{action (perform magnetometer.request)}} />
