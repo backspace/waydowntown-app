@@ -1,7 +1,9 @@
-<ul>
-  {{#each-in this.device as |key value|}}
-    <li data-test-device={{key}}>
-      {{key}}: <span data-test-value>{{value}}</span>
-    </li>
-  {{/each-in}}
-</ul>
+<div class="flex flex-row flex-grow mb-2">
+  <ul>
+    {{#each-in this.device as |key value|}}
+      <li data-test-device={{key}}>
+        {{key}}: <span data-test-value>{{value}}</span>
+      </li>
+    {{/each-in}}
+  </ul>
+</div>

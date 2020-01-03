@@ -1,7 +1,9 @@
-{{#each this.capabilities as |capability|}}
-  <div>
-    <label for={{capability.id}}>{{capability.label}}</label>
-    <Input @id={{capability.id}} @type="checkbox" @name={{capability.id}} @checked={{get @member.capabilities capability.id}} />
-    <p>{{capability.description}}</p>
-  </div>
-{{/each}}
+<div class="flex-grow mb-2">
+  {{#each this.capabilities as |capability|}}
+    <div>
+      <label for={{capability.id}}>{{capability.label}}</label>
+      <Input @id={{capability.id}} @type="checkbox" @name={{capability.id}} @checked={{get @member.capabilities capability.id}} />
+      <p>{{capability.description}}</p>
+    </div>
+  {{/each}}
+</div>

@@ -1,15 +1,17 @@
-Motion:
-  <ul>
-    <li>x: {{@provider.event.acceleration.x}}</li>
-    <li>y: {{@provider.event.acceleration.y}}</li>
-    <li>z: {{@provider.event.acceleration.z}}</li>
-  </ul>
+<div class="flex-grow mb-2">
+  Motion:
+    <ul>
+      <li>x: {{@provider.event.acceleration.x}}</li>
+      <li>y: {{@provider.event.acceleration.y}}</li>
+      <li>z: {{@provider.event.acceleration.z}}</li>
+    </ul>
 
-Orientation:
-<Capabilities::Deviceorientation as |deviceorientation|>
-  <ul {{did-update (perform deviceorientation.request) @provider.request.performCount}}>
-    <li>z: {{deviceorientation.event.alpha}}</li>
-    <li>x: {{deviceorientation.event.beta}}</li>
-    <li>y: {{deviceorientation.event.gamma}}</li>
-  </ul>
-</Capabilities::Deviceorientation>
+  Orientation:
+  <Capabilities::Deviceorientation as |deviceorientation|>
+    <ul {{did-update (perform deviceorientation.request) @provider.request.performCount}}>
+      <li>z: {{deviceorientation.event.alpha}}</li>
+      <li>x: {{deviceorientation.event.beta}}</li>
+      <li>y: {{deviceorientation.event.gamma}}</li>
+    </ul>
+  </Capabilities::Deviceorientation>
+</div>

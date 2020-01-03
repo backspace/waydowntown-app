@@ -1,7 +1,9 @@
-<ul>
-  {{#each-in this.capabilities as |key value|}}
-    <li data-test-capability={{key}}>
-      {{key}}: <span data-test-value>{{value}}</span>
-    </li>
-  {{/each-in}}
-</ul>
+<div class="flex-grow mb-2">
+  <ul>
+    {{#each-in this.capabilities as |key value|}}
+      <li data-test-capability={{key}}>
+        {{key}}: <span data-test-value>{{value}}</span>
+      </li>
+    {{/each-in}}
+  </ul>
+</div>
