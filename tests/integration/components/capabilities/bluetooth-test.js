@@ -104,4 +104,26 @@ module('Integration | Component | capabilities/bluetooth', function(hooks) {
 
     assert.dom('[data-test-error]').hasText('Bluetooth is disabled');
   });
+
+  test('it displays an error when the Bluetooth capability doesn’t exist', async function(assert) {
+    await render(hbs`
+      <Capabilities::Bluetooth as |bluetooth|>
+        <button {{action (perform bluetooth.request)}} />
+        <span data-test-error>{{bluetooth.error}}</span>
+      </Capabilities::Bluetooth>
+    `);
+
+    assert.dom('[data-test-error]').hasNoText();
+
+    delete window.bluetoothle;
+
+    setupOnerror(function(err) {
+      assert.ok(err);
+    });
+
+    await click('button');
+    await settled();
+
+    assert.dom('[data-test-error]').hasText('Bluetooth is missing');
+  });
 });

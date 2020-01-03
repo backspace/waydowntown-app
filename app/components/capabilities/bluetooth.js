@@ -8,6 +8,10 @@ export default class CapabilitiesMagnetometerComponent extends Component {
 
   @task(function*() {
     return yield new Promise((resolve, reject) => {
+      if (!window.bluetoothle) {
+        return reject('Bluetooth is missing');
+      }
+
       return new Promise(initResolve => {
         window.bluetoothle.initialize(({ status }) => {
           this.status = status;
