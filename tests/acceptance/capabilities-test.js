@@ -350,7 +350,7 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-next]');
 
     assert.dom('h2').hasText('Location');
-    assert.dom('[data-test-progress]').hasText('3 of 9');
+    assert.dom('[data-test-progress]').hasText('3 of 10');
     assert
       .dom('.leaflet-tile-pane .leaflet-layer')
       .hasStyle({ opacity: '0.25' });
@@ -401,7 +401,7 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-next]');
 
     assert.dom('h2').includesText('Decibel meter');
-    assert.dom('[data-test-progress]').hasText('6 of 9');
+    assert.dom('[data-test-progress]').hasText('6 of 10');
     // assert.dom('[data-test-previous]').isNotDisabled(); FIXME how to handle going backward, shouldn’t have to repeat request
     assert.dom('[data-test-next]').doesNotExist();
     assert.dom('[data-test-skip]').exists();
@@ -491,6 +491,17 @@ module('Acceptance | capabilities', function(hooks) {
 
     await click('[data-test-next]');
 
+    window.textocr = {
+      recText(sourceType, uri, success) {
+        success();
+      },
+    };
+
+    assert.dom('h2').hasText('Text recognition');
+    await click('[data-test-request]');
+    await settled();
+    await click('[data-test-next]');
+
     assert.dom('h2').hasText('Overview');
     assert.dom('[data-test-request]').doesNotExist();
 
@@ -502,7 +513,7 @@ module('Acceptance | capabilities', function(hooks) {
       location: true,
       magnetometer: true,
       // notifications: true,
-      // ocr: true,
+      ocr: true,
 
       // exertion: true,
       // height: true,
@@ -522,7 +533,7 @@ module('Acceptance | capabilities', function(hooks) {
       location: true,
       magnetometer: true,
       notifications: false,
-      ocr: false,
+      ocr: true,
 
       exertion: false,
       height: false,

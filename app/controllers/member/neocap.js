@@ -98,6 +98,12 @@ export default class NeocapController extends Controller {
       description: 'We use motion and orientation events for some games.',
     },
     {
+      property: 'ocr',
+      title: 'Text recognition',
+      description:
+        'We use text recognition for many games. This will take a photo and attempt to recognise text within it.',
+    },
+    {
       property: 'overview',
       title: 'Overview',
       description: 'Here is what we will store:',
