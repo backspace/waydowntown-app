@@ -1,8 +1,7 @@
-<button class="btn" {{on "click" this.start}}>Observe</button>
-<button class="btn" {{on "click" this.stop}}>Stop</button>
-
-<ul>
-  <li>z: {{this.event.alpha}}</li>
-  <li>x: {{this.event.beta}}</li>
-  <li>y: {{this.event.gamma}}</li>
-</ul>
+<Capabilities::Deviceorientation as |deviceorientation|>
+  <ul {{did-insert (perform deviceorientation.request)}}>
+    <li>z: {{deviceorientation.event.alpha}}</li>
+    <li>x: {{deviceorientation.event.beta}}</li>
+    <li>y: {{deviceorientation.event.gamma}}</li>
+  </ul>
+</Capabilities::Deviceorientation>
