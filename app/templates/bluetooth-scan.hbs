@@ -1,15 +1,18 @@
-<p>Bluetooth status: {{this.status}}</p>
+<Capabilities::Bluetooth as |bluetooth|>
+  <p {{did-insert (perform bluetooth.request)}}>Bluetooth status: {{bluetooth.status}}</p>
 
-<button class="btn" {{on "click" this.search}}>Search for devices</button>
+  <p>
+    Devices:
+    <ul>
+      {{#each bluetooth.devices as |device|}}
+        <li>{{device}}</li>
+      {{else}}
+        <li>no devices</li>
+      {{/each}}
+    </ul>
+  </p>
 
-{{#if this.error}}
-  <p>Bluetooth error: {{this.error}}</p>
-{{/if}}
-
-<ul>
-  {{#each this.devices as |device|}}
-    <li>{{device}}</li>
-  {{else}}
-    <li>no devices</li>
-  {{/each}}
-</ul>
+  {{#if bluetooth.error}}
+    <p>Error: {{bluetooth.error}}</p>
+  {{/if}}
+</Capabilities::Bluetooth>
