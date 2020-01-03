@@ -64,5 +64,10 @@ export default class NeocapController extends Controller {
       title: 'Magnetometer',
       description: 'We detect magnetic field magnitude for some games.',
     },
+    {
+      property: 'devicemotion',
+      title: 'Motion and orientation',
+      description: 'We use motion and orientation events for some games.',
+    },
   ];
 }
