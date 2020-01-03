@@ -23,7 +23,9 @@ export default class PaletteController extends Controller {
         correctOrientation: true,
       },
       {
-        destinationType: navigator.camera.DestinationType.NATIVE_URI,
+        destinationType: navigator.camera.DestinationType.DATA_URL,
+        targetWidth: 800,
+        targetHeight: 600,
       },
     );
   }
