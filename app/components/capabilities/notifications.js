@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { task, timeout } from 'ember-concurrency';
+import Ember from 'ember';
 
 export default class CapabilitiesNotificationsComponent extends Component {
   @task(function*() {
@@ -28,9 +29,11 @@ export default class CapabilitiesNotificationsComponent extends Component {
           reject(error);
         });
 
-        timeout(5000).then(() => {
-          reject('Timeout waiting for notification registration');
-        });
+        if (!Ember.testing) {
+          timeout(5000).then(() => {
+            reject('Timeout waiting for notification registration');
+          });
+        }
       } catch (error) {
         reject(error);
       }
