@@ -111,6 +111,20 @@ export default class NeocapController extends Controller {
         'We use text recognition for many games. This will take a photo and attempt to recognise text within it.',
     },
     {
+      property: 'physical',
+      title: 'Physical capabilities',
+      description:
+        'Some games have a significant physical component or happen in places with accessibility particularities. Let us know what kinds of games and places you can or want to access.',
+      informational: true,
+    },
+    {
+      property: 'phone',
+      title: 'Phone capabilities',
+      description:
+        'Games involve particular types of movements on the phone. Let us know which kinds of movements work for you.',
+      informational: true,
+    },
+    {
       property: 'overview',
       title: 'Overview',
       description: 'Here is what we will store:',

@@ -321,6 +321,9 @@ module('Acceptance | capabilities', function(hooks) {
   test('the new walkthrough adds a step to display and confirm capability values', async function(assert) {
     const done = assert.async();
 
+    this.member.attrs.capabilities = { stairs: true };
+    this.member.save();
+
     let updateCalls = 0;
 
     this.server.patch(`/members/:id`, function({ members }, request) {
@@ -330,7 +333,7 @@ module('Acceptance | capabilities', function(hooks) {
 
       if (updateCalls == 1) {
         assert.deepEqual(member.attrs.device, window.device);
-        assert.deepEqual(member.attrs.capabilities, expectedCapabilitiesServer);
+        assert.deepEqual(member.attrs.capabilities, expectedCapabilities);
 
         done();
       }
@@ -392,7 +395,7 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-next]');
 
     assert.dom('h2').hasText('Location');
-    assert.dom('[data-test-progress]').hasText('4 of 11');
+    assert.dom('[data-test-progress]').hasText('4 of 13');
     assert
       .dom('.leaflet-tile-pane .leaflet-layer')
       .hasStyle({ opacity: '0.25' });
@@ -443,7 +446,7 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-next]');
 
     assert.dom('h2').includesText('Decibel meter');
-    assert.dom('[data-test-progress]').hasText('7 of 11');
+    assert.dom('[data-test-progress]').hasText('7 of 13');
     // assert.dom('[data-test-previous]').isNotDisabled(); FIXME how to handle going backward, shouldn’t have to repeat request
     assert.dom('[data-test-next]').doesNotExist();
     assert.dom('[data-test-skip]').exists();
@@ -544,6 +547,18 @@ module('Acceptance | capabilities', function(hooks) {
     await settled();
     await click('[data-test-next]');
 
+    assert.dom('h2').hasText('Physical capabilities');
+    await click('#exertion');
+    await click('#height');
+    await click('#scents');
+    await click('#speed');
+    await click('#stairs');
+    await click('[data-test-next]');
+
+    assert.dom('h2').hasText('Phone capabilities');
+    await click('#fastNavigation');
+    await click('[data-test-next]');
+
     assert.dom('h2').hasText('Overview');
     assert.dom('[data-test-request]').doesNotExist();
 
@@ -557,33 +572,13 @@ module('Acceptance | capabilities', function(hooks) {
       notifications: true,
       ocr: true,
 
-      // exertion: true,
-      // height: true,
-      // scents: true,
-      // speed: true,
-      // stairs: false,
-
-      // fastNavigation: true,
-    };
-
-    // FIXME when new walkthrough is complete
-    const expectedCapabilitiesServer = {
-      bluetooth: false,
-      camera: true,
-      decibels: true,
-      devicemotion: true,
-      location: true,
-      magnetometer: true,
-      notifications: true,
-      ocr: true,
-
-      exertion: false,
-      height: false,
-      scents: false,
-      speed: false,
+      exertion: true,
+      height: true,
+      scents: true,
+      speed: true,
       stairs: false,
 
-      fastNavigation: false,
+      fastNavigation: true,
     };
 
     Object.keys(expectedCapabilities).forEach(capability => {
@@ -594,7 +589,7 @@ module('Acceptance | capabilities', function(hooks) {
 
     assert
       .dom('[data-test-capability]')
-      .exists({ count: Object.keys(expectedCapabilitiesServer).length });
+      .exists({ count: Object.keys(expectedCapabilities).length });
 
     await click('[data-test-save]');
   });
