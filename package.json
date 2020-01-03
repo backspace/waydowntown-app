@@ -65,7 +65,6 @@
     "ember-set-body-class": "^0.4.2",
     "ember-set-helper": "^0.1.1",
     "ember-source": "https://s3.amazonaws.com/builds.emberjs.com/beta/shas/7d4a746ce41cf68f882d72d52f01f3c67485c233.tgz",
-    "ember-steps": "^9.0.0",
     "ember-template-lint": "^1.5.0",
     "ember-test-selectors": "^2.1.0",
     "ember-truth-helpers": "^2.1.0",

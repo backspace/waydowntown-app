@@ -5305,15 +5305,6 @@ ember-data@~3.12.0:
     ember-cli-typescript "^2.0.2"
     ember-inflector "^3.0.1"
 
-ember-decorators-polyfill@^1.0.4:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/ember-decorators-polyfill/-/ember-decorators-polyfill-1.1.1.tgz#6ff8e57a516e04c583451305574020c34e6ad4bc"
-  integrity sha512-ZIB3uNcquNyRm+eWUbDeeE5BtH/D7oXIX9pdiEHx4TXaTnAY6z4wDrw6Ge0xP9wx/nlC4Qd/i8rdlwBOT5C6lw==
-  dependencies:
-    ember-cli-babel "^7.1.2"
-    ember-cli-version-checker "^3.1.3"
-    ember-compatibility-helpers "^1.2.0"
-
 ember-export-application-global@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ember-export-application-global/-/ember-export-application-global-2.0.0.tgz#8d6d7619ac8a1a3f8c43003549eb21ebed685bd2"
@@ -5566,15 +5557,6 @@ ember-source-channel-url@^2.0.1:
     resolve "^1.11.1"
     semver "^6.1.1"
     silent-error "^1.1.1"
-
-ember-steps@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/ember-steps/-/ember-steps-9.0.0.tgz#c63a8408026a32a057793e9cceb13e78db0ab97b"
-  integrity sha512-P83tIJ9aG57h3bBaSyqq7b1aMqR73m4Z/o7QnGAoI2XThK3TiQEzc+e2Dnro9NG0IrwbUqgjjzpcPRjYvuocbA==
-  dependencies:
-    ember-cli-babel "^7.7.3"
-    ember-cli-htmlbars "^3.0.0"
-    ember-decorators-polyfill "^1.0.4"
 
 ember-template-lint@^1.5.0:
   version "1.8.1"

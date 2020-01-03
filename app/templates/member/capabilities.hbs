@@ -1,156 +1,90 @@
-<div class="absolute bg-region top-0 left-0 w-full min-h-screen z-10">
-  <StepManager as |w|>
-    <nav class="absolute flex flex-row-reverse top-0 right-0 m-4" {{did-insert (set this.stepManager w)}}>
-      {{#unless this.first}}
-        {{#if this.member.capabilities.hasDirtyAttributes}}
-          {{#if this.requestingExit}}
-            <button class="btn" {{action (mut this.requestingExit) false}} data-test-cancel-exit>
-              Cancel exit
-            </button>
-            <button class="btn bg-orange-300" {{action this.exit}} data-test-exit>
-              Exit without saving
-            </button>
-          {{else}}
-            <button class="btn" {{action (mut this.requestingExit) true}} data-test-request-exit>
-              Exit
-            </button>
-          {{/if}}
+<div class="absolute bg-region top-0 left-0 w-full min-h-screen z-10 flex flex-col p-2-safe">
+  <nav class="absolute flex flex-row-reverse top-safe right-0 mr-4">
+    {{#unless this.first}}
+      {{#if this.member.capabilities.hasDirtyAttributes}}
+        {{#if this.requestingExit}}
+          <button class="btn" {{action (mut this.requestingExit) false}} data-test-cancel-exit>
+            Cancel exit
+          </button>
+          <button class="btn bg-orange-300" {{action this.exit}} data-test-exit>
+            Exit without saving
+          </button>
         {{else}}
-          <button class="btn absolute" {{action this.exit}} data-test-exit>
+          <button class="btn" {{action (mut this.requestingExit) true}} data-test-request-exit>
             Exit
           </button>
         {{/if}}
-      {{/unless}}
-    </nav>
-
-    <w.step>
-      <h2 class="text-2xl">Capabilities</h2>
-
-      We will walk through required and optional permissions and preferences.
-
-      {{#if this.forced}}
-        <Alert>
-          Please refresh these details as your device has changed.
-        </Alert>
+      {{else}}
+        <button class="absolute font-arrows text-2xl" {{action this.exit}} data-test-exit>
+          ;
+        </button>
       {{/if}}
+    {{/unless}}
+  </nav>
 
-      <button class="btn" {{action w.transition-to-next}} data-test-next>
-        Next
-      </button>
-    </w.step>
+  {{#let this.step as |s|}}
+    <header>
+      <h2 class="text-2xl inline">
+        {{s.title}}
+      </h2>
+      <span class="text-sm" data-test-progress>{{this.progress}}</span>
+    </header>
 
-    <w.step>
-      <h2 class="text-2xl">Capabilities: Device</h2>
+    <p class="mb-2">
+      {{s.description}}
+    </p>
 
-      These are some characteristics of this device.
-
-      <ul>
-        {{#each-in this.device as |key value|}}
-          <li data-test-device={{key}}>
-            {{key}}: <span data-test-value>{{value}}</span>
-          </li>
-        {{/each-in}}
-      </ul>
-
-      <button class="btn" {{action w.transition-to-next}} data-test-next>
-        Next
-      </button>
-    </w.step>
-
-    {{#each this.hardwareCapabilities as |capability|}}
-      <w.step>
-        <h2 class="text-2xl">Capabilities: {{capability.label}}</h2>
-
-        <p>{{capability.description}}</p>
-
-        {{#unless capability.required}}
-          <button class="btn" {{on "click" (action this.transitionToNextStep)}} data-test-skip>
-            Skip
+    {{#let (component (concat "walkthrough/" s.property)) (component (concat "capabilities/" s.property)) as |WalkthroughComponent ProviderComponent|}}
+      <ProviderComponent @member={{this.member}} as |provider|>
+        {{#unless s.informational}}
+          <button class="btn mb-2 {{if provider.request.isRunning "loading:bg-region"}}" {{on "click" (perform provider.request)}} data-test-request>
+            {{#if provider.request.isRunning}}
+              &nbsp;
+            {{else if provider.request.performCount}}
+              Request again
+            {{else}}
+              Request
+            {{/if}}
           </button>
         {{/unless}}
 
-        {{#if (or (and capability.validationMessage (get this (concat "validating" capability.label))))}}
-          <p data-test-validation>{{capability.validationMessage}}</p>
-          <button class="btn" {{on "click" (action this.transitionToNextStep)}} data-test-validate>
-            Yes
-          </button>
-          <button class="btn" {{on "click" capability.action}} data-test-request>
-            Try again
-          </button>
-        {{else}}
-          <button class="btn" {{on "click" capability.action}} data-test-request>
-            {{#if this.error}}Try again{{else}}Request{{/if}}
-          </button>
+        <WalkthroughComponent @provider={{provider}} @member={{this.member}} @first={{this.first}} @forced={{this.forced}} />
+
+        {{#if provider.error}}
+          <p>Error: {{provider.error}}</p>
+
+          {{#if s.required}}
+            <p class="mb-2">Things will be significantly broken without this, but you can proceed.</p>
+          {{/if}}
         {{/if}}
-      </w.step>
-    {{/each}}
 
-    <w.step>
-      <h2 class="text-2xl">Capabilities: Physical</h2>
-
-      <p>Some games have a significant physical component or happen in places with accessibility particularities. Let us know what kinds of games and places you can or want to access.</p>
-
-      {{#each this.physicalCapabilities as |capability|}}
-        <div>
-          <label for={{capability.id}}>{{capability.label}}</label>
-          <Input @id={{capability.id}} @type="checkbox" @name={{capability.id}} @checked={{get this.member.capabilities capability.id}} />
-          <p>{{capability.description}}</p>
-        </div>
-      {{/each}}
-
-      <button class="btn" {{action w.transition-to-previous}} data-test-previous>
-        Previous
-      </button>
-
-      <button class="btn" {{action w.transition-to-next}} data-test-next>
-        Next
-      </button>
-    </w.step>
-
-    <w.step>
-      <h2 class="text-2xl">Capabilities: Phone</h2>
-
-      <p>Games involve particular types of movements on the phone. Let us know which kinds of movements work for you.</p>
-
-      {{#each this.phoneCapabilities as |capability|}}
-        <div>
-          <label for={{capability.id}}>{{capability.label}}</label>
-          <Input @id={{capability.id}} @type="checkbox" @name={{capability.id}} @checked={{get this.member.capabilities capability.id}} />
-          <p>{{capability.description}}</p>
-        </div>
-      {{/each}}
-
-      <button class="btn" {{action w.transition-to-previous}} data-test-previous>
-        Previous
-      </button>
-
-      <button class="btn" {{action w.transition-to-next}} data-test-next>
-        Next
-      </button>
-    </w.step>
-
-    <w.step>
-      <h2 class="text-2xl">Capabilities: Summary</h2>
-
-      <ul>
-        {{#each-in this.capabilities as |key value|}}
-          <li data-test-capability={{key}}>
-            {{key}}: <span data-test-value>{{value}}</span>
-          </li>
-        {{/each-in}}
-      </ul>
-
-      <button class="btn" {{action w.transition-to-previous}} data-test-previous>
-        Previous
-      </button>
-
-      <button class="btn" {{on "click" (perform this.save)}} data-test-save>
-        Save
-      </button>
-    </w.step>
-
-    {{#if this.error}}
-      <p>Error: <span data-test-error>{{this.error}}</span></p>
-    {{/if}}
-  </StepManager>
+        <nav class="flex flex-row">
+          <button class="btn flex-1 mr-1 opacity-50" disabled data-test-previous>
+            Previous
+          </button>
+          {{#if this.last}}
+            <button class="btn flex-1 ml-1" {{action (perform this.save)}} data-test-save>
+              Save
+            </button>
+          {{else if provider.request.last.isSuccessful}}
+            <button class="btn flex-1 ml-1" {{action this.next}} data-test-next>
+              Next
+            </button>
+          {{else if provider.error}}
+            <button class="btn flex-1 ml-1" {{action this.skip}} data-test-skip>
+              Ignore
+            </button>
+          {{else if s.required}}
+            <button class="btn flex-1 ml-1 opacity-50" disabled data-test-next>
+              Next
+            </button>
+          {{else}}
+            <button class="btn flex-1 ml-1" {{action this.skip}} data-test-skip>
+              Skip
+            </button>
+          {{/if}}
+        </nav>
+      </ProviderComponent>
+    {{/let}}
+  {{/let}}
 </div>

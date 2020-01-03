@@ -12,6 +12,7 @@ export default class CapabilitiesRoute extends Route {
   resetController(controller, isExiting) {
     if (isExiting) {
       controller.requestingExit = false;
+      controller.stepIndex = 0;
     }
   }
 }

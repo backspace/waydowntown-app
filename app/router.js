@@ -10,7 +10,6 @@ Router.map(function() {
   this.route('member', function() {
     this.route('archived');
     this.route('capabilities');
-    this.route('neocap');
   });
 
   this.route('barcode');
