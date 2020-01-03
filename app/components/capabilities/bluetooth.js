@@ -22,7 +22,7 @@ export default class CapabilitiesMagnetometerComponent extends Component {
         window.bluetoothle.startScan(
           ({ status, name }) => {
             if (status === 'scanResult') {
-              if (!this.devices.includes(name)) {
+              if (name && !this.devices.includes(name)) {
                 this.devices = [...this.devices, name];
               }
             }

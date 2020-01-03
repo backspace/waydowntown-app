@@ -17,6 +17,7 @@ module('Integration | Component | capabilities/bluetooth', function(hooks) {
           <span data-test-running>{{bluetooth.request.isRunning}}</span>
           <span data-test-status>{{bluetooth.status}}</span>
           <span data-test-devices>{{join " " bluetooth.devices}}</span>
+          <span data-test-device-count>{{bluetooth.devices.length}}</span>
         </Capabilities::Bluetooth>
       {{/if}}
     `);
@@ -53,6 +54,7 @@ module('Integration | Component | capabilities/bluetooth', function(hooks) {
     await settled();
 
     assert.dom('[data-test-devices]').hasText('A');
+    assert.dom('[data-test-device-count]').hasText('1');
 
     scanResultHandler({
       status: 'scanResult',
@@ -64,9 +66,15 @@ module('Integration | Component | capabilities/bluetooth', function(hooks) {
       name: 'A',
     });
 
+    scanResultHandler({
+      status: 'scanResult',
+      name: null,
+    });
+
     await settled();
 
     assert.dom('[data-test-devices]').hasText('A B');
+    assert.dom('[data-test-device-count]').hasText('2');
 
     this.set('show', false);
   });
