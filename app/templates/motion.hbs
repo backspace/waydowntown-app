@@ -1,8 +1,7 @@
-<button class="btn" {{on "click" this.start}}>Observe</button>
-<button class="btn" {{on "click" this.stop}}>Stop</button>
-
-<ul>
-  <li>x: {{this.event.acceleration.x}}</li>
-  <li>y: {{this.event.acceleration.y}}</li>
-  <li>z: {{this.event.acceleration.z}}</li>
-</ul>
+<Capabilities::Devicemotion as |devicemotion|>
+  <ul {{did-insert (perform devicemotion.request)}}>
+    <li>x: {{devicemotion.event.acceleration.x}}</li>
+    <li>y: {{devicemotion.event.acceleration.y}}</li>
+    <li>z: {{devicemotion.event.acceleration.z}}</li>
+  </ul>
+</Capabilities::Devicemotion>
