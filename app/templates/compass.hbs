@@ -1,9 +1,12 @@
-<button class="btn" {{on "click" this.start}}>Observe</button>
-<button class="btn" {{on "click" this.stop}}>Stop</button>
+<Capabilities::Magnetometer as |magnetometer|>
+  <ul {{did-insert (perform magnetometer.request)}}>
+    <li>x: {{magnetometer.reading.x}}</li>
+    <li>y: {{magnetometer.reading.y}}</li>
+    <li>z: {{magnetometer.reading.z}}</li>
+    <li>magnitude: {{magnetometer.reading.magnitude}}</li>
+  </ul>
 
-<ul>
-  <li>x: {{this.event.x}}</li>
-  <li>y: {{this.event.y}}</li>
-  <li>z: {{this.event.z}}</li>
-  <li>magnitude: {{this.event.magnitude}}</li>
-</ul>
+  {{#if magnetometer.error}}
+    <p>Error: {{magnetometer.error}}</p>
+  {{/if}}
+</Capabilities::Magnetometer>
