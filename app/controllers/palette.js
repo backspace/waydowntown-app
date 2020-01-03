@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import ColorThief from 'colorthief';
 
@@ -8,10 +9,13 @@ export default class PaletteController extends Controller {
   @tracked palette;
   @tracked error;
 
+  @service debugLog;
+
   @action
   getPicture() {
     navigator.camera.getPicture(
       photoUrl => {
+        this.debugLog.log(`Camera URL: ${photoUrl}`);
         this.photoUrl = photoUrl;
       },
       error => (this.error = error),
@@ -28,11 +32,17 @@ export default class PaletteController extends Controller {
     let img = document.querySelector('[data-palette-image]');
 
     if (img.complete) {
-      this.palette = new ColorThief().getPalette(img);
-    } else {
-      img.addEventListener('load', () => {
+      try {
         this.palette = new ColorThief().getPalette(img);
-      });
+      } catch (e) {
+        this.error = JSON.stringify(e);
+      }
+    } else {
+      try {
+        this.palette = new ColorThief().getPalette(img);
+      } catch (e) {
+        this.error = JSON.stringify(e);
+      }
     }
   }
 }
