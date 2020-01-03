@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { task } from 'ember-concurrency';
 
 export default class NeocapController extends Controller {
   queryParams = ['first', 'forced'];
@@ -12,12 +13,12 @@ export default class NeocapController extends Controller {
   }
 
   @action next() {
-    // FIXME update capability with true
+    this.member.set(`capabilities.${this.step.property}`, true);
     this.stepIndex++;
   }
 
   @action skip() {
-    // FIXME update capability with false
+    this.member.set(`capabilities.${this.step.property}`, false);
     this.stepIndex++;
   }
 
@@ -26,12 +27,26 @@ export default class NeocapController extends Controller {
     this.transitionToRoute('member');
   }
 
+  @task(function*() {
+    try {
+      yield this.member.save();
+      this.transitionToRoute('member');
+    } catch (e) {
+      this.set('error', 'Error saving capabilities: ' + e);
+    }
+  })
+  save;
+
   get step() {
     return this.steps[this.stepIndex];
   }
 
   get progress() {
     return `${this.stepIndex + 1} of ${this.steps.length}`;
+  }
+
+  get last() {
+    return this.stepIndex === this.steps.length - 1;
   }
 
   steps = [
@@ -68,6 +83,11 @@ export default class NeocapController extends Controller {
       property: 'devicemotion',
       title: 'Motion and orientation',
       description: 'We use motion and orientation events for some games.',
+    },
+    {
+      property: 'overview',
+      title: 'Overview',
+      description: 'Here is what we will store:',
     },
   ];
 }

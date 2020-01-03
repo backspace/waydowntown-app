@@ -36,17 +36,19 @@
 
     {{#let (component (concat "walkthrough/" s.property)) (component (concat "capabilities/" s.property)) as |WalkthroughComponent ProviderComponent|}}
       <ProviderComponent as |provider|>
-        <button class="btn mb-2 {{if provider.request.isRunning "loading:bg-region"}}" {{on "click" (perform provider.request)}} data-test-request>
-          {{#if provider.request.isRunning}}
-            &nbsp;
-          {{else if provider.request.performCount}}
-            Request again
-          {{else}}
-            Request
-          {{/if}}
-        </button>
+        {{#unless this.last}}
+          <button class="btn mb-2 {{if provider.request.isRunning "loading:bg-region"}}" {{on "click" (perform provider.request)}} data-test-request>
+            {{#if provider.request.isRunning}}
+              &nbsp;
+            {{else if provider.request.performCount}}
+              Request again
+            {{else}}
+              Request
+            {{/if}}
+          </button>
+        {{/unless}}
 
-        <WalkthroughComponent @provider={{provider}} />
+        <WalkthroughComponent @provider={{provider}} @member={{this.member}} />
 
         {{#if provider.error}}
           <p>Error: {{provider.error}}</p>
@@ -60,7 +62,11 @@
           <button class="btn flex-1 mr-1 opacity-50" disabled data-test-previous>
             Previous
           </button>
-          {{#if provider.request.last.isSuccessful}}
+          {{#if this.last}}
+            <button class="btn flex-1 ml-1" {{action (perform this.save)}} data-test-save>
+              Save
+            </button>
+          {{else if provider.request.last.isSuccessful}}
             <button class="btn flex-1 ml-1" {{action this.next}} data-test-next>
               Next
             </button>
