@@ -21,8 +21,6 @@ export default class PaletteController extends Controller {
       error => (this.error = error),
       {
         correctOrientation: true,
-      },
-      {
         destinationType: navigator.camera.DestinationType.DATA_URL,
         targetWidth: 800,
         targetHeight: 600,
