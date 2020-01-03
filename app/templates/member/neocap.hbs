@@ -36,7 +36,7 @@
 
     {{#let (component (concat "walkthrough/" s.property)) (component (concat "capabilities/" s.property)) as |WalkthroughComponent ProviderComponent|}}
       <ProviderComponent as |provider|>
-        {{#unless this.last}}
+        {{#unless s.informational}}
           <button class="btn mb-2 {{if provider.request.isRunning "loading:bg-region"}}" {{on "click" (perform provider.request)}} data-test-request>
             {{#if provider.request.isRunning}}
               &nbsp;

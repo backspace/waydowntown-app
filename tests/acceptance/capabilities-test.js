@@ -334,10 +334,12 @@ module('Acceptance | capabilities', function(hooks) {
     await visit('/member/neocap');
 
     assert.dom('h2').hasText('Capabilities');
+    assert.dom('[data-test-request]').doesNotExist();
 
     await click('[data-test-next]');
 
     assert.dom('h2').includesText('Device');
+    assert.dom('[data-test-request]').doesNotExist();
 
     Object.keys(window.device).forEach(key => {
       assert

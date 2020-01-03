@@ -55,11 +55,13 @@ export default class NeocapController extends Controller {
       title: 'Capabilities',
       description:
         'We will walk through required and optional permissions and preferences. There are a lot of steps but this helps ensure you won’t be invited to games your device doesn’t support or that aren’t accessible for you.',
+      informational: true,
     },
     {
       property: 'device',
       title: 'Device details',
       description: 'We will store these characteristics about the device.',
+      informational: true,
     },
     {
       property: 'location',
@@ -99,6 +101,7 @@ export default class NeocapController extends Controller {
       property: 'overview',
       title: 'Overview',
       description: 'Here is what we will store:',
+      informational: true,
     },
   ];
 }
