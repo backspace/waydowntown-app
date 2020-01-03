@@ -23,6 +23,7 @@ Router.map(function() {
   this.route('motion');
   this.route('ocr');
   this.route('orientation');
+  this.route('palette');
   this.route('sim');
   this.route('vibration');
   this.route('volume');

@@ -29,6 +29,7 @@
     "@sentry/integrations": "^5.10.1",
     "babel-eslint": "^10.0.2",
     "broccoli-asset-rev": "^3.0.0",
+    "colorthief": "^2.3.0",
     "corber": "1.4.2",
     "corber-ember-livereload": "^0.0.2",
     "ember-auto-import": "^1.2.20",

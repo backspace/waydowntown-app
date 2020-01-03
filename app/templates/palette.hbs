@@ -1,0 +1,17 @@
+<button class="btn" {{on "click" this.getPicture}}>Get picture</button>
+<button class="btn" {{on "click" this.getPalette}}>Get palette</button>
+
+{{#if this.error}}
+  <p>Camera error: {{this.error}}</p>
+{{/if}}
+
+{{#if this.photoUrl}}
+  Image not showing 🧐
+  <img src={{this.photoUrl}} class="max-w-xl" alt="image from camera" crossorigin="anonymous" data-palette-image>
+{{/if}}
+
+{{#each this.palette as |colour|}}
+  <span class="w-10 h-10 inline-block" style="background-color: rgb({{join ", " colour}})"></span>
+{{else}}
+  <p>no palette yet</p>
+{{/each}}
