@@ -1,4 +1,4 @@
-{{set-body-class "region-none p-2-safe"}}
+{{set-body-class (concat "region-none " (if this.testing "" "p-2-safe"))}}
 
 <h1 class="text-2xl">
   <LinkTo @route="application">waydowntown</LinkTo>

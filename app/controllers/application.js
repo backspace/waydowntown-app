@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 import config from 'waydowntown/config/environment';
 import { tracked } from '@glimmer/tracking';
 import { storageFor } from 'ember-local-storage';
+import Ember from 'ember';
 
 export default class ApplicationController extends Controller {
   @service debugLog;
@@ -16,6 +17,8 @@ export default class ApplicationController extends Controller {
   @tracked url;
 
   @tracked showLogEntries = false;
+
+  testing = Ember.testing;
 
   @action
   toggleDiagnostics() {
