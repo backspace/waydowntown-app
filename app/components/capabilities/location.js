@@ -8,7 +8,9 @@ export default class CapabilitiesLocationComponent extends Component {
         if (!navigator.geolocation.getCurrentPosition) {
           throw 'Geolocation property not found';
         }
-        navigator.geolocation.getCurrentPosition(resolve, reject);
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          timeout: 10000,
+        });
       } catch (error) {
         if (
           window.GeolocationPositionError &&
