@@ -181,9 +181,17 @@
   top: 0;
 }
 
+.top-2-safe {
+  top: 0.5rem;
+}
+
 @supports(top: max(0px)) {
   .top-safe {
     top: max(0px, env(safe-area-inset-top));
+  }
+
+  .top-2-safe {
+    top: max(0.5rem, env(safe-area-inset-top));
   }
 }
 

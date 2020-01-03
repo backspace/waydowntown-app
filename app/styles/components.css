@@ -3,6 +3,12 @@
   @apply border;
 }
 
+.btn-sm {
+  @apply p-1;
+  @apply text-sm;
+  @apply border;
+}
+
 .region-none, .region-graham, .region-portage, .region-main {
   .btn {
     @apply border-white;

@@ -7,6 +7,7 @@ export default class CapabilitiesController extends Controller {
   queryParams = ['first', 'forced'];
 
   @tracked stepIndex = 0;
+  @tracked requestingExit = false;
 
   @action previous() {
     this.stepIndex--;
