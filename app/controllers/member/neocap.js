@@ -43,6 +43,11 @@ export default class NeocapController extends Controller {
       required: true,
     },
     {
+      property: 'camera',
+      title: 'Camera',
+      description: 'We use the camera for text recogintion. (more eventually?)',
+    },
+    {
       property: 'decibels',
       title: 'Decibel meter',
       description:
