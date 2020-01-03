@@ -1,19 +1,10 @@
-<button class="btn" {{on "click" this.recognise}}>Recognise</button>
+<Capabilities::Ocr as |ocr|>
+  <button class="btn" {{on "click" (perform ocr.request)}}>Take photo and analyse</button>
 
-{{#if this.error}}
-  <p>Camera/recognition error: {{this.error}}</p>
-{{/if}}
+  <img src={{ocr.imageUrl}} class="flex-1 object-contain pr-1" alt="Image from camera">
+  <div class="flex-1 pl-1">{{join " " ocr.recognised.words.wordtext}}</div>
 
-{{#if this.photoUrl}}
-  Image not showing 🧐
-  <img src={{this.photoUrl}} class="max-w-xl" alt="image from camera">
-{{/if}}
-
-{{#if this.recognised}}
-  <p>Found text: {{this.recognised.foundText}}</p>
-  <ul>
-    {{#each this.recognised.words.wordtext as |word|}}
-      <li>{{word}}</li>
-    {{/each}}
-  </ul>
-{{/if}}
+  {{#if ocr.error}}
+    <p>Error: {{ocr.error}}</p>
+  {{/if}}
+</Capabilities::Ocr>
