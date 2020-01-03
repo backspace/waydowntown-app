@@ -1,0 +1,11 @@
+<div>
+  <p>Bluetooth status: {{@provider.status}}</p>
+  <p>
+    Devices:
+    <ul>
+      {{#each @provider.devices as |device|}}
+        <li>{{device}}</li>
+      {{/each}}
+    </ul>
+  </p>
+</div>

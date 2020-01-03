@@ -1,5 +1,11 @@
 import { module, test } from 'qunit';
-import { click, currentURL, visit, settled } from '@ember/test-helpers';
+import {
+  click,
+  currentURL,
+  visit,
+  settled,
+  setupOnerror,
+} from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMirage } from 'ember-cli-mirage/test-support';
 import { Response } from 'ember-cli-mirage';
@@ -160,8 +166,6 @@ module('Acceptance | capabilities', function(hooks) {
       .hasText('Failed to obtain access to Bluetooth');
 
     await click('[data-test-skip]');
-
-    assert.dom('[data-test-error]').doesNotExist();
 
     navigator.camera = {
       getPicture(success) {
@@ -328,7 +332,7 @@ module('Acceptance | capabilities', function(hooks) {
     await visit('/member/neocap');
 
     assert.dom('h2').hasText('Location');
-    assert.dom('[data-test-progress]').hasText('1 of 4');
+    assert.dom('[data-test-progress]').hasText('1 of 5');
     assert
       .dom('.leaflet-tile-pane .leaflet-layer')
       .hasStyle({ opacity: '0.25' });
@@ -346,6 +350,25 @@ module('Acceptance | capabilities', function(hooks) {
 
     await click('[data-test-next]');
 
+    assert.dom('h2').hasText('Bluetooth');
+
+    const mockBluetooth = {
+      initialize(f) {
+        f({ status: 'disabled' });
+      },
+    };
+
+    window.bluetoothle = mockBluetooth;
+
+    setupOnerror(function(err) {
+      assert.ok(err);
+    });
+
+    await click('[data-test-request]');
+    await settled();
+
+    await click('[data-test-skip]');
+
     assert.dom('h2').hasText('Camera');
 
     navigator.camera = {
@@ -360,7 +383,7 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-next]');
 
     assert.dom('h2').includesText('Decibel meter');
-    assert.dom('[data-test-progress]').hasText('3 of 4');
+    assert.dom('[data-test-progress]').hasText('4 of 5');
     // assert.dom('[data-test-previous]').isNotDisabled(); FIXME how to handle going backward, shouldn’t have to repeat request
     assert.dom('[data-test-next]').doesNotExist();
     assert.dom('[data-test-skip]').exists();

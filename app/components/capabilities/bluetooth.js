@@ -1,0 +1,44 @@
+import Component from '@glimmer/component';
+import { task } from 'ember-concurrency';
+import { tracked } from '@glimmer/tracking';
+
+export default class CapabilitiesMagnetometerComponent extends Component {
+  @tracked devices = [];
+  @tracked status = 'unknown';
+
+  @task(function*() {
+    return yield new Promise((resolve, reject) => {
+      return new Promise(initResolve => {
+        window.bluetoothle.initialize(({ status }) => {
+          this.status = status;
+
+          if (status === 'enabled') {
+            initResolve(status);
+          } else {
+            reject('Bluetooth is disabled');
+          }
+        });
+      }).then(() => {
+        window.bluetoothle.startScan(
+          ({ status, name }) => {
+            if (status === 'scanResult') {
+              if (!this.devices.includes(name)) {
+                this.devices = [...this.devices, name];
+              }
+            }
+            resolve();
+          },
+          reject,
+          { services: [] },
+        );
+      });
+    });
+  })
+  request;
+
+  willDestroy() {
+    try {
+      window.bluetoothle.stopScan();
+    } catch (e) {}
+  }
+}

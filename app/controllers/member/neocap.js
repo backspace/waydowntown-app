@@ -43,6 +43,12 @@ export default class NeocapController extends Controller {
       required: true,
     },
     {
+      property: 'bluetooth',
+      title: 'Bluetooth',
+      description:
+        'We use Bluetooth to look for nearby devices for some games.',
+    },
+    {
       property: 'camera',
       title: 'Camera',
       description: 'We use the camera for text recogintion. (more eventually?)',
