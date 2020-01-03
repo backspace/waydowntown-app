@@ -186,3 +186,7 @@
     top: max(0px, env(safe-area-inset-top));
   }
 }
+
+.font-arrows {
+  font-family: 'arrows';
+}

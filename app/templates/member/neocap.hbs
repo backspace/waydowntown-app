@@ -1,5 +1,5 @@
 <div class="absolute bg-region top-0 left-0 w-full min-h-screen z-10 flex flex-col p-2-safe">
-  <nav class="absolute flex flex-row-reverse top-safe right-0 m-4">
+  <nav class="absolute flex flex-row-reverse top-safe right-0 mr-4">
     {{#unless this.first}}
       {{#if this.member.capabilities.hasDirtyAttributes}}
         {{#if this.requestingExit}}
@@ -15,8 +15,8 @@
           </button>
         {{/if}}
       {{else}}
-        <button class="absolute" {{action this.exit}} data-test-exit>
-          ↶
+        <button class="absolute font-arrows text-2xl" {{action this.exit}} data-test-exit>
+          ;
         </button>
       {{/if}}
     {{/unless}}

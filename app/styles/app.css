@@ -14,6 +14,14 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'arrows';
+  src: url('fonts/arrows.woff2') format('woff2'),
+       url('fonts/arrows.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 html {
   font-family: 'roadgeek';
 }
