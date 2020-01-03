@@ -8,4 +8,11 @@ export default class NeocapRoute extends Route {
   setupController(controller, model) {
     controller.set('member', model);
   }
+
+  resetController(controller, isExiting) {
+    if (isExiting) {
+      controller.requestingExit = false;
+      controller.stepIndex = 0;
+    }
+  }
 }

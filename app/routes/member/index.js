@@ -14,11 +14,11 @@ export default class MemberRoute extends Route {
     }
 
     if (!member.get('device.uuid')) {
-      this.transitionTo('member.capabilities', {
+      this.transitionTo('member.neocap', {
         queryParams: { first: true },
       });
     } else if (device.version !== member.get('device.version')) {
-      this.transitionTo('member.capabilities', {
+      this.transitionTo('member.neocap', {
         queryParams: { forced: true },
       });
     }

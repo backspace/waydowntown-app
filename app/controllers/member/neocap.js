@@ -23,7 +23,7 @@ export default class NeocapController extends Controller {
   }
 
   @action exit() {
-    // this.member.capabilities.rollbackAttributes();
+    this.member.capabilities.rollbackAttributes();
     this.transitionToRoute('member');
   }
 

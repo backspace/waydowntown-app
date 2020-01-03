@@ -48,7 +48,7 @@
           </button>
         {{/unless}}
 
-        <WalkthroughComponent @provider={{provider}} @member={{this.member}} />
+        <WalkthroughComponent @provider={{provider}} @member={{this.member}} @first={{this.first}} @forced={{this.forced}} />
 
         {{#if provider.error}}
           <p>Error: {{provider.error}}</p>
