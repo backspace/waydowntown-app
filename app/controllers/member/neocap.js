@@ -64,17 +64,17 @@ export default class NeocapController extends Controller {
       informational: true,
     },
     {
-      property: 'notifications',
-      title: 'Notifications',
-      description:
-        'We need to send push notifications to let you know about games if the app isn’t open. (This is currently broken.)',
-      required: true,
-    },
-    {
       property: 'location',
       title: 'Location',
       description:
         'We need to track your location to be able to connect you with nearby teams for games. This will only be used during the adventure and beta testing and no history is stored, only the most recent position.',
+      required: true,
+    },
+    {
+      property: 'notifications',
+      title: 'Notifications',
+      description:
+        'We need to send push notifications to let you know about games if the app isn’t open. (This is currently broken.)',
       required: true,
     },
     {

@@ -371,6 +371,25 @@ module('Acceptance | capabilities', function(hooks) {
 
     await click('[data-test-next]');
 
+    assert.dom('h2').hasText('Location');
+    assert.dom('[data-test-progress]').hasText('3 of 13');
+    assert
+      .dom('.leaflet-tile-pane .leaflet-layer')
+      .hasStyle({ opacity: '0.25' });
+    assert.dom('.leaflet-overlay-pane path').doesNotExist();
+
+    assert.dom('[data-test-previous]').isDisabled();
+    assert.dom('[data-test-next]').isDisabled();
+
+    await click('[data-test-request]');
+    await settled();
+
+    assert.dom('.leaflet-tile-pane .leaflet-layer').hasStyle({ opacity: '1' });
+    assert.dom('.leaflet-overlay-pane path').exists();
+    assert.dom('[data-test-next]').isNotDisabled();
+
+    await click('[data-test-next]');
+
     assert.dom('h2').hasText('Notifications');
 
     window.PushNotification = {
@@ -392,25 +411,6 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-request]');
     await settled();
     await settled();
-    await click('[data-test-next]');
-
-    assert.dom('h2').hasText('Location');
-    assert.dom('[data-test-progress]').hasText('4 of 13');
-    assert
-      .dom('.leaflet-tile-pane .leaflet-layer')
-      .hasStyle({ opacity: '0.25' });
-    assert.dom('.leaflet-overlay-pane path').doesNotExist();
-
-    assert.dom('[data-test-previous]').isDisabled();
-    assert.dom('[data-test-next]').isDisabled();
-
-    await click('[data-test-request]');
-    await settled();
-
-    assert.dom('.leaflet-tile-pane .leaflet-layer').hasStyle({ opacity: '1' });
-    assert.dom('.leaflet-overlay-pane path').exists();
-    assert.dom('[data-test-next]').isNotDisabled();
-
     await click('[data-test-next]');
 
     assert.dom('h2').hasText('Bluetooth');
