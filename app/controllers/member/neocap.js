@@ -64,6 +64,13 @@ export default class NeocapController extends Controller {
       informational: true,
     },
     {
+      property: 'notifications',
+      title: 'Notifications',
+      description:
+        'We need to send push notifications to let you know about games if the app isn’t open. (This is currently broken.)',
+      required: true,
+    },
+    {
       property: 'location',
       title: 'Location',
       description:

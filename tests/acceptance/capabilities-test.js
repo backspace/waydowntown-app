@@ -321,6 +321,25 @@ module('Acceptance | capabilities', function(hooks) {
   test('the new walkthrough adds a step to display and confirm capability values', async function(assert) {
     const done = assert.async();
 
+    let updateCalls = 0;
+
+    this.server.patch(`/members/:id`, function({ members }, request) {
+      const member = members.find(request.params.id);
+
+      member.update(this.normalizedRequestAttrs());
+
+      if (updateCalls == 1) {
+        assert.deepEqual(member.attrs.device, window.device);
+        assert.deepEqual(member.attrs.capabilities, expectedCapabilitiesServer);
+
+        done();
+      }
+
+      updateCalls++;
+
+      return member;
+    });
+
     this.getCurrentPositionOverride = success => {
       success({
         coords: {
@@ -349,8 +368,31 @@ module('Acceptance | capabilities', function(hooks) {
 
     await click('[data-test-next]');
 
+    assert.dom('h2').hasText('Notifications');
+
+    window.PushNotification = {
+      init() {
+        return {
+          on(event, handler) {
+            if (event === 'registration') {
+              handler({ registrationType: 'X', registrationId: 'Y' });
+            }
+          },
+        };
+      },
+    };
+
+    this.server.post(`/members/${this.member.id}/notify`, () => {
+      return new Response(201, {}, {});
+    });
+
+    await click('[data-test-request]');
+    await settled();
+    await settled();
+    await click('[data-test-next]');
+
     assert.dom('h2').hasText('Location');
-    assert.dom('[data-test-progress]').hasText('3 of 10');
+    assert.dom('[data-test-progress]').hasText('4 of 11');
     assert
       .dom('.leaflet-tile-pane .leaflet-layer')
       .hasStyle({ opacity: '0.25' });
@@ -401,7 +443,7 @@ module('Acceptance | capabilities', function(hooks) {
     await click('[data-test-next]');
 
     assert.dom('h2').includesText('Decibel meter');
-    assert.dom('[data-test-progress]').hasText('6 of 10');
+    assert.dom('[data-test-progress]').hasText('7 of 11');
     // assert.dom('[data-test-previous]').isNotDisabled(); FIXME how to handle going backward, shouldn’t have to repeat request
     assert.dom('[data-test-next]').doesNotExist();
     assert.dom('[data-test-skip]').exists();
@@ -512,7 +554,7 @@ module('Acceptance | capabilities', function(hooks) {
       devicemotion: true,
       location: true,
       magnetometer: true,
-      // notifications: true,
+      notifications: true,
       ocr: true,
 
       // exertion: true,
@@ -532,7 +574,7 @@ module('Acceptance | capabilities', function(hooks) {
       devicemotion: true,
       location: true,
       magnetometer: true,
-      notifications: false,
+      notifications: true,
       ocr: true,
 
       exertion: false,
@@ -543,25 +585,6 @@ module('Acceptance | capabilities', function(hooks) {
 
       fastNavigation: false,
     };
-
-    let updateCalls = 0;
-
-    this.server.patch(`/members/:id`, function({ members }, request) {
-      const member = members.find(request.params.id);
-
-      member.update(this.normalizedRequestAttrs());
-
-      if (updateCalls == 0) {
-        assert.deepEqual(member.attrs.device, window.device);
-        assert.deepEqual(member.attrs.capabilities, expectedCapabilitiesServer);
-
-        done();
-      }
-
-      updateCalls++;
-
-      return member;
-    });
 
     Object.keys(expectedCapabilities).forEach(capability => {
       assert
