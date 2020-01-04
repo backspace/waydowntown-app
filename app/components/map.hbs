@@ -1,4 +1,4 @@
-{{#let (icon iconUrl="assets/icons/playground.svg" iconSize=(point 25 25)) as |icon|}}
+{{#let (icon iconUrl="assets/icons/playground.svg" iconSize=(point 25 25)) (icon iconUrl="assets/icons/bowling-alley.svg" iconSize=(point 25 25)) as |memberIcon incarnationIcon|}}
   <LeafletMap @lat={{this.lat}} @lng={{this.lon}} @zoom={{this.zoom}} class="w-full h-64" data-test-map as |layers|>
     <layers.tile @url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png"></layers.tile>
 
@@ -9,7 +9,7 @@
     {{#each @teams as |team|}}
       {{#each team.members as |member|}}
         {{#if (and member.lat member.lon)}}
-          <layers.marker @location={{hash lat=member.lat lon=member.lon}} @icon={{icon}} as |marker|>
+          <layers.marker @location={{hash lat=member.lat lon=member.lon}} @icon={{memberIcon}} as |marker|>
             <marker.popup>
               <span data-test-marker-popup-member-id={{member.id}}>
                 {{member.name}}
@@ -18,6 +18,12 @@
           </layers.marker>
         {{/if}}
       {{/each}}
+    {{/each}}
+
+    {{#each @incarnations as |incarnation|}}
+      {{#if (and incarnation.lat incarnation.lon)}}
+        <layers.marker @location={{hash lat=incarnation.lat lon=incarnation.lon}} @icon={{incarnationIcon}} />
+      {{/if}}
     {{/each}}
   </LeafletMap>
 {{/let}}

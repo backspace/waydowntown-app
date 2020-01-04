@@ -40,4 +40,15 @@ module('Acceptance | map', function(hooks) {
 
     assert.dom('.leaflet-marker-icon').exists({ count: 2 });
   });
+
+  test('incarnations show on the map', async function(assert) {
+    this.server.create('incarnation', {
+      lat: 49.897561,
+      lon: -97.140272,
+    });
+
+    await visit('/member/map');
+
+    assert.dom('.leaflet-marker-icon').exists({ count: 1 });
+  });
 });

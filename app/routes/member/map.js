@@ -1,11 +1,15 @@
 import Route from '@ember/routing/route';
+import { hash } from 'rsvp';
 
 export default class MemberMapRoute extends Route {
   model() {
-    return this.modelFor('member').teams;
+    return hash({
+      teams: this.modelFor('member').teams,
+      incarnations: this.store.findAll('incarnation'),
+    });
   }
 
-  setupController(controller, teams) {
-    controller.set('teams', teams);
+  setupController(controller, { incarnations, teams }) {
+    controller.setProperties({ incarnations, teams });
   }
 }

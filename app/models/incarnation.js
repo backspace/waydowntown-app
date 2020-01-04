@@ -7,4 +7,7 @@ export default class IncarnationModel extends Model {
 
   @attr() questions;
   @attr('string') credit;
+
+  @attr('number') lat;
+  @attr('number') lon;
 }

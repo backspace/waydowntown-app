@@ -4,6 +4,7 @@ export default function() {
   });
 
   this.get('/games'); // FIXME filter based on requesting team
+  this.get('/incarnations');
 
   this.patch('/games/:id/report', function({ games }, { params }) {
     return games.find(params.id);
