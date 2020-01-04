@@ -1,9 +1,11 @@
-<button class="btn" {{on "click" this.scan}} data-test-scan>Scan barcode</button>
+<Capabilities::Barcodes as |barcodes|>
+  <button class="btn" {{on "click" (perform barcodes.request)}} data-test-scan>Scan barcode</button>
 
-{{#if this.barcodes.length}}
-  <ul data-test-barcodes>
-    {{#each this.barcodes as |barcode|}}
-      <li>{{barcode}}</li>
-    {{/each}}
-  </ul>
-{{/if}}
+  {{#if barcodes.barcodes.length}}
+    <ul {{did-update this.updateBarcodes barcodes.barcodes}} data-test-barcodes>
+      {{#each barcodes.barcodes as |barcode|}}
+        <li>{{barcode}}</li>
+      {{/each}}
+    </ul>
+  {{/if}}
+</Capabilities::Barcodes>

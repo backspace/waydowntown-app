@@ -1,13 +1,15 @@
-<button class="btn" {{on "click" this.scan}}>Scan</button>
+<Capabilities::Barcodes as |barcodes|>
+  <button class="btn" {{on "click" (perform barcodes.request)}}>Scan</button>
 
-{{#if this.error}}
-  <p>Error: {{this.error}}</p>
-{{/if}}
+  <ul>
+    {{#each barcodes.barcodes as |barcode|}}
+      <li>{{barcode}}</li>
+    {{else}}
+      <li>no barcodes</li>
+    {{/each}}
+  </ul>
 
-<ul>
-  {{#each this.barcodes as |barcode|}}
-    <li>{{barcode}}</li>
-  {{else}}
-    <li>no barcodes</li>
-  {{/each}}
-</ul>
+  {{#if barcodes.error}}
+    <p>Error: {{barcodes.error}}</p>
+  {{/if}}
+</Capabilities::Barcodes>
