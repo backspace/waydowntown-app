@@ -22,7 +22,12 @@
 
     {{#each @incarnations as |incarnation|}}
       {{#if (and incarnation.lat incarnation.lon)}}
-        <layers.marker @location={{hash lat=incarnation.lat lon=incarnation.lon}} @icon={{incarnationIcon}} />
+        <layers.marker @location={{hash lat=incarnation.lat lon=incarnation.lon}} @icon={{incarnationIcon}} as |marker|>
+          <marker.popup>
+            {{incarnation.concept.name}}
+            <button class="p-1 border border-black" {{on "click" (perform this.requestGame incarnation)}}>Request</button>
+          </marker.popup>
+        </layers.marker>
       {{/if}}
     {{/each}}
   </LeafletMap>
