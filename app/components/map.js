@@ -16,7 +16,10 @@ export default class Map extends Component {
   );
 
   mapTileUrl = ENV.MAP_TILE_URL;
-  testing = Ember.testing;
+
+  get testing() {
+    return Ember.testing;
+  }
 
   @task(function*(incarnation) {
     const store = getOwner(this).lookup('service:store');

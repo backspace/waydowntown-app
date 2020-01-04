@@ -18,7 +18,9 @@ export default class ApplicationController extends Controller {
 
   @tracked showLogEntries = false;
 
-  testing = Ember.testing;
+  get testing() {
+    return Ember.testing;
+  }
 
   @action
   toggleDiagnostics() {
