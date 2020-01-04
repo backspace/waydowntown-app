@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { task } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
 
-export default class CapabilitiesMagnetometerComponent extends Component {
+export default class CapabilitiesBluetoothComponent extends Component {
   @tracked devices = [];
   @tracked status = 'unknown';
 
