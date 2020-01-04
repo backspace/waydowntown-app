@@ -6,7 +6,6 @@ export default class BluetoothCollector extends Component {
   devices = [];
 
   @action updateDevices(element, [devices]) {
-    console.log('new devices', devices);
     this.devices = devices;
   }
 

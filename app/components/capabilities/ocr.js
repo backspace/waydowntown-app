@@ -17,12 +17,10 @@ export default class CapabilitiesOcrComponent extends Component {
           this.imageUrl = imageUrl;
 
           window.textocr.recText(2, imageUrl, resolve, error => {
-            console.log('error getting ocr', error);
             reject(error);
           });
         },
         error => {
-          console.log('error getting picture', error);
           reject(error);
         },
         {
