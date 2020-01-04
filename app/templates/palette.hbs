@@ -11,7 +11,7 @@
 {{/if}}
 
 {{#each this.palette as |colour|}}
-  <span class="w-30 h-10 inline-block" style="background-color: rgb({{join ", " colour}})">{{join ", " colour}}</span>
+  <span class="w-30 h-10 inline-block" style="background-color: rgb({{join ", " colour}})"> ({{join ", " colour}} )</span>
 {{else}}
   <p>no palette yet</p>
 {{/each}}
