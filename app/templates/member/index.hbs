@@ -107,12 +107,6 @@
       {{/each}}
     </ul>
   {{/if}}
-
-  <button class="btn" {{on "click" (toggle-action "showMap" this)}} data-test-toggle-map>{{if this.showMap "Hide" "Show"}} Map</button>
-
-  {{#if this.showMap}}
-    <Map @teams={{this.teams}} />
-  {{/if}}
 {{/if}}
 
 Start solo games:

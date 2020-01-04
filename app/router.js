@@ -10,6 +10,7 @@ Router.map(function() {
   this.route('member', function() {
     this.route('archived');
     this.route('capabilities');
+    this.route('map');
   });
 
   this.route('barcode');

@@ -19,14 +19,7 @@ module('Acceptance | map', function(hooks) {
     const others = this.server.create('team', { name: 'others' });
     const otherMember = others.createMember();
 
-    await visit('/');
-
-    assert.dom('[data-test-map]').doesNotExist();
-
-    await click('[data-test-toggle-map]');
-
-    assert.dom('[data-test-map]').exists();
-    assert.dom('.leaflet-marker-icon').exists({ count: 1 });
+    await visit('/member/map');
 
     await click('.leaflet-marker-icon');
 

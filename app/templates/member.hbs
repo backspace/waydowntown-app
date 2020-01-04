@@ -7,6 +7,10 @@
 <LinkTo class="underline" @route="member.capabilities">Capabilities walkthrough</LinkTo>
 <LinkTo class="underline" @route="member.archived" data-test-archived>Archived</LinkTo>
 
+{{#if this.member.admin}}
+  <LinkTo class="underline" @route="member.map">Map</LinkTo>
+{{/if}}
+
 {{outlet}}
 
 {{#if this.member.admin}}
